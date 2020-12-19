@@ -1,0 +1,186 @@
+{% extends 'main/base.html' %}
+{% load custom_filtering_tags %}
+
+{% block javascript %}
+    <script>
+        // These functions are basically allowing
+        // the reloading of the page if needed
+        // otherwise, the user can stop the refreshing
+        // by unchecking the box
+
+        $('#switch')[0].checked = false;
+
+        let checked = localStorage.getItem("checkBox");
+
+        function checkStates() {
+            if (checked == "true") {
+                console.log('It was checked');
+                $('#switch')[0].checked = true;
+            } else if (checked == "false") {
+                console.log('It was not checked!');
+            }
+        }
+
+        function change() {
+            let decider = document.getElementById('switch');
+            if(decider.checked){
+                localStorage.setItem("checkBox", true);
+                setTimeout(reload, 10000);
+            } else {
+                localStorage.removeItem("checkBox");
+                localStorage.setItem("checkBox", false);
+                clearTimeout(reload);
+            }
+        }
+
+        function reload() {
+            document.location.reload();
+        }
+
+        checkStates();
+        change();
+
+    </script>
+{% endblock %}
+
+{% block content %}
+
+<div class="row pt-4">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-6">
+        <a class="btn btn-success" href="{% url 'recalculate_scores' comp_name=competition.competition_name%}">Start Competition</a>
+      </div>
+      <div class="col-6">
+        <input type="checkbox" id="switch" onclick="change()" autocomplete="off">
+        <label for="switch"><b>Dynamically Refresh Page</b></label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row pt-4">
+    <div class="col">
+
+        <div class="container">
+            <div id="accordion pt-4">
+              <div class="card">
+                <div class="card-header">
+                  <table class="table table-sm mb-0">
+                    <tbody>
+                      <tr id="headingOne" data-toggle="collapse" data-target="#header">
+
+                        <div class="row">
+                            <div class="col-8">
+                                <td class="border-0"><h1>{{ competition.competition_name }}</h1></td>
+                            <div class="col-4">
+                                <td class="border-0 text-right"><i>Created by: {{ competition.created_by }}</i></td>
+                            </div>
+                        </div>
+                    {% if competition.competition_status == 1 %}
+                        <div class="row">
+                            <td class="border-0 text-right"><span class="badge badge-success"> In-Progress </span></td>
+                        </div>
+                    {% elif competition.competition_status == 2 %}
+                        <div class="row">
+                            <td class="border-0 text-right"><span class="badge badge-warning"> Ended </span></td>
+                        </div>
+                    {% elif competition.competition_status == 3 %}
+                        <div class="row">
+                            <td class="border-0 text-right"><span class="badge badge-primary"> Not-Started </span></td>
+                        </div>
+                    {% endif %}
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="header" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                  <div class="card-body">
+                    {{ competition.competition_description }}
+                  </div>
+                </div>
+              </div>
+              {% for team in teams %}
+                <div class="card">
+                    <div class="card-header" role="tab" id="headingThree">
+                      <h5 class="mb-0">
+                        <a class="collapsed" data-toggle="collapse" href="#{{ team }}" aria-expanded="false" aria-controls="{{ team }}">
+                          <table class="table table-sm mb-0">
+                            <tbody>
+                              <tr id="headingOne" data-toggle="collapse" data-target="#collapseOne">
+                                <td class="border-0">{{ team }}</td>
+                                <td class="border-0">Score:</td>
+                                <td class="border-0">{{ team.score }}</td>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </a>
+                      </h5>
+                    </div>
+                    <div id="{{ team }}" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+                      <div class="card-body">
+
+                        <div id="accordionInside">
+
+                            {% if team.data %}
+
+                                {% for data in team.data %}
+                                    {% for key, value in data.items %}
+                                        {% for stats in value %}
+                                        <div class="card">
+                                        <div class="card-header" role="tab" id="headingInside">
+                                            <h5 class="mb-0">
+                                            <a class="collapsed" data-toggle="collapse" href="#{{ forloop.counter0|add }} {{key}}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }} {{key}}">
+                                                <td class="border-0">Match #{{ forloop.counter0|add }} - </td>
+                                                <td class="border-0">{{ key }}</td>
+                                                <td class="border-0 text-right">
+                                                <i class="fa"></i>
+                                                </span>
+                                            </a>
+                                            </h5>
+                                        </div>
+                                        <div id="{{ forloop.counter0|add }} {{key}}" class="collapse" role="tabpanel" aria-labelledby="headingInside" data-parent="#accordionInside">
+                                            <div class="card-body">
+
+                                            <table class="table table-dark">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">Stats</th>
+                                                    <th scope="col">Values</th>
+                                                </tr>
+                                                </thead>
+                                                {% for key, value in stats.items %}
+                                                <tbody>
+                                                    <tr>
+                                                    <td>{{ key }}</td>
+                                                    <td>{{ value }}</td>
+                                                    </tr>
+                                                </tbody>
+                                                {% endfor %}
+                                            </table>
+
+                                            </div>
+                                        </div>
+                                        </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% else %}
+                                    <h3>Competition has not started or been loaded!</h3>
+                            {% endif %}
+
+                        </div>
+
+                      </div>
+                    </div>
+
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

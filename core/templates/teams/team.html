@@ -1,0 +1,79 @@
+{% extends 'main/base.html' %}
+{% block content %}
+
+    <div class="row pt-4 justify-content-center">
+        <div class="col-12 text-center">        
+            <div class="card">
+                <h5 class="card-header ">{{ team.team_name }}</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <p><b>KDA:</b></p>
+                        </div>
+                        <div class="col-4">
+                            <p><b>Wins:</b></p>
+                        </div>
+                        <div class="col-4">
+                            <p><b>Kills:</b></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">{{ team.cummulative_kd }}</div>
+                        <div class="col">{{ team.total_wins }}</div>
+                        <div class="col">{{ team.total_kills }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pt-4 justify-content-center">
+        {% for data in profiles %}
+        <div class="col-lg-3 col-md-2 col-sm-1">
+            <div class="card text-center" style="width: 18rem;">
+                <img class="card-img-top" src="https://cdn1.dotesports.com/wp-content/uploads/2019/12/16125403/cod38.jpg" alt="Card image cap">
+                <div class="card-body text-center">
+                <a href="{% url 'get_profile' tag=data.activision_tag %}" class="list-group-item list-group-item-action">{{data.activision_tag}}</a>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <p><b>KDA:</b></p>
+                                </div>
+                                <div class="row">
+                                    <p>{{data.kda}}</p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <p><b>WINS:</b></p>
+                                </div>
+                                <div class="row">
+                                    <p>{{data.wins}}</p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <p><b>Kills:</b> </p>
+                                </div>
+                                <div class="row">
+                                    <p>{{data.total_kills}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if team.created_by == user %}
+        <div class="row pt-4 justify-content-center">
+            <a href="{% url 'edit_team' team_name=team.team_name %}" class="btn btn-primary">Edit Team</a>
+        </div>
+    {% endif %}
+
+{% endblock content %}

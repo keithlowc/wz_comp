@@ -1,0 +1,41 @@
+{% extends 'main/base.html' %}
+{% block content %}
+
+<div class="row pt-4">
+    <div class="col">
+
+    {% if user.is_authenticated%}
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="https://cdn.mos.cms.futurecdn.net/RjKYxQHcJL3k7WjkKjGxi9-320-80.png" alt="Card image cap">
+            <div class="card-body">
+            <h5 class="card-title">{{ activision_tag }}</h5>
+            <p class="card-text">{{ message }}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% if profile_found %}
+                    <li class="list-group-item"><b>Activision tag:</b> {{ activision_tag }}</li>
+                    <li class="list-group-item"><b>Kill Death Ratio:</b> {{ kdratio }}</li>
+                    <li class="list-group-item"><b>Wins:</b> {{ battleroyale_total_wins }} </li>
+                    <li class="list-group-item"><b>Total Kills:</b> {{ total_kills }} </li>
+                {% else %}
+                    <li class="list-group-item"><b>Activision tag:</b> Edit your profile to show data</li>
+                    <li class="list-group-item"><b>Kill Death Ratio:</b> Edit your profile to show data</li>
+                    <li class="list-group-item"><b>Wins:</b> Edit your profile to show data</li>
+                    <li class="list-group-item"><b>Total Kills:</b> Edit your profile to show data </li>
+                {% endif %}
+            </ul>
+        </div>
+    {% else %}
+        <h1>User is not authenticated</h1>
+        <p>Please <a href="{% url 'login' %}">Log in</a>!</p>
+    {% endif %}
+      
+    </div>
+    <div class="col-md-auto">
+    </div>
+    <div class="col-lg-2">
+</div>
+    
+
+
+{% endblock content %}
