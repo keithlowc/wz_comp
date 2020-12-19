@@ -1,1 +1,1 @@
-web: gunicorn warzone_general.wsgi --log-file -
+web: gunicorn warzone_general.wsgi
