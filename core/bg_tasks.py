@@ -14,6 +14,8 @@ def recalculate_competition_stats(comp_name):
     later use and parsing
     '''
 
+    print('calling recalculate_competition_stats')
+
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
     team_users = []
@@ -48,6 +50,8 @@ def calculate_competition_scores(comp_name):
     calculates the points for each
     player and team
     '''
+
+    print('calling calculate_competition_scores')
 
     users = []
 
@@ -127,9 +131,9 @@ def calculate_status_of_competition(comp_name):
     end = competition.end_time
     
     print('competition name: ', competition.competition_name)
-    print("Current time", current_time.timestamp())
+    print('Current time', current_time.timestamp())
     print('Start time: ', start.timestamp())
-    print('End time: ', end)
+    print('End time: ', end.timestamp())
 
     # Status
     # 'In-Progress': 1,
@@ -141,18 +145,18 @@ def calculate_status_of_competition(comp_name):
         # And the competition has not ended
         competition.competition_status = 1
         competition.save()
-        print('The competition has started')
+        print('** The competition has started **')
 
     elif current_time.timestamp() >= start.timestamp():
         # The competition has ended
         competition.competition_status = 2
         competition.save()
-        print('The competition has ended')
+        print('** The competition has ended **')
 
     else:
         # The competition has not started
         competition.competition_status = 3
         competition.save()
-        print('The competition has not started')
+        print('** The competition has not started **')
         
 

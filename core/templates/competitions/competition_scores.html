@@ -58,10 +58,17 @@
         {% endif %}
       </div>
       <div class="col-6">
-        <!-- <input type="checkbox" id="switch" onclick="change()" autocomplete="off" checked data-toggle="toggle"> -->
-    
-        <input id="toggle-silent" type="checkbox" data-toggle="toggle" onchange="change()">
-        <label for="switch"><b>Dynamically Refresh Page</b></label>
+
+        <div class = "row">
+            <input id="toggle-silent" type="checkbox" data-toggle="toggle" onchange="change()">
+            <label for="switch"><b>Dynamically Refresh Page</b></label>
+        </div>
+        <div class = "row pt-4">
+          {% if user == competition.created_by and competition.competition_ready == True %}
+            <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Refresh Once</a>
+          {% endif %}
+        </div>
+
       </div>
     </div>
   </div>
