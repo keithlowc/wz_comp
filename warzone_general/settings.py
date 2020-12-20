@@ -97,9 +97,6 @@ DATABASES = {
 
 if SERVER:
     DATABASES['default'] = dj_database_url.config()
-else:
-    print('Not a server env')
-    print(DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
