@@ -47,7 +47,9 @@
                                   </div>
                               {% endif %}
                           </div>
-                          <div class="col-4 text-right"><i>Created by: {{ competition.created_by }}</i></div>
+                          <div class="col-4 text-right">
+                              <i>Created by: {{ competition.created_by }}</i>
+                          </div>
                         </div>
                         </span>
                       </a>
@@ -56,9 +58,14 @@
                   <div id="{{ forloop.counter0|add }}" class="collapse" role="tabpanel" aria-labelledby="headingInside" data-parent="#accordionInside">
                     <div class="card-body">
 
-                      <p>
-                        {{ competition.competition_description }}
-                      </p>
+                      <div class="row">
+                        <div class="col-12">
+                          <p>{{ competition.competition_description }}</p>
+                          
+                          <p><b>Start Time: </b>{{ competition.start_time }}</p>
+                          <p><b>End Time: </b> {{ competition.end_time }}</p>
+                        </div>
+                      </div>
                       <a class="btn btn-info" href="{% url 'get_competition' comp_name=competition.competition_name %}">See scores</a>
 
                     </div>

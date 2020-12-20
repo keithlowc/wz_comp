@@ -14,9 +14,13 @@ def recalculate_competition_stats(comp_name):
     later use and parsing
     '''
 
-    print('calling recalculate_competition_stats')
+    print()
+    print('** calling recalculate_competition_stats **')
 
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+
+    competition_start_time = competition.start_time # Datetime.datetime format
+    competition_end_time = competition.end_time # Datetime.datetime format
 
     team_users = []
 
@@ -33,7 +37,7 @@ def recalculate_competition_stats(comp_name):
         for users in team_users:
             if users is not None:
                 time.sleep(1)
-                clean_data = util.get_custom_data(users)
+                clean_data = util.get_custom_data(users, competition_start_time, competition_end_time)
                 data_list.append(clean_data)
 
         team_users = []
@@ -51,7 +55,8 @@ def calculate_competition_scores(comp_name):
     player and team
     '''
 
-    print('calling calculate_competition_scores')
+    print()
+    print('** calling calculate_competition_scores **')
 
     users = []
 
@@ -119,6 +124,8 @@ def calculate_status_of_competition(comp_name):
     and runs background jobs that calculate
     user data and points.
     '''
+    print()
+    print('** Starting bg calculations! **')
 
     recalculate_competition_stats(comp_name)
     calculate_competition_scores(comp_name)
@@ -129,11 +136,13 @@ def calculate_status_of_competition(comp_name):
 
     start = competition.start_time
     end = competition.end_time
-    
+
+    print('--------')
     print('competition name: ', competition.competition_name)
-    print('Current time', current_time.timestamp())
-    print('Start time: ', start.timestamp())
-    print('End time: ', end.timestamp())
+    print('Current time', current_time)
+    print('Start time: ', start)
+    print('End time: ', end)
+    print('--------')
 
     # Status
     # 'In-Progress': 1,
@@ -141,22 +150,22 @@ def calculate_status_of_competition(comp_name):
     # 'Not started': 3,
 
     if current_time.timestamp() >= start.timestamp() and not current_time.timestamp() >= end.timestamp():
-        # The competition has started
+        # The competition has In-Progress
         # And the competition has not ended
         competition.competition_status = 1
         competition.save()
-        print('** The competition has started **')
+        print('** The competition Status is: In-Progress **')
 
     elif current_time.timestamp() >= start.timestamp():
-        # The competition has ended
+        # The competition Status is: Ended
         competition.competition_status = 2
         competition.save()
-        print('** The competition has ended **')
+        print('** The competition Status is: Ended **')
 
     else:
-        # The competition has not started
+        # The competition Status is: not Started
         competition.competition_status = 3
         competition.save()
-        print('** The competition has not started **')
+        print('** The competition Status is: not Started **')
         
 

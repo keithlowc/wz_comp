@@ -99,6 +99,7 @@ class StaffCustomCompetition(models.Model):
 
 
 class StaffCustomTeams(models.Model):
+    team_name = models.CharField(max_length = 100, null = True, unique = True)
     player_1 = models.CharField(max_length = 100, null = True, unique = True, blank = True)
     player_2 = models.CharField(max_length = 100, null = True, unique = True, blank = True)
     player_3 = models.CharField(max_length = 100, null = True, unique = True, blank = True)
@@ -110,8 +111,6 @@ class StaffCustomTeams(models.Model):
     data_to_score = models.JSONField(default = dict, blank = True)
 
     score = models.IntegerField(default = 0)
-    
-    team_name = models.CharField(max_length = 100, null = True, unique = True)
 
     class Meta:
         verbose_name = 'CustomTeam'
@@ -133,9 +132,10 @@ class ConfigController(models.Model):
     competitions_page_refresh_time = 5000 mili seconds
     competitions_bg_tasks = 100 seconds
     '''
-    name = models.CharField(max_length = 100, null = True, unique = True)
+    name = models.CharField(max_length = 100, null = True, unique = True, default = 'main_config_controller')
     competitions_page_refresh_time = models.IntegerField(default = 5000)
     competitions_bg_tasks = models.IntegerField(default = 100)
+    competitions_dummy_data = models.BooleanField(default = False)
 
     class Meta:
         verbose_name = 'ConfigController'

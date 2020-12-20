@@ -60,13 +60,14 @@
       <div class="col-6">
 
         <div class = "row">
-            <input id="toggle-silent" type="checkbox" data-toggle="toggle" onchange="change()">
-            <label for="switch"><b>Dynamically Refresh Page</b></label>
-        </div>
-        <div class = "row pt-4">
-          {% if user == competition.created_by and competition.competition_ready == True %}
-            <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Refresh Once</a>
-          {% endif %}
+          <div class="col-6">
+            {% if user == competition.created_by and competition.competition_ready == True %}
+              <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Refresh Once</a>
+            {% endif %}
+          </div>
+          <div class="col-6">
+            <input id="toggle-silent" type="checkbox" data-toggle="toggle" onchange="change()" data-on="Auto-Refresh On" data-off="Auto-Refresh Off">
+          </div>
         </div>
 
       </div>
@@ -92,26 +93,34 @@
                                 <td class="border-0 text-right"><i>Created by: {{ competition.created_by }}</i></td>
                             </div>
                         </div>
-                    {% if competition.competition_status == 1 %}
-                        <div class="row">
-                            <td class="border-0 text-right"><span class="badge badge-success"> In-Progress </span></td>
-                        </div>
-                    {% elif competition.competition_status == 2 %}
-                        <div class="row">
-                            <td class="border-0 text-right"><span class="badge badge-warning"> Ended </span></td>
-                        </div>
-                    {% elif competition.competition_status == 3 %}
-                        <div class="row">
-                            <td class="border-0 text-right"><span class="badge badge-primary"> Not-Started </span></td>
-                        </div>
-                    {% endif %}
+                        {% if competition.competition_status == 1 %}
+                            <div class="row">
+                                <td class="border-0 text-right"><span class="badge badge-success"> In-Progress </span></td>
+                            </div>
+                        {% elif competition.competition_status == 2 %}
+                            <div class="row">
+                                <td class="border-0 text-right"><span class="badge badge-warning"> Ended </span></td>
+                            </div>
+                        {% elif competition.competition_status == 3 %}
+                            <div class="row">
+                                <td class="border-0 text-right"><span class="badge badge-primary"> Not-Started </span></td>
+                            </div>
+                        {% endif %}
+                        
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <div id="header" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                   <div class="card-body">
-                    {{ competition.competition_description }}
+                    <div class="row">
+                      <div class="col-12">
+                        <p>{{ competition.competition_description }}</p>
+                        
+                        <p><b>Start Time: </b>{{ competition.start_time }}</p>
+                        <p><b>End Time: </b> {{ competition.end_time }}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
