@@ -395,7 +395,7 @@ def recalculate_scores(request, comp_name):
                     message = 'Started calculation on the background! Just wait for a couple of minutes and refresh!',
                     type = 'INFO')
 
-    config = ConfigController.objects.get(name = 'ConfigController')
+    config = ConfigController.objects.get(name = 'main_config_controller')
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
     if competition.competition_ready:
