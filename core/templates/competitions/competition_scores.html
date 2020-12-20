@@ -10,24 +10,21 @@
 
         let time_to_refresh = {{ config.competitions_page_refresh_time }}
 
-        console.log('This is the time');
-        console.log(time_to_refresh);
-
-        $('#switch')[0].checked = false;
+        $('#toggle-silent')[0].checked = false;
 
         let checked = localStorage.getItem("checkBox");
 
         function checkStates() {
             if (checked == "true") {
                 console.log('It was checked');
-                $('#switch')[0].checked = true;
+                $('#toggle-silent')[0].checked = true;
             } else if (checked == "false") {
                 console.log('It was not checked!');
             }
         }
 
         function change() {
-            let decider = document.getElementById('switch');
+            let decider = document.getElementById('toggle-silent');
             if(decider.checked){
                 localStorage.setItem("checkBox", true);
                 setTimeout(reload, time_to_refresh);
@@ -54,10 +51,16 @@
   <div class="col-12">
     <div class="row">
       <div class="col-6">
-        <a class="btn btn-success" href="{% url 'recalculate_scores' comp_name=competition.competition_name%}">Start Competition</a>
+        {% if user == competition.created_by and competition.competition_ready == False %}
+          <a class="btn btn-success" href="{% url 'recalculate_scores' comp_name=competition.competition_name %}">Start Competition</a>
+        {% else %}
+          <h3>Competition has been started!</h3>
+        {% endif %}
       </div>
       <div class="col-6">
-        <input type="checkbox" id="switch" onclick="change()" autocomplete="off">
+        <!-- <input type="checkbox" id="switch" onclick="change()" autocomplete="off" checked data-toggle="toggle"> -->
+    
+        <input id="toggle-silent" type="checkbox" data-toggle="toggle" onchange="change()">
         <label for="switch"><b>Dynamically Refresh Page</b></label>
       </div>
     </div>

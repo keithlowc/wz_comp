@@ -15,6 +15,7 @@ def calculate_time_delta(start_1, start_2):
 
     return total_delta
 
+
 def calculate_average(matches, element):
     ratios = []
     for match in matches:
@@ -43,6 +44,7 @@ def get_values_from_matches(matches_list, user_tag = None):
             data['teamPlacement'] = 0
 
         data['damageDone'] = matches['playerStats']['damageDone']
+        data['matchID'] = matches['matchID']
 
         all_matches.append(data)
     
@@ -82,7 +84,8 @@ def get_custom_data(user_tag):
     Gets the matches for user_tag
     '''
 
-    warzone_api = WarzoneApi(tag = user_tag.replace('#', '%23'),platform = 'acti')
+    warzone_api = WarzoneApi(tag = user_tag.replace('#', '%23'), platform = 'acti')
+
     matches = warzone_api.get_warzone_matches()
 
     total_matches_len = len(matches['matches'])
@@ -91,22 +94,9 @@ def get_custom_data(user_tag):
 
     clean_data = get_values_from_matches(data, user_tag)
 
-    print(clean_data)
-    print()
-
     return clean_data
 
 
-def warzone_competition_rules(data, kills = False, placement = False):
-    if kills:
-        total_kills = sum(data)
-        total_kills = total_kills * 2
-
-        return total_kills
-    
-    elif placement:
-        
-        return 1
 
 
 
