@@ -13,7 +13,9 @@ from django.contrib.messages import constants as messages
 from pathlib import Path
 import os
 
-import django_on_heroku
+import django_on_heroku, dj_database_url
+
+SERVER = os.getenv('SERVER')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -88,15 +90,16 @@ WSGI_APPLICATION = 'warzone_general.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dape56t991qjad',
-        'HOST': 'ec2-52-6-75-198.compute-1.amazonaws.com',
-        'PORT': 5432,
-        'USER': 'ctglnmzggldzos',
-        'PASSWORD': 'b0841f6f842cd6dea014413cfa1320f576ec6622c1939a0f97f18943e88fc170',
-
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+if SERVER:
+    DATABASES['default'] = dj_database_url.config()
+else:
+    print('Not a server env')
+    print(DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
