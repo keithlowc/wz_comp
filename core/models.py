@@ -133,6 +133,7 @@ class ConfigController(models.Model):
     competitions_page_refresh_time = 5000 mili seconds
     competitions_bg_tasks = 100 seconds
     '''
+    name = models.CharField(max_length = 100, null = True, unique = True)
     competitions_page_refresh_time = models.IntegerField(default = 5000)
     competitions_bg_tasks = models.IntegerField(default = 100)
 
