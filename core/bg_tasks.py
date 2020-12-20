@@ -8,6 +8,11 @@ import time
 
 @background(schedule = 1)
 def recalculate_competition_stats(comp_name):
+    '''
+    Caculates all the competition stack
+    based on the rest api data for 
+    later use and parsing
+    '''
 
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
@@ -38,6 +43,12 @@ def recalculate_competition_stats(comp_name):
 
 @background(schedule = 1)
 def calculate_competition_scores(comp_name):
+    '''
+    Parses from previous data and 
+    calculates the points for each
+    player and team
+    '''
+
     users = []
 
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
@@ -98,6 +109,13 @@ def calculate_competition_scores(comp_name):
 
 @background(schedule = 1)
 def calculate_status_of_competition(comp_name):
+    '''
+    Calculates the status of the competition
+    based on the competition ending time
+    and runs background jobs that calculate
+    user data and points.
+    '''
+
     recalculate_competition_stats(comp_name)
     calculate_competition_scores(comp_name)
 
@@ -113,11 +131,10 @@ def calculate_status_of_competition(comp_name):
     print('Start time: ', start.timestamp())
     print('End time: ', end)
 
-    # status = {
-    #     'In-Progress': 1,
-    #     'Ended': 2,
-    #     'Not started': 3,
-    # }
+    # Status
+    # 'In-Progress': 1,
+    # 'Ended': 2,
+    # 'Not started': 3,
 
     if current_time.timestamp() >= start.timestamp() and not current_time.timestamp() >= end.timestamp():
         # The competition has started
