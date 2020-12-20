@@ -8,6 +8,11 @@
         // otherwise, the user can stop the refreshing
         // by unchecking the box
 
+        let time_to_refresh = {{ config.competitions_page_refresh_time }}
+
+        console.log('This is the time');
+        console.log(time_to_refresh);
+
         $('#switch')[0].checked = false;
 
         let checked = localStorage.getItem("checkBox");
@@ -25,11 +30,11 @@
             let decider = document.getElementById('switch');
             if(decider.checked){
                 localStorage.setItem("checkBox", true);
-                setTimeout(reload, 10000);
+                setTimeout(reload, time_to_refresh);
             } else {
+                clearTimeout(reload);
                 localStorage.removeItem("checkBox");
                 localStorage.setItem("checkBox", false);
-                clearTimeout(reload);
             }
         }
 

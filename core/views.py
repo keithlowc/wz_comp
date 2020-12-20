@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.db import transaction
 
-from .models import Profile, Teams, StaffCustomTeams, StaffCustomCompetition
+from .models import Profile, Teams, StaffCustomTeams, StaffCustomCompetition, ConfigController
 from .forms import ProfileForm, TeamsForm
 
 from . import signals, util, bg_tasks
@@ -395,9 +395,7 @@ def recalculate_scores(request, comp_name):
                     message = 'Started calculation on the background! Just wait for a couple of minutes and refresh!',
                     type = 'INFO')
 
-    # bg_tasks.recalculate_competition_stats(comp_name)
-    # bg_tasks.calculate_competition_scores(comp_name)
-
+    config = ConfigController.objects.get(name = 'ConfigController')
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
     if competition.competition_ready:
@@ -415,7 +413,7 @@ def recalculate_scores(request, comp_name):
         # if competition is true
         # We activate the bg task
 
-        bg_tasks.calculate_status_of_competition(comp_name, repeat = 100, repeat_until = competition.end_time) # 10 minuticos mas
+        bg_tasks.calculate_status_of_competition(comp_name, repeat = config.competitions_bg_tasks, repeat_until = competition.end_time) # 10 minuticos mas
 
     # When press ready
     # if competition ready:
@@ -445,6 +443,7 @@ def get_competition(request, comp_name):
     '''
 
     try:
+        config = ConfigController.objects.get(name = 'main_config_controller')
         competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
         teams = StaffCustomTeams.objects.filter(competition = competition.id).order_by('-score')
     except Exception as e:
@@ -453,6 +452,7 @@ def get_competition(request, comp_name):
     context = { 
         'teams': teams,
         'competition': competition,
+        'config': config,
     }
 
     return render(request, 'competitions/competition_scores.html', context)
