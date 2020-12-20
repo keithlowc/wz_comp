@@ -8,7 +8,7 @@ from .forms import ProfileForm, TeamsForm
 from . import signals, util, bg_tasks
 from .warzone_api import WarzoneApi
 
-import requests, datetime, time, ast
+import requests, datetime, time, ast, os
 
 # Create your views here.
 
@@ -415,7 +415,7 @@ def recalculate_scores(request, comp_name):
         # if competition is true
         # We activate the bg task
 
-        bg_tasks.calculate_status_of_competition(comp_name, repeat = 100, repeat_until = competition.end_time)
+        bg_tasks.calculate_status_of_competition(comp_name, repeat = 100, repeat_until = competition.end_time) # 10 minuticos mas
 
     # When press ready
     # if competition ready:
