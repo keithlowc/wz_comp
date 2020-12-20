@@ -22,50 +22,54 @@
 
 <div class="row">
     <div class="col">
-    {% for competition in competitions %}
-      <div class="row pt-4">
-          <div class="col">
-            <div class="card">
-              <div class="card-header" role="tab" id="headingInside">
-                <h5 class="mb-0">
-                  <a class="collapsed" data-toggle="collapse" href="#{{ forloop.counter0|add }}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }}">
-                    <div class="row">
-                      <div class="col-4"><h1> {{ competition.competition_name }} </h1></div>
-                      <div class="col-4">
-                          {% if competition.competition_status == 1 %}
-                            <div class="row">
-                                <td class="border-0 text-right"><span class="badge badge-success"> In-Progress </span></td>
-                            </div>
-                          {% elif competition.competition_status == 2 %}
-                              <div class="row">
-                                  <td class="border-0 text-right"><span class="badge badge-warning"> Ended </span></td>
-                              </div>
-                          {% elif competition.competition_status == 3 %}
-                              <div class="row">
-                                  <td class="border-0 text-right"><span class="badge badge-primary"> Not-Started </span></td>
-                              </div>
-                          {% endif %}
-                      </div>
-                      <div class="col-4 text-right"><i>Created by: {{ competition.created_by }}</i></div>
+      {% if competitions %}
+        {% for competition in competitions %}
+          <div class="row pt-4">
+              <div class="col">
+                <div class="card">
+                  <div class="card-header" role="tab" id="headingInside">
+                    <h5 class="mb-0">
+                      <a class="collapsed" data-toggle="collapse" href="#{{ forloop.counter0|add }}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }}">
+                        <div class="row">
+                          <div class="col-4"><h1> {{ competition.competition_name }} </h1></div>
+                          <div class="col-4">
+                              {% if competition.competition_status == 1 %}
+                                <div class="row">
+                                    <td class="border-0 text-right"><span class="badge badge-success"> In-Progress </span></td>
+                                </div>
+                              {% elif competition.competition_status == 2 %}
+                                  <div class="row">
+                                      <td class="border-0 text-right"><span class="badge badge-warning"> Ended </span></td>
+                                  </div>
+                              {% elif competition.competition_status == 3 %}
+                                  <div class="row">
+                                      <td class="border-0 text-right"><span class="badge badge-primary"> Not-Started </span></td>
+                                  </div>
+                              {% endif %}
+                          </div>
+                          <div class="col-4 text-right"><i>Created by: {{ competition.created_by }}</i></div>
+                        </div>
+                        </span>
+                      </a>
+                    </h5>
+                  </div>
+                  <div id="{{ forloop.counter0|add }}" class="collapse" role="tabpanel" aria-labelledby="headingInside" data-parent="#accordionInside">
+                    <div class="card-body">
+
+                      <p>
+                        {{ competition.competition_description }}
+                      </p>
+                      <a class="btn btn-info" href="{% url 'get_competition' comp_name=competition.competition_name %}">See scores</a>
+
                     </div>
-                    </span>
-                  </a>
-                </h5>
-              </div>
-              <div id="{{ forloop.counter0|add }}" class="collapse" role="tabpanel" aria-labelledby="headingInside" data-parent="#accordionInside">
-                <div class="card-body">
-
-                  <p>
-                    {{ competition.competition_description }}
-                  </p>
-                  <a class="btn btn-info" href="{% url 'get_competition' comp_name=competition.competition_name %}">See scores</a>
-
+                  </div>
                 </div>
               </div>
-            </div>
           </div>
-      </div>
-    {% endfor %}
+        {% endfor %}
+      {% else %}
+          <p>There are no competitions available!</p>
+      {% endif %}
   </div>
 </div>
 
