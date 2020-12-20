@@ -119,3 +119,27 @@ class StaffCustomTeams(models.Model):
     
     def __str__(self):
         return str(self.team_name)
+
+
+class ConfigController(models.Model):
+    '''
+    Based on this config controller
+    we can control the time
+    to run background jobs, refresh and 
+    etc
+    
+    For development:
+
+    competitions_page_refresh_time = 5000 mili seconds
+    competitions_bg_tasks = 100 seconds
+    '''
+    competitions_page_refresh_time = models.IntegerField(default = 5000)
+    competitions_bg_tasks = models.IntegerField(default = 100)
+
+    class Meta:
+        verbose_name = 'ConfigController'
+        verbose_name_plural = 'ConfigControllers'
+    
+    def __str__(self):
+        return str("Configuration controller - Do not delete - Do not create more objects")
+
