@@ -9,8 +9,8 @@ urlpatterns = [
     path('competition/recalculate_scores/<str:comp_name>', views.recalculate_scores, name = 'recalculate_scores'),
     
     path('competitions/all', views.get_competitions_all, name = 'get_competitions_all'),
-
     path('competition/<str:comp_name>', views.get_competition, name = 'get_competition'),
+    path('competition/<str:comp_name>/refresh', views.manually_recalculate_score_once, name = 'manually_recalculate_score_once'),
 
     path('profile/', views.view_profile, name = 'view_profile'),
     path('profile/edit', views.edit_profile, name = 'edit_profile'),

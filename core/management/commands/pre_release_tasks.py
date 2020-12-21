@@ -9,4 +9,4 @@ class Command(BaseCommand):
         # main configuration
         
         if len(ConfigController.objects.all()) < 1:
-            ConfigController.objects.create(name = 'main_config_controller')
+            ConfigController.objects.create()

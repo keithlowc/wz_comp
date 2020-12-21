@@ -1,7 +1,8 @@
 from .warzone_api import WarzoneApi
+from .models import ConfigController
 from warzone_general.settings import headers
 
-import datetime
+import datetime, time
 
 def covert_epoch_time_utc(epoch):
     return datetime.datetime.fromtimestamp(epoch).strftime('%c')
@@ -14,6 +15,7 @@ def calculate_time_delta(start_1, start_2):
     total_delta = a - b
 
     return total_delta
+
 
 def calculate_average(matches, element):
     ratios = []
@@ -43,6 +45,7 @@ def get_values_from_matches(matches_list, user_tag = None):
             data['teamPlacement'] = 0
 
         data['damageDone'] = matches['playerStats']['damageDone']
+        data['matchID'] = matches['matchID']
 
         all_matches.append(data)
     
@@ -56,57 +59,74 @@ def get_values_from_matches(matches_list, user_tag = None):
         return all_matches
 
 
-def filter_for_time(matches_list, threshold_time_seconds = 7200):
+def filter_for_time(matches_list, competition_start_time, competition_end_time, threshold_time_seconds = 7200):
     '''
     Filters matches for 2 hours by default
-    Need to add first_match_time as utc.now()
     '''
+
+    # threshold = value from end_time - start_time. ie = 2 hours range
+    # start_time = 1 pm  - match_time = 1:30 pm = delta = 0:30
+    # if delta 0:30 < 2 and 1:30 pm <= end_time
+    # add to lists values
+
+    config = ConfigController.objects.get(name = 'main_config_controller')
+
+    if config.competitions_dummy_data:
+        # Dummy data = False by default
+        start_time = matches_list[0]['utcStartSeconds']
+
+        print()
+        print('** Using Dummy data **')
+        print('The start_time: ', start_time)
+
+        threshold_time = datetime.timedelta(seconds = threshold_time_seconds)
+
+        end_time = time.time()
+    else:
+        # Should slice the matches based on the 
+        # time range give.
+        start_time = competition_start_time.timestamp()
+        end_time = competition_end_time.timestamp()
+        threshold_time = calculate_time_delta(end_time, start_time)
     
-    first_match_time = matches_list[0]['utcStartSeconds']
+        print()
+        print('** Using Real Sliced data **')
+        print('The start_time: ', start_time)
 
     top_matches = []
 
-    threshold_time = datetime.timedelta(seconds = threshold_time_seconds)
-
     for match in matches_list:
-        delta = calculate_time_delta(first_match_time, match['utcStartSeconds'])
+        delta = calculate_time_delta(start_time, match['utcStartSeconds'])
+        print('This time: {} - {} = {}'.format(start_time, match['utcStartSeconds'], delta))
 
-        if delta < threshold_time:
+        if delta <= threshold_time and match['utcStartSeconds'] <= end_time:
             top_matches.append(match)
+            print('--------------> {} Selected Match: The delta: {} < {} threshold and match time {} <= {} end'.format(len(top_matches), 
+                                                                                                                delta, threshold_time, 
+                                                                                                                datetime.datetime.fromtimestamp(match['utcStartSeconds']), 
+                                                                                                                datetime.datetime.fromtimestamp(end_time)))
         
     return top_matches
 
 
-def get_custom_data(user_tag):
+def get_custom_data(user_tag, competition_start_time, competition_end_time):
     '''
     Gets the matches for user_tag
     '''
 
-    warzone_api = WarzoneApi(tag = user_tag.replace('#', '%23'),platform = 'acti')
+    warzone_api = WarzoneApi(tag = user_tag.replace('#', '%23'), platform = 'acti')
+
     matches = warzone_api.get_warzone_matches()
 
     total_matches_len = len(matches['matches'])
 
-    data = filter_for_time(matches['matches'][0:total_matches_len - 1])
+    data = filter_for_time(matches['matches'][0:total_matches_len - 1], competition_start_time, competition_end_time)
 
     clean_data = get_values_from_matches(data, user_tag)
-
-    print(clean_data)
-    print()
 
     return clean_data
 
 
-def warzone_competition_rules(data, kills = False, placement = False):
-    if kills:
-        total_kills = sum(data)
-        total_kills = total_kills * 2
-
-        return total_kills
-    
-    elif placement:
-        
-        return 1
 
 
 

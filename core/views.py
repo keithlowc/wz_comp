@@ -395,7 +395,7 @@ def recalculate_scores(request, comp_name):
                     message = 'Started calculation on the background! Just wait for a couple of minutes and refresh!',
                     type = 'INFO')
 
-    config = ConfigController.objects.get(name = 'ConfigController')
+    config = ConfigController.objects.get(name = 'main_config_controller')
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
     if competition.competition_ready:
@@ -419,6 +419,32 @@ def recalculate_scores(request, comp_name):
     # if competition ready:
     # the competition will be checking for the time of the comp
     # and start calculating based on that
+
+    return redirect('get_competition', comp_name = comp_name)
+
+
+def manually_recalculate_score_once(request, comp_name):
+    '''
+    Allows recalculation of the data
+    manually once per click. Background
+    job does not keep running.
+    '''
+
+    signals.send_message.send(sender = None,
+                    request = request,
+                    message = 'Manually refreshing once! Make sure to refresh the page!',
+                    type = 'INFO')
+
+    config = ConfigController.objects.get(name = 'main_config_controller')
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+
+    if competition.competition_ready:
+        # if competition is true
+        # We activate the bg task
+
+        print('Manually calling recalculation once!')
+
+        bg_tasks.calculate_status_of_competition(comp_name)
 
     return redirect('get_competition', comp_name = comp_name)
 
