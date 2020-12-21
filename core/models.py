@@ -59,6 +59,8 @@ class StaffCustomCompetition(models.Model):
     competition_name = models.CharField(max_length = 150, null = True, unique = True)
     competition_description = models.CharField(max_length = 500, null = True)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, default = 0)
+
+    competition_banner = models.URLField(max_length = 1000, default = 'https://cdn1.dotesports.com/wp-content/uploads/2019/12/16125403/cod38.jpg')
     
     # Rules
     points_per_kill = models.IntegerField(default = 1)

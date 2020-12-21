@@ -25,3 +25,12 @@ body {
 .card-header:first-child {
     background-color: #212529!important;
 }
+
+/* Card image */
+.card-img-top {
+    flex-grow: 1;
+    object-fit:contain;
+}
+.card-body{
+    flex-grow:0;
+}
