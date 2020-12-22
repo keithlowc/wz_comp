@@ -60,7 +60,7 @@ class Teams(models.Model):
 # Custom competitions
 class StaffCustomCompetition(models.Model):
     competition_type = [
-        ('SQUAD', 'SQUAD'),
+        ('SQUADS', 'SQUADS'),
         ('TRIOS', 'TRIOS'),
         ('DUOS', 'DUOS'),
         ('SOLOS', 'SOLOS'),
