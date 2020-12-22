@@ -31,12 +31,12 @@ SECRET_KEY = '2m05(*m&n!wald@k^-v*au43ervkw740%^yubp&+4(*+1ii(fw'
 
 if 'SERVER' in os.environ:
     DEBUG = False
-    ALLOWED_HOSTS = ['.herokuapp.com']
+    ALLOWED_HOSTS = ['wz-comp-dev.herokuapp.com','wz-comp.herokuapp.com']
 else:
     DEBUG = True
     ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
 
-DEBUG = False
+# DEBUG = False
 
 # Application definition
 
@@ -61,14 +61,14 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # Whitenoise
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # Whitenoise
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'warzone_general.urls'
@@ -102,7 +102,7 @@ DATABASES = {
     }
 }
 
-if SERVER:
+if 'SERVER' in os.environ:
     DATABASES['default'] = dj_database_url.config()
 
 # Password validation
@@ -141,14 +141,15 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-MEDIA_URL = '/images/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = '/images/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
