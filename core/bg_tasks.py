@@ -20,7 +20,8 @@ def recalculate_competition_stats(comp_name):
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
     competition_start_time = competition.start_time # Datetime.datetime format
-    competition_end_time = competition.end_time # Datetime.datetime format
+    competition_end_time = competition.end_time     # Datetime.datetime format
+    competition_type = competition.competition_type
 
     team_users = []
 
@@ -37,7 +38,7 @@ def recalculate_competition_stats(comp_name):
         for users in team_users:
             if users is not None:
                 time.sleep(1)
-                clean_data = util.get_custom_data(users, competition_start_time, competition_end_time)
+                clean_data = util.get_custom_data(users, competition_start_time, competition_end_time, competition_type)
                 data_list.append(clean_data)
 
         team_users = []
@@ -102,13 +103,15 @@ def calculate_competition_scores(comp_name):
 
                         scoring_data.append(new_data)
                     except Exception as e:
-                        print('Not found')
+                        print('Json for USER  was Not found')
 
                 for val in scoring_data:
                     try:
                         score_for_kills = sum(val[user]['kills']) * competition.points_per_kill
                     except Exception as e:
-                        print('User is not found')
+                        print('User is not found inside of scoring data')
+
+        print('--------------> Results: The score for team {} is {}'.format(team, score_for_kills))
 
         team = StaffCustomTeams.objects.get(team_name = team)
         team.data_to_score = scoring_data

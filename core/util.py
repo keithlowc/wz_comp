@@ -27,6 +27,35 @@ def calculate_average(matches, element):
 
     return '{:.3f}'.format(avg)
 
+
+def filter_matches(matches_list, competition_type):
+    '''
+    Filter matches based on type
+    '''
+
+    print()
+    print('** Started to filter matches **')
+
+    new_matches_list = []
+
+    if competition_type == 'SQUADS':
+        match_type = 'br_brquads'
+    elif competition_type == 'TRIOS':
+        match_type = 'br_brtrios'
+    elif competition_type == 'DUOS':
+        match_type = 'br_brduos'
+    elif competition_type == 'SOLOS':
+        match_type = 'br_brsolo'
+
+    for match in matches_list:
+        if match['mode'] == match_type:
+            new_matches_list.append(match)
+
+    for match in new_matches_list:
+        print('The match mode is {} - By {} - Match #ID {}'.format(match['mode'], match['player']['username'], match['matchID']))
+    
+    return new_matches_list
+
 # Matches related
 
 def get_values_from_matches(matches_list, user_tag = None):
@@ -97,11 +126,14 @@ def filter_for_time(matches_list, competition_start_time, competition_end_time, 
 
     for match in matches_list:
         delta = calculate_time_delta(start_time, match['utcStartSeconds'])
-        print('This time: {} - {} = {}'.format(start_time, match['utcStartSeconds'], delta))
+        print('Start Time: {} - Match time {} = delta {} - {}'.format(datetime.datetime.fromtimestamp(start_time),
+                                                               datetime.datetime.fromtimestamp(match['utcStartSeconds']), 
+                                                               delta, 
+                                                               match['matchID']))
 
         if delta <= threshold_time and match['utcStartSeconds'] <= end_time:
             top_matches.append(match)
-            print('--------------> {} Selected Match: The delta: {} < {} threshold and match time {} <= {} end'.format(len(top_matches), 
+            print('--------------> {} - Selected Match: The delta: {} < {} threshold and match time {} <= {} end'.format(len(top_matches), 
                                                                                                                 delta, threshold_time, 
                                                                                                                 datetime.datetime.fromtimestamp(match['utcStartSeconds']), 
                                                                                                                 datetime.datetime.fromtimestamp(end_time)))
@@ -109,7 +141,7 @@ def filter_for_time(matches_list, competition_start_time, competition_end_time, 
     return top_matches
 
 
-def get_custom_data(user_tag, competition_start_time, competition_end_time):
+def get_custom_data(user_tag, competition_start_time, competition_end_time, competition_type):
     '''
     Gets the matches for user_tag
     '''
@@ -120,7 +152,9 @@ def get_custom_data(user_tag, competition_start_time, competition_end_time):
 
     total_matches_len = len(matches['matches'])
 
-    data = filter_for_time(matches['matches'][0:total_matches_len - 1], competition_start_time, competition_end_time)
+    filtered_matches = filter_matches(matches['matches'][0:total_matches_len - 1], competition_type)
+
+    data = filter_for_time(filtered_matches, competition_start_time, competition_end_time)
 
     clean_data = get_values_from_matches(data, user_tag)
 

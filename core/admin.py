@@ -4,8 +4,67 @@ from .models import Profile, Teams, StaffCustomTeams, StaffCustomCompetition, Co
 
 # Register your models here.
 
+admin.site.site_header = 'Codify Manager'
+admin.site.site_title = 'Codify Admin Portal'
+admin.site.index_title = 'Welcome to Codify Portal'
+
 admin.site.register(Profile)
 admin.site.register(Teams)
-admin.site.register(StaffCustomTeams)
-admin.site.register(StaffCustomCompetition)
 admin.site.register(ConfigController)
+
+class StaffCustomCompetitionAdmin(admin.ModelAdmin):
+    search_fields = ('team_name',)
+    list_filter = ('competition',)
+    fields = (
+        'team_name',
+        'player_1',
+        'player_2',
+        'player_3',
+        'player_4',
+        'competition',
+    )
+
+admin.site.register(StaffCustomTeams, StaffCustomCompetitionAdmin)
+
+class InLineStaffCustomTeam(admin.StackedInline):
+    '''
+    Allows us to show the staff
+    custom teams in the same form
+    when creating the competition.
+    '''
+
+    model = StaffCustomTeams
+    extra = 1
+
+class StaffCustomCompetitionAdmin(admin.ModelAdmin):
+    def save_model(self, request, instance, form, change):
+        '''
+        This allows us to save the 
+        user from the request
+        as the creator of the model
+        '''
+
+        user = request.user 
+        instance = form.save(commit=False)
+        if not change or not instance.created_by:
+            instance.created_by = user
+        instance.save()
+        return instance
+
+    inlines = [InLineStaffCustomTeam]
+    search_fields = ('competition_name',)
+    list_filter = ('created_by', 'competition_type',)
+    list_display = ('competition_name', 'competition_type',)
+    fields = (
+        'competition_name',
+        'competition_description',
+        'competition_type',
+        'points_per_kill',
+        'points_per_first_place',
+        'points_per_second_place',
+        'points_per_third_place',
+        'start_time',
+        'end_time',
+    )
+
+admin.site.register(StaffCustomCompetition, StaffCustomCompetitionAdmin)

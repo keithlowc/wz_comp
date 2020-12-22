@@ -413,7 +413,8 @@ def recalculate_scores(request, comp_name):
         # if competition is true
         # We activate the bg task
 
-        bg_tasks.calculate_status_of_competition(comp_name, repeat = config.competitions_bg_tasks, repeat_until = competition.end_time) # 10 minuticos mas
+        bg_tasks.calculate_status_of_competition(comp_name, repeat = config.competitions_bg_tasks,
+                                                 repeat_until = competition.end_time + datetime.timedelta(seconds = 120))
 
     # When press ready
     # if competition ready:

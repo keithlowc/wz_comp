@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib import admin
 
 from datetime import datetime
 
@@ -26,6 +27,7 @@ class Profile(models.Model):
     
     def __str__(self):
         return f'{self.activision_tag}'
+
 
 class Teams(models.Model):
     team_types = [
@@ -54,10 +56,19 @@ class Teams(models.Model):
     def __str__(self):
         return str(self.team_name) + ' - ' + str(self.team_type)
 
+
 # Custom competitions
 class StaffCustomCompetition(models.Model):
+    competition_type = [
+        ('SQUAD', 'SQUAD'),
+        ('TRIOS', 'TRIOS'),
+        ('DUOS', 'DUOS'),
+        ('SOLOS', 'SOLOS'),
+    ]
+
     competition_name = models.CharField(max_length = 150, null = True, unique = True)
-    competition_description = models.CharField(max_length = 500, null = True)
+    competition_description = models.TextField()
+    competition_type = models.CharField(max_length = 5, choices = competition_type)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, default = 0)
 
     competition_banner = models.URLField(max_length = 1000, default = 'https://cdn1.dotesports.com/wp-content/uploads/2019/12/16125403/cod38.jpg')
@@ -73,24 +84,7 @@ class StaffCustomCompetition(models.Model):
 
     # Competition flag should flip based on time started
     competition_ready = models.BooleanField(default = False)
-
-    # Status
-    # 'In-Progress': 1,
-    # 'Ended': 2,
-    # 'Not started': 3,
-
-    competition_status = models.IntegerField(default = 3)
-
-    # timezones = [
-    #     ('EST', 'est'),
-    #     ('UTC', 'utc'),
-    # ]
-
-    # competition_timezone = models.CharField(
-    #     max_length = 5,
-    #     choices = timezones,
-    #     default = 'EST'
-    # )
+    competition_status = models.IntegerField(default = 3) # 'Not started': 3, 'Ended': 2, 'In-Progress': 1,
 
     class Meta:
         verbose_name = 'CustomCompetition'
