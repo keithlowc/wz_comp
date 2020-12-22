@@ -36,6 +36,8 @@ else:
     DEBUG = True
     ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
 
+DEBUG = False
+
 # Application definition
 
 CUSTOM_APPS = [
@@ -168,4 +170,14 @@ headers = {
     'x-rapidapi-host': "call-of-duty-modern-warfare.p.rapidapi.com"
 }
 
-django_on_heroku.settings(locals())
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "loggers": {
+        "": {"handlers": ["console"], "level": "INFO"},
+        "django": {"handlers": ["console"], "level": "INFO"},
+    },
+}
+
+django_on_heroku.settings(locals(), logging = False)
