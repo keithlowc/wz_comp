@@ -36,8 +36,6 @@ else:
     DEBUG = True
     ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
 
-# DEBUG = False
-
 # Application definition
 
 CUSTOM_APPS = [
