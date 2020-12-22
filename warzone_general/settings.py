@@ -28,14 +28,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '2m05(*m&n!wald@k^-v*au43ervkw740%^yubp&+4(*+1ii(fw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# if not SERVER:
-#     DEBUG = True
-# else:
-#     DEBUG = False
 
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
+if 'SERVER' in os.environ:
+    DEBUG = False
+    ALLOWED_HOSTS = ['wz-comp-dev.herokuapp.com','wz-comp.herokuapp.com']
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
 
 # Application definition
 
@@ -60,14 +59,14 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # Whitenoise
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # Whitenoise
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'warzone_general.urls'
@@ -101,7 +100,7 @@ DATABASES = {
     }
 }
 
-if SERVER:
+if 'SERVER' in os.environ:
     DATABASES['default'] = dj_database_url.config()
 
 # Password validation
@@ -140,16 +139,17 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/images/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
@@ -169,4 +169,14 @@ headers = {
     'x-rapidapi-host': "call-of-duty-modern-warfare.p.rapidapi.com"
 }
 
-django_on_heroku.settings(locals())
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "loggers": {
+        "": {"handlers": ["console"], "level": "INFO"},
+        "django": {"handlers": ["console"], "level": "INFO"},
+    },
+}
+
+django_on_heroku.settings(locals(), logging = False)

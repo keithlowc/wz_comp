@@ -4,7 +4,7 @@
             <h1>Welcome {{ user.username }} !</h1>
     {% else %}
         <h1>User is not authenticated</h1>
-        <p>Please <a href="{% url 'login' %}">Log in</a>!</p>
+        <a href="{% url 'login' %}">Please Log in!</a>
     {% endif %}
 
 {% endblock content %}

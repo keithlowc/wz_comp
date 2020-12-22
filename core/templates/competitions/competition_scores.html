@@ -62,7 +62,7 @@
         <div class = "row">
           <div class="col-6">
             {% if user == competition.created_by and competition.competition_ready == True %}
-              <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Refresh Once</a>
+              <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
             {% endif %}
           </div>
           <div class="col-6">
