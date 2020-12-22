@@ -31,8 +31,10 @@ SECRET_KEY = '2m05(*m&n!wald@k^-v*au43ervkw740%^yubp&+4(*+1ii(fw'
 
 if 'SERVER' in os.environ:
     DEBUG = False
+    ALLOWED_HOSTS = ['.herokuapp.com']
 else:
     DEBUG = True
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']
 
 # Application definition
 
