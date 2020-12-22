@@ -29,7 +29,7 @@ SECRET_KEY = '2m05(*m&n!wald@k^-v*au43ervkw740%^yubp&+4(*+1ii(fw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = os.environ.get('SERVER', '') != 'False'
+DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 # Application definition
 
