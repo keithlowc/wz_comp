@@ -29,15 +29,7 @@ SECRET_KEY = '2m05(*m&n!wald@k^-v*au43ervkw740%^yubp&+4(*+1ii(fw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-if SERVER == 'True' or SERVER == True:
-    DEBUG = False
-    ALLOWED_HOSTS = [
-        'https://wz-comp-dev.herokuapp.com/',
-        'https://wz-comp.herokuapp.com/',
-    ]
-else:
-    DEBUG = True
-    ALLOWED_HOSTS = ['*']
+DEBUG = os.environ.get('SERVER', '') != 'False'
 
 # Application definition
 
