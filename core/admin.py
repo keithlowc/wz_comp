@@ -34,6 +34,14 @@ class InLineStaffCustomTeam(admin.StackedInline):
     '''
 
     model = StaffCustomTeams
+    fields = (
+        'team_name',
+        'player_1',
+        'player_2',
+        'player_3',
+        'player_4',
+        'competition',
+    )
     extra = 1
 
 class StaffCustomCompetitionAdmin(admin.ModelAdmin):
