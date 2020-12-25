@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+import os
+
 from .models import Profile, Teams, StaffCustomTeams, StaffCustomCompetition, ConfigController
 
 # Register your models here.
@@ -12,19 +14,33 @@ admin.site.register(Profile)
 admin.site.register(Teams)
 admin.site.register(ConfigController)
 
-class StaffCustomCompetitionAdmin(admin.ModelAdmin):
+class StaffCustomTeamAdmin(admin.ModelAdmin):
     search_fields = ('team_name',)
     list_filter = ('competition',)
-    fields = (
-        'team_name',
-        'player_1',
-        'player_2',
-        'player_3',
-        'player_4',
-        'competition',
-    )
 
-admin.site.register(StaffCustomTeams, StaffCustomCompetitionAdmin)
+    if 'SERVER' in os.environ:
+        fields = (
+            'team_name',
+            'player_1',
+            'player_2',
+            'player_3',
+            'player_4',
+            'competition',
+        )
+    else:
+        fields = (
+            'team_name',
+            'player_1',
+            'player_2',
+            'player_3',
+            'player_4',
+            'competition',
+            'data',
+            'data_to_score',
+            'data_to_render',
+        )
+
+admin.site.register(StaffCustomTeams, StaffCustomTeamAdmin)
 
 class InLineStaffCustomTeam(admin.StackedInline):
     '''

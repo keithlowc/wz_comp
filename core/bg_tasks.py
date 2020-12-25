@@ -39,12 +39,17 @@ def recalculate_competition_stats(comp_name):
             if users is not None:
                 time.sleep(1)
                 clean_data = util.get_custom_data(users, competition_start_time, competition_end_time, competition_type)
+
                 data_list.append(clean_data)
+
+        # match matches per team with match id
+        organized_data = util.match_matches_with_matches_id(data_list, team_users)
 
         team_users = []
 
         team = StaffCustomTeams.objects.get(team_name = team.team_name)
         team.data = data_list
+        team.data_to_render = organized_data
         team.save()
 
 

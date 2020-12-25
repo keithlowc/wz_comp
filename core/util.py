@@ -4,6 +4,8 @@ from warzone_general.settings import headers
 
 import datetime, time
 
+from itertools import groupby
+
 def covert_epoch_time_utc(epoch):
     return datetime.datetime.fromtimestamp(epoch).strftime('%c')
 
@@ -86,6 +88,59 @@ def get_values_from_matches(matches_list, user_tag = None):
 
     else:
         return all_matches
+
+
+def match_matches_with_matches_id(data_list, team_users):
+    '''
+    Solution on https://stackoverflow.com/questions/65432225/merge-these-two-json-objects-based-on-a-specific-key-inside-of-them-in-python/65432494#65432494
+    Matches each user with one match
+    and same users with the same match id
+
+    matches = [
+        {
+            'match_id': 123,
+            'placement': 2,
+            'klowerito': {
+                'kills': 6,
+                'damage': 900,
+                'kd': 2.5
+            },
+            'klowerito': {
+                'kills': 6,
+                'damage': 900,
+                'kd': 2.5
+            }
+        }
+    ]
+    '''
+
+    dics = {}
+    for k1 in data_list:
+        for k2 in k1:        
+            for e in k1[k2]:
+                m = e.get('matchID', None)
+                if m is None: continue
+                if not m in dics: dics[m] = {}
+                dics[m].update({k2: collect_data(k2, m, data_list)})
+    
+    return dics
+
+
+def collect_data(key_id, match_id, data_list):
+    '''
+    https://stackoverflow.com/questions/65432225/merge-these-two-json-objects-based-on-a-specific-key-inside-of-them-in-python/65432494#65432494
+    '''
+
+    d = []
+    for k1 in data_list:
+        for k2 in k1:
+            if k2 != key_id: continue
+            for e in k1[k2]:
+                if e.get('matchID', None) == match_id:
+                    e1 = e.copy()
+                    e1.pop('matchID')
+                    d.append(e1)
+    return d
 
 
 def filter_for_time(matches_list, competition_start_time, competition_end_time, threshold_time_seconds = 7200):

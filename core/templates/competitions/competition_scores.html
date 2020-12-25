@@ -63,6 +63,7 @@
           <div class="col-6">
             {% if user == competition.created_by and competition.competition_ready == True %}
               <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
+              <a class="btn btn-warning" href="{% url 'test' %}">TEST</a>
             {% endif %}
           </div>
           <div class="col-6">
@@ -129,13 +130,13 @@
                     <div class="card-header" role="tab" id="headingThree">
                       <h5 class="mb-0">
                         <a class="collapsed" data-toggle="collapse" href="#{{ team }}" aria-expanded="false" aria-controls="{{ team }}">
-                          <table class="table table-sm mb-0">
+                          <table class="table table-sm mb-0 table-hover">
                             <tbody>
                               <tr id="headingOne" data-toggle="collapse" data-target="#collapseOne">
                                 <td class="border-0">{{ team }}</td>
                                 <td class="border-0">Score:</td>
                                 <td class="border-0">{{ team.score }}</td>
-                                </td>
+                                <td class="border-0 text-right"><i class="fas fa-chevron-down"></i></td>
                               </tr>
                             </tbody>
                           </table>
@@ -149,17 +150,15 @@
 
                             {% if team.data %}
 
-                                {% for data in team.data %}
-                                    {% for key, value in data.items %}
-                                        {% for stats in value %}
+                                {% for key, val in team.data_to_render.items %}
                                         <div class="card">
                                         <div class="card-header" role="tab" id="headingInside">
                                             <h5 class="mb-0">
                                             <a class="collapsed" data-toggle="collapse" href="#{{ forloop.counter0|add }} {{key}}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }} {{key}}">
-                                                <td class="border-0">Match #{{ forloop.counter0|add }} - </td>
-                                                <td class="border-0">{{ key }}</td>
-                                                <td class="border-0 text-right">
-                                                <i class="fa"></i>
+                                                <div class="row">
+                                                  <div class="col-8">Match #{{ forloop.counter0|add }}</div>
+                                                  <div class="col-4 text-right"><i class="fas fa-chevron-down"></i></td></div>
+                                                </div>
                                                 </span>
                                             </a>
                                             </h5>
@@ -167,18 +166,26 @@
                                         <div id="{{ forloop.counter0|add }} {{key}}" class="collapse" role="tabpanel" aria-labelledby="headingInside" data-parent="#accordionInside">
                                             <div class="card-body">
 
-                                            <table class="table table-dark">
+                                            <table class="table table-dark table-hover">
                                                 <thead>
-                                                <tr>
-                                                    <th scope="col">Stats</th>
-                                                    <th scope="col">Values</th>
-                                                </tr>
+                                                  <tr>
+                                                    <th scope="col">Match ID: {{ key }}</th>
+                                                  </tr>
+                                                  <tr>
+                                                      <th scope="col">Player</th>
+                                                      <th scope="col">KD</th>
+                                                      <th scope="col">KILLS</th>
+                                                      <th scope="col">Placement</th>
+                                                      <th scope="col">Damage</th>
+                                                  </tr>
                                                 </thead>
-                                                {% for key, value in stats.items %}
+                                                {% for key, value in val.items %}
                                                 <tbody>
                                                     <tr>
                                                     <td>{{ key }}</td>
-                                                    <td>{{ value }}</td>
+                                                    {% for key, value in value.0.items %}
+                                                        <td>{{ value }}</td>
+                                                    {% endfor %}
                                                     </tr>
                                                 </tbody>
                                                 {% endfor %}
@@ -187,8 +194,6 @@
                                             </div>
                                         </div>
                                         </div>
-                                        {% endfor %}
-                                    {% endfor %}
                                 {% endfor %}
                             {% else %}
                                     <h3>Competition has not started or been loaded!</h3>

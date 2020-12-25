@@ -84,7 +84,7 @@ class StaffCustomCompetition(models.Model):
 
     # Competition flag should flip based on time started
     competition_ready = models.BooleanField(default = False)
-    competition_status = models.IntegerField(default = 3) # 'Not started': 3, 'Ended': 2, 'In-Progress': 1,
+    competition_status = models.IntegerField(default = 3)       # 'Not started': 3, 'Ended': 2, 'In-Progress': 1
 
     class Meta:
         verbose_name = 'CustomCompetition'
@@ -105,6 +105,7 @@ class StaffCustomTeams(models.Model):
 
     data = models.JSONField(default = dict, blank = True)
     data_to_score = models.JSONField(default = dict, blank = True)
+    data_to_render = models.JSONField(default = dict, blank = True)
 
     score = models.IntegerField(default = 0)
 

@@ -483,3 +483,113 @@ def get_competition(request, comp_name):
     }
 
     return render(request, 'competitions/competition_scores.html', context)
+
+
+def test(request):
+    data_list = [
+        {
+            "kloweritotv#3560772":[
+                {
+                    "kd":2,
+                    "kills":4,
+                    "teamPlacement":11,
+                    "damageDone":1218,
+                    "matchID":"4196836767861917674"
+                },
+                {
+                    "kd":1,
+                    "kills":2,
+                    "teamPlacement":31,
+                    "damageDone":358,
+                    "matchID":"10755368203363629524"
+                },
+                {
+                    "kd":0,
+                    "kills":0,
+                    "teamPlacement":36,
+                    "damageDone":109,
+                    "matchID":"3643379484395719331"
+                },
+                {
+                    "kd":2,
+                    "kills":6,
+                    "teamPlacement":3,
+                    "damageDone":2388,
+                    "matchID":"12887455297423544724"
+                },
+                {
+                    "kd":1,
+                    "kills":4,
+                    "teamPlacement":14,
+                    "damageDone":1828,
+                    "matchID":"11929202821836542057"
+                },
+                {
+                    "kd":2.5,
+                    "kills":5,
+                    "teamPlacement":13,
+                    "damageDone":1435,
+                    "matchID":"7135852647922641187"
+                },
+                {
+                    "kd":1.5,
+                    "kills":3,
+                    "teamPlacement":33,
+                    "damageDone":1420,
+                    "matchID":"5031164584323500627"
+                }
+            ]
+        },
+        {
+            "Stylnox07":[
+                {
+                    "kd":4.5,
+                    "kills":9,
+                    "teamPlacement":3,
+                    "damageDone":2549,
+                    "matchID":"12887455297423544724"
+                },
+                {
+                    "kd":1.5,
+                    "kills":3,
+                    "teamPlacement":14,
+                    "damageDone":1008,
+                    "matchID":"11929202821836542057"
+                },
+                {
+                    "kd":0.5,
+                    "kills":1,
+                    "teamPlacement":13,
+                    "damageDone":1147,
+                    "matchID":"7135852647922641187"
+                },
+                {
+                    "kd":2,
+                    "kills":4,
+                    "teamPlacement":33,
+                    "damageDone":1027,
+                    "matchID":"5031164584323500627"
+                },
+                {
+                    "kd":0,
+                    "kills":0,
+                    "teamPlacement":29,
+                    "damageDone":483,
+                    "matchID":"15142402316364851821"
+                },
+                {
+                    "kd":1.5,
+                    "kills":3,
+                    "teamPlacement":22,
+                    "damageDone":875,
+                    "matchID":"10509969697803246071"
+                }
+            ]
+        }
+    ]
+
+    team_users = ['kloweritotv#3560772', 'Stylnox07']
+
+    util.match_matches_with_matches_id(data_list, team_users)
+
+    return redirect('get_competition', comp_name = 'test')

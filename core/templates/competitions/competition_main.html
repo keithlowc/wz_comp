@@ -33,8 +33,8 @@
                     <h5 class="mb-0">
                       <a class="collapsed" data-toggle="collapse" href="#{{ forloop.counter0|add }}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }}">
                         <div class="row">
-                          <div class="col-4"><h2> {{ competition.competition_name }} </h2></div>
-                          <div class="col-4">
+                          <div class="col-6"><h2> {{ competition.competition_name }} </h2></div>
+                          <div class="col-2">
                               {% if competition.competition_status == 1 %}
                                 <div class="row">
                                     <td class="border-0 text-right"><span class="badge badge-success"> In-Progress </span></td>
@@ -49,9 +49,15 @@
                                   </div>
                               {% endif %}
                           </div>
-                          <div class="col-4 text-right">
+
+                          <div class="col-2 text-right">
                               <i>Created by: {{ competition.created_by }}</i>
                           </div>
+
+                          <div class="col-2 text-right">
+                            <i class="fas fa-chevron-down"></i>
+                          </div>
+
                         </div>
                         </span>
                       </a>
