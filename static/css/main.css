@@ -33,7 +33,7 @@ body {
     border-radius: 50%;
     position: relative;
     overflow: hidden;
-  }
+}
 
 .circular img {
     min-width: 100%;
@@ -47,4 +47,8 @@ body {
     -moz-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-  }
+}
+
+#test {
+    color: blue;
+}
