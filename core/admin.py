@@ -82,6 +82,7 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
     fields = (
         'competition_name',
         'competition_description',
+        'competition_banner',
         'competition_type',
         'points_per_kill',
         'points_per_first_place',
