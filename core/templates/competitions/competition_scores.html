@@ -224,16 +224,23 @@
                                                 </thead>
                                                 {% for key, val in val.items %}
                                                 <tbody>
+                                                  <tr>
                                                       {% if key == 'points' %}
                                                         <!-- Don't do anything -->
                                                       {% else %}
-
-                                                      <tr>
                                                         <td>{{ key }}</td>
                                                       {% endif %}
                                                     
                                                       {% for key, value in val.0.items %}
+                                                        {% if key == 'kd' %}
                                                           <td>{{ value }}</td>
+                                                        {% elif  key == 'kills' %}
+                                                          <td>{{ value }}</td>
+                                                        {% elif  key == 'teamPlacement' %}
+                                                          <td>{{ value }}</td>
+                                                        {% elif  key == 'damageDone' %}
+                                                          <td>{{ value }}</td>
+                                                        {% endif %}
                                                       {% endfor %}
                                                     </tr>
                                                 </tbody>
