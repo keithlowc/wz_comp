@@ -84,6 +84,7 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
         'competition_description',
         'competition_banner',
         'competition_type',
+        'number_of_matches_to_count_points',
         'points_per_kill',
         'points_per_first_place',
         'points_per_second_place',

@@ -74,6 +74,7 @@ class StaffCustomCompetition(models.Model):
     competition_banner = models.URLField(max_length = 1000, default = 'https://cdn1.dotesports.com/wp-content/uploads/2019/12/16125403/cod38.jpg')
     
     # Rules
+    number_of_matches_to_count_points = models.IntegerField(default = 5)
     points_per_kill = models.IntegerField(default = 1)
     points_per_first_place = models.IntegerField(default = 10)
     points_per_second_place = models.IntegerField(default = 5)
