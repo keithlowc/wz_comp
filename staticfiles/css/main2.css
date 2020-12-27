@@ -53,3 +53,19 @@ body {
 .card-header:first-child {
     background-color: #212529!important;
 }
+
+/* Fa icons style */
+
+/* Match crowns */
+
+.first-place {
+    color: gold!important;
+}
+
+.second-place {
+    color: silver!important;
+}
+
+.third-place {
+    color: brown!important;
+}

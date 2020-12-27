@@ -166,7 +166,30 @@
                                             <h5 class="mb-0">
                                             <a class="collapsed" data-toggle="collapse" href="#{{ forloop.counter0|add }} {{key}}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }} {{key}}">
                                                 <div class="row">
-                                                  <div class="col-8">Match #{{ forloop.counter0|add }}</div>
+
+                                                    {% for key, val in val.items %}
+
+                                                      {% if key == 'points' %}
+                                                        {% if val.placement == competition.points_per_first_place %}
+                                                          <div class="col-1">
+                                                            <i class="fas fa-crown first-place"> 1st</i>
+                                                          </div>
+                                                        {% elif val.placement == competition.points_per_second_place %}
+                                                          <div class="col-1">
+                                                            <i class="fas fa-crown second-place"> 2nd</i>
+                                                          </div>
+                                                        {% elif val.placement == competition.points_per_third_place %}
+                                                          <div class="col-1">
+                                                            <i class="fas fa-crown third-place"> 3rd</i>
+                                                          </div>
+                                                        {% else %}
+                                                          <div class="col-1">
+                                                          </div>
+                                                        {% endif %}
+                                                      {% endif %}
+
+                                                    {% endfor %}
+                                                  <div class="col-7">Match #{{ forloop.counter0|add }}</div>
                                                   <div class="col-4 text-right"><i class="fas fa-chevron-down"></i></td></div>
                                                 </div>
                                                 </span>
@@ -176,17 +199,19 @@
                                         <div id="{{ forloop.counter0|add }} {{key}}" class="collapse" role="tabpanel" aria-labelledby="headingInside" data-parent="#accordionInside">
                                             <div class="card-body">
 
-                                            <table class="table table-dark table-hover">
+                                            <table class="table table-dark table-hover table-bordered">
                                                 <thead>
                                                   <tr class="bg-primary">
                                                     <th scope="col">Match ID:</th>
                                                     <th scope="col">{{ key }}</th>
                                                     {% for key, val in val.items %}
+
                                                       {% if key == 'points' %}
                                                         <th class="col">Points Earned In Match:</th>
-                                                        <th class="col">{{val.total_points}}</th>
+                                                        <th class="col">{{ val.total_points }}</th>
                                                         <th class="col"></th>
                                                       {% endif %}
+
                                                     {% endfor %}
                                                   </tr>
                                                   <tr>
@@ -200,14 +225,9 @@
                                                 {% for key, val in val.items %}
                                                 <tbody>
                                                       {% if key == 'points' %}
-                                                      <!-- <tr class="table-success">
-                                                        <th class="border-0 font-color-black">Total Points Earned In Match:</th>
-                                                        <th class="border-0 font-color-black">{{ val.total_points }}</th>
-                                                        <th class="border-0"></th>
-                                                        <th class="border-0"></th>
-                                                        <th class="border-0"></td>
-                                                      </tr> -->
+                                                        <!-- Don't do anything -->
                                                       {% else %}
+
                                                       <tr>
                                                         <td>{{ key }}</td>
                                                       {% endif %}
