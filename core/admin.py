@@ -38,6 +38,7 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
             'data',
             'data_to_score',
             'data_to_render',
+            'score',
         )
 
 admin.site.register(StaffCustomTeams, StaffCustomTeamAdmin)

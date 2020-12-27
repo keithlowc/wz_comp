@@ -104,7 +104,6 @@ class StaffCustomTeams(models.Model):
     competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE)
 
     data = models.JSONField(default = dict, blank = True)
-    data_to_score = models.JSONField(default = dict, blank = True)
     data_to_render = models.JSONField(default = dict, blank = True)
 
     score = models.IntegerField(default = 0)

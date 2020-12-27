@@ -75,53 +75,54 @@ def calculate_competition_scores(comp_name):
         users.append(team.player_3)
         users.append(team.player_4)
 
-        data = team.data
-        
-        scoring_data = []
+        total_points = []
 
-        kills = []
-        placement = []
+        users = [i for i in users if i] # removes none values
 
-        score_for_kills = 0
+        data = team.data_to_render
 
-        for user in users:
-            if user is not None:
-                for person in data:
-                    kills_dict = {}
-                    placement_dict = {}
+        match_score = {}
+        for key, val in data.items():
 
-                    try:
-                        new_data = person[user]
-                        for info in new_data:
-                            kills.append(info['kills'])
-                            placement.append(info['teamPlacement'])
+            kills = []
+            placements = []
+            for user in users:
+                try:
+                    #print('user {} - kills {} - match id {}'.format(user, val[user][0]['kills'], key))
+                    kills.append(val[user][0]['kills'])
+                    placements.append(val[user][0]['teamPlacement'])
+                except Exception as e:
+                    print(e)
 
-                        kills_dict['kills'] = kills
-                        placement_dict['placement'] = placement
+            data[key]['points'] = {
+                'kills': kills,
+                'placement': placements[0],
+            }
 
-                        new_data = {
-                            user: {
-                                'kills': kills,
-                                'placement': placement,
-                            }
-                        }
+            points_for_kills = sum(data[key]['points']['kills']) * competition.points_per_kill
 
-                        scoring_data.append(new_data)
-                    except Exception as e:
-                        print('Json for USER  was Not found')
+            if data[key]['points']['placement'] == 1:
+                placement = competition.points_per_first_place
+            elif data[key]['points']['placement'] == 2:
+                placement = competition.points_per_second_place
+            elif data[key]['points']['placement'] == 3:
+                placement = competition.points_per_third_place
+            else:
+                placement = 0
 
-                for val in scoring_data:
-                    try:
-                        score_for_kills = sum(val[user]['kills']) * competition.points_per_kill
-                    except Exception as e:
-                        print('User is not found inside of scoring data')
+            data[key]['points'] = {
+                'kills': points_for_kills,
+                'placement': placement,
+                'total_points': int(points_for_kills + placement),
+            }
 
-        print('--------------> Results: The score for team {} is {}'.format(team, score_for_kills))
+            total_points.append(data[key]['points']['total_points'])
 
         team = StaffCustomTeams.objects.get(team_name = team)
-        team.data_to_score = scoring_data
-        team.score = score_for_kills
+        team.data_to_render = data
+        team.score = sum(total_points)
         team.save()
+
 
 
 @background(schedule = 1)

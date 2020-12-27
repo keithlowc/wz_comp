@@ -216,6 +216,3 @@ def get_custom_data(user_tag, competition_start_time, competition_end_time, comp
     return clean_data
 
 
-
-
-

@@ -485,4 +485,7 @@ def get_competition(request, comp_name):
     return render(request, 'competitions/competition_scores.html', context)
 
 
+def test(request, comp_name):
+    bg_tasks.calculate_competition_scores_test(comp_name)
+    return redirect('get_competition', comp_name = comp_name)
 
