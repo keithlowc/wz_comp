@@ -117,6 +117,16 @@
                     <div class="row">
                       <div class="col-12">
                         <p>{{ competition.competition_description }}</p>
+
+                        <h3>Competition settings</h3>
+
+                        <ul>
+                          <li><b>Calculating stats from Top {{ competition.number_of_matches_to_count_points }} matches</b></li>
+                          <li><b>Points per kill {{ competition.points_per_kill }}</b></li>
+                          <li><b>Points per first place {{ competition.points_per_first_place }}</b></li>
+                          <li><b>Points per second place {{ competition.points_per_second_place }}</b></li>
+                          <li><b>Points per third place {{ competition.points_per_third_place }}</b></li>
+                        </ul>
                         
                         <p><b>Start Time: </b>{{ competition.start_time }}</p>
                         <p><b>End Time: </b> {{ competition.end_time }}</p>
@@ -168,8 +178,16 @@
 
                                             <table class="table table-dark table-hover">
                                                 <thead>
-                                                  <tr>
-                                                    <th scope="col">Match ID: {{ key }}</th>
+                                                  <tr class="bg-primary">
+                                                    <th scope="col">Match ID:</th>
+                                                    <th scope="col">{{ key }}</th>
+                                                    {% for key, val in val.items %}
+                                                      {% if key == 'points' %}
+                                                        <th class="col">Points Earned In Match:</th>
+                                                        <th class="col">{{val.total_points}}</th>
+                                                        <th class="col"></th>
+                                                      {% endif %}
+                                                    {% endfor %}
                                                   </tr>
                                                   <tr>
                                                       <th scope="col">Player</th>
@@ -182,21 +200,21 @@
                                                 {% for key, val in val.items %}
                                                 <tbody>
                                                       {% if key == 'points' %}
-                                                      <tr class="table-success">
-                                                        <td class="border-0 font-color-black">Total Points Earned In Match:</td>
-                                                        <td class="border-0 font-color-black">{{ val.total_points }}</td>
-                                                        <td class="border-0"></td>
-                                                        <td class="border-0"></td>
-                                                        <td class="border-0"></td>
-                                                      </tr>
+                                                      <!-- <tr class="table-success">
+                                                        <th class="border-0 font-color-black">Total Points Earned In Match:</th>
+                                                        <th class="border-0 font-color-black">{{ val.total_points }}</th>
+                                                        <th class="border-0"></th>
+                                                        <th class="border-0"></th>
+                                                        <th class="border-0"></td>
+                                                      </tr> -->
                                                       {% else %}
                                                       <tr>
                                                         <td>{{ key }}</td>
                                                       {% endif %}
                                                     
-                                                    {% for key, value in val.0.items %}
-                                                        <td>{{ value }}</td>
-                                                    {% endfor %}
+                                                      {% for key, value in val.0.items %}
+                                                          <td>{{ value }}</td>
+                                                      {% endfor %}
                                                     </tr>
                                                 </tbody>
                                                 {% endfor %}
