@@ -181,11 +181,16 @@
                                                 </thead>
                                                 {% for key, val in val.items %}
                                                 <tbody>
-                                                    <tr>
                                                       {% if key == 'points' %}
-                                                        <td>{{ key }}</td>
-                                                        <td>{{ val.total_points }}</td>
+                                                      <tr class="table-success">
+                                                        <td class="border-0 font-color-black">Total Points Earned In Match:</td>
+                                                        <td class="border-0 font-color-black">{{ val.total_points }}</td>
+                                                        <td class="border-0"></td>
+                                                        <td class="border-0"></td>
+                                                        <td class="border-0"></td>
+                                                      </tr>
                                                       {% else %}
+                                                      <tr>
                                                         <td>{{ key }}</td>
                                                       {% endif %}
                                                     
