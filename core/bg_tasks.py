@@ -39,12 +39,17 @@ def recalculate_competition_stats(comp_name):
             if users is not None:
                 time.sleep(1)
                 clean_data = util.get_custom_data(users, competition_start_time, competition_end_time, competition_type)
+
                 data_list.append(clean_data)
+
+        # match matches per team with match id
+        organized_data = util.match_matches_with_matches_id(data_list, team_users)
 
         team_users = []
 
         team = StaffCustomTeams.objects.get(team_name = team.team_name)
         team.data = data_list
+        team.data_to_render = organized_data
         team.save()
 
 
@@ -54,6 +59,12 @@ def calculate_competition_scores(comp_name):
     Parses from previous data and 
     calculates the points for each
     player and team
+
+    Based on how many matches the user
+    wants to count - The matches will be sorted
+    and cut for the top 5 matches for instance
+    if the key list is smaller than the number 
+    set, then it will grab them all
     '''
 
     print()
@@ -70,53 +81,73 @@ def calculate_competition_scores(comp_name):
         users.append(team.player_3)
         users.append(team.player_4)
 
-        data = team.data
-        
-        scoring_data = []
+        total_points = []
 
-        kills = []
-        placement = []
+        data = team.data_to_render
 
-        score_for_kills = 0
+        match_score = {}
+        for key, val in data.items():
 
-        for user in users:
-            if user is not None:
-                for person in data:
-                    kills_dict = {}
-                    placement_dict = {}
-
+            kills = []
+            placements = []
+            for user in users:
+                if user is not None:
                     try:
-                        new_data = person[user]
-                        for info in new_data:
-                            kills.append(info['kills'])
-                            placement.append(info['teamPlacement'])
-
-                        kills_dict['kills'] = kills
-                        placement_dict['placement'] = placement
-
-                        new_data = {
-                            user: {
-                                'kills': kills,
-                                'placement': placement,
-                            }
-                        }
-
-                        scoring_data.append(new_data)
+                        kills.append(val[user][0]['kills'])
+                        placements.append(val[user][0]['teamPlacement'])
                     except Exception as e:
-                        print('Json for USER  was Not found')
+                        print(e)
 
-                for val in scoring_data:
-                    try:
-                        score_for_kills = sum(val[user]['kills']) * competition.points_per_kill
-                    except Exception as e:
-                        print('User is not found inside of scoring data')
+            data[key]['points'] = {
+                'kills': kills,
+                'placement': placements[0],
+            }
 
-        print('--------------> Results: The score for team {} is {}'.format(team, score_for_kills))
+            points_for_kills = sum(data[key]['points']['kills']) * competition.points_per_kill
+
+            if data[key]['points']['placement'] == 1:
+                placement = competition.points_per_first_place
+            elif data[key]['points']['placement'] == 2:
+                placement = competition.points_per_second_place
+            elif data[key]['points']['placement'] == 3:
+                placement = competition.points_per_third_place
+            else:
+                placement = 0
+
+            data[key]['points'] = {
+                'kills': points_for_kills,
+                'placement': placement,
+                'total_points': int(points_for_kills + placement),
+            }
+
+        print('Sorting and calculating top matches! number_of_matches_to_count_points is {}'.format(competition.number_of_matches_to_count_points))
+
+        key_list = []
+
+        for key, val in data.items():
+            dict_to_sort = {}
+            dict_to_sort['key'] = key
+            dict_to_sort['total_points'] = val['points']['total_points']
+            key_list.append(dict_to_sort)
+
+        key_list = sorted(key_list, key = lambda i: i['total_points'], reverse = True)
+
+        if len(key_list) < competition.number_of_matches_to_count_points:
+            print('The total amount of matches {} is smaller than number_of_matches_to_count_points {}'.format(len(key_list), competition.number_of_matches_to_count_points))
+            for key in key_list[0 : len(key_list) - 1]:
+                print('-----------> Match selected for scoring with id {} and total points of {}'.format(key['key'], data[key['key']]['points']['total_points']))
+                total_points.append(data[key['key']]['points']['total_points'])
+        else:
+            print('The total amount of matches {} is greater or equal to the number_of_matches_to_count_points {}'.format(len(key_list), competition.number_of_matches_to_count_points))
+            for key in key_list[0 : competition.number_of_matches_to_count_points]:
+                print('-----------> Match selected for scoring with id {} and total points of {}'.format(key['key'], data[key['key']]['points']['total_points']))
+                total_points.append(data[key['key']]['points']['total_points'])
 
         team = StaffCustomTeams.objects.get(team_name = team)
-        team.data_to_score = scoring_data
-        team.score = score_for_kills
+        team.data_to_render = data
+        team.score = sum(total_points)
         team.save()
+
 
 
 @background(schedule = 1)
@@ -145,7 +176,6 @@ def calculate_status_of_competition(comp_name):
     print('Current time', current_time)
     print('Start time: ', start)
     print('End time: ', end)
-    print('--------')
 
     # Status
     # 'In-Progress': 1,
@@ -157,18 +187,19 @@ def calculate_status_of_competition(comp_name):
         # And the competition has not ended
         competition.competition_status = 1
         competition.save()
-        print('** The competition Status is: In-Progress **')
+        print('The competition Status is: In-Progress')
 
     elif current_time.timestamp() >= start.timestamp():
         # The competition Status is: Ended
         competition.competition_status = 2
         competition.save()
-        print('** The competition Status is: Ended **')
+        print('The competition Status is: Ended')
 
     else:
         # The competition Status is: not Started
         competition.competition_status = 3
         competition.save()
-        print('** The competition Status is: not Started **')
-        
+        print('The competition Status is: not Started')
+    
+    print('--------')
 

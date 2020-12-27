@@ -60,31 +60,32 @@ class Teams(models.Model):
 # Custom competitions
 class StaffCustomCompetition(models.Model):
     competition_type = [
-        ('SQUAD', 'SQUAD'),
+        ('SQUADS', 'SQUADS'),
         ('TRIOS', 'TRIOS'),
         ('DUOS', 'DUOS'),
         ('SOLOS', 'SOLOS'),
     ]
 
     competition_name = models.CharField(max_length = 150, null = True, unique = True)
-    competition_description = models.TextField()
-    competition_type = models.CharField(max_length = 5, choices = competition_type)
+    competition_description = models.TextField(default = '')
+    competition_type = models.CharField(max_length = 6, choices = competition_type)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, default = 0)
 
     competition_banner = models.URLField(max_length = 1000, default = 'https://cdn1.dotesports.com/wp-content/uploads/2019/12/16125403/cod38.jpg')
     
     # Rules
+    number_of_matches_to_count_points = models.IntegerField(default = 5)
     points_per_kill = models.IntegerField(default = 1)
-    points_per_first_place = models.IntegerField(default = 1)
-    points_per_second_place = models.IntegerField(default = 1)
-    points_per_third_place = models.IntegerField(default = 1)
+    points_per_first_place = models.IntegerField(default = 10)
+    points_per_second_place = models.IntegerField(default = 5)
+    points_per_third_place = models.IntegerField(default = 3)
 
     start_time = models.DateTimeField(default = datetime.now, blank = True)
     end_time = models.DateTimeField(default = datetime.now, blank = True)
 
     # Competition flag should flip based on time started
     competition_ready = models.BooleanField(default = False)
-    competition_status = models.IntegerField(default = 3) # 'Not started': 3, 'Ended': 2, 'In-Progress': 1,
+    competition_status = models.IntegerField(default = 3)       # 'Not started': 3, 'Ended': 2, 'In-Progress': 1
 
     class Meta:
         verbose_name = 'CustomCompetition'
@@ -104,7 +105,7 @@ class StaffCustomTeams(models.Model):
     competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE)
 
     data = models.JSONField(default = dict, blank = True)
-    data_to_score = models.JSONField(default = dict, blank = True)
+    data_to_render = models.JSONField(default = dict, blank = True)
 
     score = models.IntegerField(default = 0)
 

@@ -6,6 +6,8 @@ from . import views
 urlpatterns = [
     path('', views.home, name = 'home'),
 
+    path('competition/<str:comp_name>/test', views.test, name = 'test'),
+
     path('competition/recalculate_scores/<str:comp_name>', views.recalculate_scores, name = 'recalculate_scores'),
     
     path('competitions/all', views.get_competitions_all, name = 'get_competitions_all'),

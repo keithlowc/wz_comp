@@ -6,6 +6,12 @@ body {
     color:#EFEFEF!important;
 }
 
+/* Miscellaneous */
+
+.font-color-black {
+    color: black!important;;
+}
+
 /* Navigation bar */
 .bg-light {
     background-color:#2D3640!important;
