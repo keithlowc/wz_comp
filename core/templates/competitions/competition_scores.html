@@ -218,8 +218,8 @@
                                                       <th scope="col">Player</th>
                                                       <th scope="col">KD</th>
                                                       <th scope="col">KILLS</th>
-                                                      <th scope="col">Placement</th>
                                                       <th scope="col">Damage</th>
+                                                      <th scope="col">Placement</th>
                                                   </tr>
                                                 </thead>
                                                 {% for key, val in val.items %}
@@ -233,16 +233,16 @@
                                                     
                                                       {% for key, value in val.0.items %}
                                                         {% if key == 'kd' %}
-                                                          <td>{{ value }}</td>
+                                                          <td>{{ key }} {{ value }}</td>
                                                         {% elif  key == 'kills' %}
-                                                          <td>{{ value }}</td>
-                                                        {% elif  key == 'teamPlacement' %}
-                                                          <td>{{ value }}</td>
+                                                          <td>{{ key }} {{ value }}</td>
                                                         {% elif  key == 'damageDone' %}
-                                                          <td>{{ value }}</td>
+                                                          <td>{{ key }} {{ value }}</td>
+                                                        {% elif  key == 'teamPlacement' %}
+                                                          <td>{{ key }} {{ value }}</td>
                                                         {% endif %}
                                                       {% endfor %}
-                                                    </tr>
+                                                  </tr>
                                                 </tbody>
                                                 {% endfor %}
                                             </table>
