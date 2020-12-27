@@ -59,6 +59,12 @@ def calculate_competition_scores(comp_name):
     Parses from previous data and 
     calculates the points for each
     player and team
+
+    Based on how many matches the user
+    wants to count - The matches will be sorted
+    and cut for the top 5 matches for instance
+    if the key list is smaller than the number 
+    set, then it will grab them all
     '''
 
     print()
@@ -113,12 +119,7 @@ def calculate_competition_scores(comp_name):
                 'placement': placement,
                 'total_points': int(points_for_kills + placement),
             }
-        
-        # Based on how many matches the user
-        # wants to count - The matches will be sorted
-        # and cut for the top 5 matches for instance
-        # if the key list is smaller than the number 
-        # set, then it will grab them all
+
         print('Sorting and calculating top matches! number_of_matches_to_count_points is {}'.format(competition.number_of_matches_to_count_points))
 
         key_list = []

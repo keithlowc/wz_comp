@@ -68,13 +68,7 @@ def get_values_from_matches(matches_list, user_tag = None):
         data = {}
         data['kd'] = matches['playerStats']['kdRatio']
         data['kills'] = matches['playerStats']['kills']
-
-        # TeamPlacement sometimes is not in the request
-        try:
-            data['teamPlacement'] = matches['playerStats']['teamPlacement']
-        except Exception as e:
-            data['teamPlacement'] = 0
-
+        data['teamPlacement'] = matches['playerStats']['teamPlacement']
         data['damageDone'] = matches['playerStats']['damageDone']
         data['matchID'] = matches['matchID']
 
@@ -146,17 +140,16 @@ def collect_data(key_id, match_id, data_list):
 def filter_for_time(matches_list, competition_start_time, competition_end_time, threshold_time_seconds = 7200):
     '''
     Filters matches for 2 hours by default
-    '''
 
-    # threshold = value from end_time - start_time. ie = 2 hours range
-    # start_time = 1 pm  - match_time = 1:30 pm = delta = 0:30
-    # if delta 0:30 < 2 and 1:30 pm <= end_time
-    # add to lists values
+    threshold = value from end_time - start_time. ie = 2 hours range
+    start_time = 1 pm  - match_time = 1:30 pm = delta = 0:30
+    if delta 0:30 < 2 and 1:30 pm <= end_time
+    add to lists values
+    '''
 
     config = ConfigController.objects.get(name = 'main_config_controller')
 
     if config.competitions_dummy_data:
-        # Dummy data = False by default
         start_time = matches_list[0]['utcStartSeconds']
 
         print()
