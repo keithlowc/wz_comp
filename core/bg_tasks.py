@@ -77,7 +77,7 @@ def calculate_competition_scores(comp_name):
 
         total_points = []
 
-        users = [i for i in users if i] # removes none values
+        # users = [i for i in users if i] # removes none values
 
         data = team.data_to_render
 
@@ -87,12 +87,13 @@ def calculate_competition_scores(comp_name):
             kills = []
             placements = []
             for user in users:
-                try:
-                    #print('user {} - kills {} - match id {}'.format(user, val[user][0]['kills'], key))
-                    kills.append(val[user][0]['kills'])
-                    placements.append(val[user][0]['teamPlacement'])
-                except Exception as e:
-                    print(e)
+                if user is not None:
+                    try:
+                        #print('user {} - kills {} - match id {}'.format(user, val[user][0]['kills'], key))
+                        kills.append(val[user][0]['kills'])
+                        placements.append(val[user][0]['teamPlacement'])
+                    except Exception as e:
+                        print(e)
 
             data[key]['points'] = {
                 'kills': kills,

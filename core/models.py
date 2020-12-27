@@ -75,9 +75,9 @@ class StaffCustomCompetition(models.Model):
     
     # Rules
     points_per_kill = models.IntegerField(default = 1)
-    points_per_first_place = models.IntegerField(default = 1)
-    points_per_second_place = models.IntegerField(default = 1)
-    points_per_third_place = models.IntegerField(default = 1)
+    points_per_first_place = models.IntegerField(default = 10)
+    points_per_second_place = models.IntegerField(default = 5)
+    points_per_third_place = models.IntegerField(default = 3)
 
     start_time = models.DateTimeField(default = datetime.now, blank = True)
     end_time = models.DateTimeField(default = datetime.now, blank = True)
