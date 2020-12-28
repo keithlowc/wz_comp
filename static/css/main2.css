@@ -56,6 +56,12 @@ body {
 
 /* Fa icons style */
 
+/* kill icon */
+
+.kill-icon {
+    color: black!important;
+}
+
 /* Match crowns */
 
 .first-place {
@@ -69,3 +75,5 @@ body {
 .third-place {
     color: brown!important;
 }
+
+/* Responsive text */
