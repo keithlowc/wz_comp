@@ -202,10 +202,21 @@
                       <div class="card-body">
                         <h5 class="font-color-black">Team members</h5>
                         <ul>
-                          <li>{{ team.player_1 }}</li>
-                          <li>{{ team.player_2 }}</li>
-                          <li>{{ team.player_3 }}</li>
-                          <li>{{ team.player_4 }}</li>
+                          {% if team.player_1 != None %}
+                            <li>{{ team.player_1 }}</li>
+                          {% endif %}
+
+                          {% if team.player_2 != None %}
+                            <li>{{ team.player_2 }}</li>
+                          {% endif %}
+
+                          {% if team.player_3 != None %}
+                            <li>{{ team.player_3 }}</li>
+                          {% endif %}
+
+                          {% if team.player_4 != None %}
+                            <li>{{ team.player_4 }}</li>
+                          {% endif %}
                         </ul>
 
                         <div id="accordionInside">
