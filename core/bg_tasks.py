@@ -151,7 +151,7 @@ def calculate_competition_scores(comp_name):
 
         if len(key_list) < competition.number_of_matches_to_count_points:
             print('The total amount of matches {} is smaller than number_of_matches_to_count_points {}'.format(len(key_list), competition.number_of_matches_to_count_points))
-            for key in key_list[0 : len(key_list) - 1]:
+            for key in key_list[0 : len(key_list)]:
                 print('-----------> Match selected for scoring with id {} and total points of {}'.format(key['key'], data[key['key']]['points']['total_points']))
                 total_points.append(data[key['key']]['points']['total_points'])
         else:
