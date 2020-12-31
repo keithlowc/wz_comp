@@ -64,7 +64,6 @@
           <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12">
             {% if user == competition.created_by and competition.competition_ready == True %}
               <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
-              <!-- <a class="btn btn-warning" href="{% url 'test' comp_name=competition.competition_name %}">test</a> -->
             {% endif %}
           </div>
           <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12">
@@ -177,11 +176,6 @@
                         <a class="collapsed" data-toggle="collapse" href="#{{ team }}" aria-expanded="false" aria-controls="{{ team }}">
                           <table class="table table-sm mb-0 table-hover">
                             <tbody>
-                              <!-- <tr id="headingOne" data-toggle="collapse" data-target="#collapseOne">
-                                <th class="border-0">{{ team }}</th>
-                                <th class="border-0 text-right">{{ team.score }}</th>
-                                <th class="border-0 text-right"><i class="fas fa-chevron-down"></i></th>
-                              </tr> -->
                               <div class="row">
                                 <div class="col-8">
                                   <td class="border-0">{{ team }}</td>
@@ -204,19 +198,25 @@
                         <ul>
                           {% if team.player_1 != None %}
                             <li>{{ team.player_1 }}</li>
+                            {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_1 %}
                           {% endif %}
 
                           {% if team.player_2 != None %}
                             <li>{{ team.player_2 }}</li>
+                            {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_2 %}
                           {% endif %}
 
                           {% if team.player_3 != None %}
                             <li>{{ team.player_3 }}</li>
+                            {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_3 %}
                           {% endif %}
 
                           {% if team.player_4 != None %}
                             <li>{{ team.player_4 }}</li>
+                            {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_4 %}
                           {% endif %}
+
+                          
                         </ul>
 
                         <div id="accordionInside">

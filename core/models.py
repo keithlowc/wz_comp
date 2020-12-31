@@ -102,11 +102,11 @@ class StaffCustomTeams(models.Model):
     player_3 = models.CharField(max_length = 100, null = True, unique = True, blank = True)
     player_4 = models.CharField(max_length = 100, null = True, unique = True, blank = True)
 
-    # created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, default = 0)
-
     competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE)
 
     data = models.JSONField(default = dict, blank = True)
+    data_stats = models.JSONField(default = dict, blank = True)
+    data_stats_loaded = models.BooleanField(default = False)
     data_to_render = models.JSONField(default = dict, blank = True)
 
     score = models.IntegerField(default = 0)

@@ -485,7 +485,40 @@ def get_competition(request, comp_name):
     return render(request, 'competitions/competition_scores.html', context)
 
 
-def test(request, comp_name):
-    bg_tasks.calculate_competition_scores_test(comp_name)
-    return redirect('get_competition', comp_name = comp_name)
+def chart_stats_key(request, team_name, user, key):
+    '''
+    Provides data depending on the key
+    if key = damageDone it will return
+    the last values of damagedone based
+    on the last few matches before the competition
+    '''
+
+    user = user
+    user_key = key
+
+    team = StaffCustomTeams.objects.filter(team_name = team_name)[0]
+    data_stats = team.data_stats
+
+    size = 0
+    data = []
+
+    for val in data_stats:
+        try:
+            for key in val[user]:
+                size = len(val[user])
+                data.append(key[user_key])
+        except Exception as e:
+            print(e)
+
+    matches = [i for i in range(size)]
+
+    return JsonResponse(data = {
+        'matches': matches,
+        'key': data,
+    })
+
+
+def show_chart(request):
+    return render(request,  'competitions/competition_user_chart.html')
+
 

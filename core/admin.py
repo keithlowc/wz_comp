@@ -61,6 +61,7 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
             'player_4',
             'competition',
             'data',
+            'data_stats',
             'data_to_render',
             'score',
         )

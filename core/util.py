@@ -202,10 +202,17 @@ def get_custom_data(user_tag, competition_start_time, competition_end_time, comp
 
     filtered_matches = filter_matches(matches['matches'][0:total_matches_len - 1], competition_type)
 
+    matches_without_time_filter = filtered_matches # Return matches filtered based on match type squads and etc..
+
     data = filter_for_time(filtered_matches, competition_start_time, competition_end_time)
 
     clean_data = get_values_from_matches(data, user_tag)
 
-    return clean_data
+    matches_without_time_filter = get_values_from_matches(matches_without_time_filter, user_tag)
+
+    print('this is without time filter')
+    print(matches_without_time_filter)
+
+    return clean_data, matches_without_time_filter
 
 

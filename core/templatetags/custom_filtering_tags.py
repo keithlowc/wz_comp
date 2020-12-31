@@ -14,3 +14,7 @@ def get_item(dictionary, key):
 def add(index):
     return index + 1
             
+
+@register.filter
+def remove_everything_after_hashtag(user):
+    return user.split('#')[0]
