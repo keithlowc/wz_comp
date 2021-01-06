@@ -46,6 +46,7 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
     if 'SERVER' in os.environ:
         fields = (
             'team_name',
+            'team_banner',
             'player_1',
             'player_2',
             'player_3',
@@ -55,6 +56,7 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
     else:
         fields = (
             'team_name',
+            'team_banner',
             'player_1',
             'player_2',
             'player_3',
@@ -63,6 +65,7 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
             'data',
             'data_stats',
             'data_to_render',
+            'data_stats_loaded',
             'score',
         )
 

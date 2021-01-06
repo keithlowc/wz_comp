@@ -496,7 +496,7 @@ def chart_stats_key(request, team_name, user, key):
     user = user
     user_key = key
 
-    team = StaffCustomTeams.objects.filter(team_name = team_name)[0]
+    team = StaffCustomTeams.objects.get(team_name = team_name)
     data_stats = team.data_stats
 
     size = 0

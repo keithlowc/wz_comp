@@ -210,9 +210,6 @@ def get_custom_data(user_tag, competition_start_time, competition_end_time, comp
 
     matches_without_time_filter = get_values_from_matches(matches_without_time_filter, user_tag)
 
-    print('this is without time filter')
-    print(matches_without_time_filter)
-
     return clean_data, matches_without_time_filter
 
 

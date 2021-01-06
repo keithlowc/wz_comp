@@ -7,19 +7,21 @@
 {% block content %}
 <div>
 <!-- Button trigger modal -->
-    <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#damageModal-{{user|remove_everything_after_hashtag}}">
-        Damage
-    </a>
 
-    <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#kdaModal-{{user|remove_everything_after_hashtag}}">
-        KD
-    </a>
+<div class="row pt-2 pb-2">
+  <div class="col-2">
 
-    <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#placementModal-{{user|remove_everything_after_hashtag}}">
-        Placements
+  </div>
+  <div class="col-8">
+    <a type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#damageModal-{{user|remove_everything_after_hashtag}}">
+      {{user}}
     </a>
-  
-  <!-- Modal -->
+  </div>
+  <div class="col-2">
+
+  </div>
+</div>
+
   <div class="modal fade" id="damageModal-{{user|remove_everything_after_hashtag}}" tabindex="-1" role="dialog" aria-labelledby="damageModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -32,81 +34,65 @@
           </button>
         </div>
         <div class="modal-body">
-            <canvas id="damage-chart-{{user|remove_everything_after_hashtag}}" data-url="{% url 'chart_stats_key' team_name=team user=user key='damageDone' %}"></canvas>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+          <div class="row">
+            <div class="col-12">
+              <canvas id="damage-chart-{{user|remove_everything_after_hashtag}}" data-url="{% url 'chart_stats_key' team_name=team user=user key='damageDone' %}"></canvas>
+            </div>
+          </div>
+      
+          <div class="row">
+            <div class="col-12">
+              <canvas id="kda-chart-{{user|remove_everything_after_hashtag}}" data-url="{% url 'chart_stats_key' team_name=team user=user key='kd' %}"></canvas>
+            </div>
+          </div>
 
-  <div class="modal fade" id="kdaModal-{{user|remove_everything_after_hashtag}}" tabindex="-1" role="dialog" aria-labelledby="kdaModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title font-color-black" id="exampleModalLabel">{{ user }} Last matches data</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <canvas id="kda-chart-{{user|remove_everything_after_hashtag}}" data-url="{% url 'chart_stats_key' team_name=team user=user key='kd' %}"></canvas>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+          <div class="row">
+            <div class="col-12">
+              <canvas id="placement-chart-{{user|remove_everything_after_hashtag}}" data-url="{% url 'chart_stats_key' team_name=team user=user key='teamPlacement' %}"></canvas>
+            </div>
+          </div>
 
-  <div class="modal fade" id="placementModal-{{user|remove_everything_after_hashtag}}" tabindex="-1" role="dialog" aria-labelledby="placementModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title font-color-black" id="exampleModalLabel">{{ user }} Last matches data</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <canvas id="placement-chart-{{user|remove_everything_after_hashtag}}" data-url="{% url 'chart_stats_key' team_name=team user=user key='teamPlacement' %}"></canvas>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}
 
 {% block javascript %}
 <script>
-    runCharts("{{ user|remove_everything_after_hashtag }}");
-  
-    async function initializeCharts(user1) {
-      initChart("damage-chart-" + user1);
-      initChart("kda-chart-" + user1);
-      initChart("placement-chart-" + user1);
-    }
-  
+
+    var chart;
+    var activision_tag = "{{ user|remove_everything_after_hashtag }}";
+
+    runCharts(activision_tag);
+
     function runCharts (user) {
       initializeCharts(user).then(() => {
-        createChart(chartId = "#damage-chart-" + user, label = "Damage per minute", color = "#3e25cd", title = "Damage over last games", xAxisLabel = "Matches", yAxisLabel = "Damage");
-        createChart(chartId = "#kda-chart-" + user, label = "KDA", color = "#f542ef", title = "KD over last games", xAxisLabel = "Matches", yAxisLabel = "KD");
-        createChart(chartId = "#placement-chart-" + user, label = "Placement", color = "#f542ef", title = "Placements over last games", xAxisLabel = "Matches", yAxisLabel = "Placements");
+        createChart(user, chartId = "#damage-chart-" + user, label = "Damage per minute", color = "#1d8187", title = "Damage over last games", xAxisLabel = "Matches", yAxisLabel = "Damage");
+        createChart(user, chartId = "#kda-chart-" + user, label = "KDA", color = "#1e242b", title = "KD over last games", xAxisLabel = "Matches", yAxisLabel = "KD");
+        createChart(user, chartId = "#placement-chart-" + user, label = "Placement", color = "#7d838d", title = "Placements over last games", xAxisLabel = "Matches", yAxisLabel = "Placements");
+        console.log(chart)
       })
     }
   
+    async function initializeCharts(user_tag) {
+      initChart("damage-chart-" + user_tag);
+      initChart("kda-chart-" + user_tag);
+      initChart("placement-chart-" + user_tag);
+    }
+
     function initChart(chartId) {
         // Initializes chart with random
         // data - This needs to be done
         // Otherwise the modal will not
         // be able to show anything
         // https://stackoverflow.com/questions/36650455/chart-js-cannot-read-property-length-of-undefined
-  
-        new Chart(document.getElementById(chartId), {
+        // console.log("Initialized chart for");
+        // console.log(chartId);
+
+        chart = new Chart(document.getElementById(chartId), {
             type: 'line',
             data: {
                 labels: [1,2,3,4,5],
@@ -116,12 +102,27 @@
                         borderColor: "#3e95cd",
                         fill: false
                 }]
+            },
+            options: {
+              events: [],
             }
         });
     }
   
-    function createChart(chartId, label, color, title, xAxisLabel, yAxisLabel) {
+    function createChart(user, chartId, label, color, title, xAxisLabel, yAxisLabel) {
         var $chart = $(chartId);
+
+        // $("canvas#damage-chart-" + user).remove();
+        // $("canvas#kda-chart-" + user).remove();
+        // $("canvas#placement-chart-" + user).remove();
+
+        // on
+
+        // $("div.col-12").append('<canvas id="damage-chart-" + user></canvas>');
+        // $("div.col-12").append('<canvas id="kda-chart-" + user></canvas>');
+        // $("div.col-12").append('<canvas id="placement-chart-" + user></canvas>');
+
+        if (typeof chart)
   
         $.ajax({
                 url: $chart.data("url"),
@@ -129,10 +130,8 @@
   
                     var ctx = $chart[0].getContext("2d");
 
-                    console.log('loaded chart for ');
-                    console.log(chartId);
-  
-                    new Chart(ctx, {
+                    chart.clear();
+                    chart = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: data.matches,
@@ -144,6 +143,7 @@
                             }]        
                         },
                         options: {
+                            events: [],
                             maintainAspectRatio: false,
                             responsive: true,
                             legend: {

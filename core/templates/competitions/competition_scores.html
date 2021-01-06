@@ -86,25 +86,33 @@
                   <table class="table table-sm mb-0">
                     <tbody>
                       <tr id="headingOne" data-toggle="collapse" data-target="#header">
-
                         <div class="row">
-                            <div class="col-8">
-                                <td class="border-0"><h2>{{ competition.competition_name }}</h2></td>
+                            <div class="col-xl-2 col-lg-2 col-md-4 d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                              <td class="border-0 align-middle">
+                                <img src="{{ competition.competition_banner }}" class="circular">
+                              </td>
+                            </div>
+                            <div class="col-6">
+                                <td class="border-0 align-middle">
+                                  <h2 class="display-4">{{ competition.competition_name }}</h2>
+                                </td>
                             <div class="col-2">
-                                <td class="border-0 text-right"><i>Created by: {{ competition.created_by }}</i></td>
+                                <td class="border-0 text-right align-middle">
+                                  <i>Created by: {{ competition.created_by }}</i>
+                                </td>
                             </div>
                             <div class="col-2">
                               {% if competition.competition_status == 1 %}
                                   <div class="row">
-                                      <td class="border-0 text-right"><span class="badge badge-success"> In-Progress </span></td>
+                                      <td class="border-0 text-right align-middle"><span class="badge badge-success"> In-Progress </span></td>
                                   </div>
                               {% elif competition.competition_status == 2 %}
                                   <div class="row">
-                                      <td class="border-0 text-right"><span class="badge badge-warning"> Ended </span></td>
+                                      <td class="border-0 text-right align-middle"><span class="badge badge-warning"> Ended </span></td>
                                   </div>
                               {% elif competition.competition_status == 3 %}
                                   <div class="row">
-                                      <td class="border-0 text-right"><span class="badge badge-primary"> Not-Started </span></td>
+                                      <td class="border-0 text-right align-middle"><span class="badge badge-primary"> Not-Started </span></td>
                                   </div>
                               {% endif %}
                             </div>
@@ -177,14 +185,21 @@
                           <table class="table table-sm mb-0 table-hover">
                             <tbody>
                               <div class="row">
-                                <div class="col-8">
-                                  <td class="border-0">{{ team }}</td>
+                                <div class="col-1">
+                                  <td class="border-0 align-middle">
+                                    <img src="{{ team.team_banner }}" class="circular-teams">
+                                  </td>
+                                </div>
+                                <div class="col-7">
+                                  <td class="border-0 align-middle">
+                                      <h5 class="display-4">{{ team }}</h5>
+                                  </td>
                                 </div>
                                 <div class="col-2">
-                                  <td class="border-0 text-right">{{ team.score }}</td>
+                                  <td class="border-0 text-right align-middle">{{ team.score }}</td>
                                 </div>
                                 <div class="col-2">
-                                  <td class="border-0 text-right"><i class="fas fa-chevron-down"></i></td>
+                                  <td class="border-0 text-right align-middle"><i class="fas fa-chevron-down"></i></td>
                                 </div>
                               </div>
                             </tbody>
@@ -195,29 +210,21 @@
                     <div id="{{ team }}" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
                       <div class="card-body">
                         <h5 class="font-color-black">Team members</h5>
-                        <ul>
                           {% if team.player_1 != None %}
-                            <li>{{ team.player_1 }}</li>
                             {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_1 %}
                           {% endif %}
 
                           {% if team.player_2 != None %}
-                            <li>{{ team.player_2 }}</li>
                             {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_2 %}
                           {% endif %}
 
                           {% if team.player_3 != None %}
-                            <li>{{ team.player_3 }}</li>
                             {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_3 %}
                           {% endif %}
 
                           {% if team.player_4 != None %}
-                            <li>{{ team.player_4 }}</li>
                             {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_4 %}
                           {% endif %}
-
-                          
-                        </ul>
 
                         <div id="accordionInside">
 

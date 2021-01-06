@@ -102,6 +102,8 @@ class StaffCustomTeams(models.Model):
     player_3 = models.CharField(max_length = 100, null = True, unique = True, blank = True)
     player_4 = models.CharField(max_length = 100, null = True, unique = True, blank = True)
 
+    team_banner = models.URLField(max_length = 1000, default = 'https://play-lh.googleusercontent.com/r2-_2oE9tU_46_n4GIC21PmqNIqPMoQNRPhfVNnK1v8hmDfA_yLuRwCy_E1cf5Wh4oM')
+
     competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE)
 
     data = models.JSONField(default = dict, blank = True)
