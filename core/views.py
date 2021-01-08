@@ -510,7 +510,7 @@ def chart_stats_key(request, team_name, user, key):
         except Exception as e:
             print(e)
 
-    matches = [i for i in range(size)]
+    matches = [i for i in range(1, size)]
 
     return JsonResponse(data = {
         'matches': matches,
