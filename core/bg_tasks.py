@@ -34,13 +34,15 @@ def recalculate_competition_stats(comp_name):
         team_users.append(team.player_4)
 
         data_list = []
+        old_matches_list = []
 
         for users in team_users:
             if users is not None:
                 time.sleep(1)
-                clean_data = util.get_custom_data(users, competition_start_time, competition_end_time, competition_type)
+                clean_data, matches_without_time_filter = util.get_custom_data(users, competition_start_time, competition_end_time, competition_type)
 
                 data_list.append(clean_data)
+                old_matches_list.append(matches_without_time_filter)
 
         # match matches per team with match id
         organized_data = util.match_matches_with_matches_id(data_list, team_users)
@@ -49,6 +51,21 @@ def recalculate_competition_stats(comp_name):
 
         team = StaffCustomTeams.objects.get(team_name = team.team_name)
         team.data = data_list
+        
+        print()
+        print('-- Loading team data_stats --')
+        print('-- Team {} --'.format(team))
+        # If the stats were loaded once, do not load again.
+        if team.data_stats_loaded == False:
+            print('-- data_stats_loaded == False --')
+            print('-- data_stats_loaded will be loaded--')
+            team.data_stats = old_matches_list
+            team.data_stats_loaded = True
+
+        print('-- data_stats_loaded == True --')
+        print('-- data_stats_loaded will NOT be loaded--')
+        print()
+
         team.data_to_render = organized_data
         team.save()
 
@@ -134,7 +151,7 @@ def calculate_competition_scores(comp_name):
 
         if len(key_list) < competition.number_of_matches_to_count_points:
             print('The total amount of matches {} is smaller than number_of_matches_to_count_points {}'.format(len(key_list), competition.number_of_matches_to_count_points))
-            for key in key_list[0 : len(key_list) - 1]:
+            for key in key_list[0 : len(key_list)]:
                 print('-----------> Match selected for scoring with id {} and total points of {}'.format(key['key'], data[key['key']]['points']['total_points']))
                 total_points.append(data[key['key']]['points']['total_points'])
         else:
@@ -147,7 +164,6 @@ def calculate_competition_scores(comp_name):
         team.data_to_render = data
         team.score = sum(total_points)
         team.save()
-
 
 
 @background(schedule = 1)

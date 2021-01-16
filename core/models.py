@@ -97,14 +97,18 @@ class StaffCustomCompetition(models.Model):
 
 class StaffCustomTeams(models.Model):
     team_name = models.CharField(max_length = 100, null = True, unique = True)
-    player_1 = models.CharField(max_length = 100, null = True, unique = True, blank = True)
-    player_2 = models.CharField(max_length = 100, null = True, unique = True, blank = True)
-    player_3 = models.CharField(max_length = 100, null = True, unique = True, blank = True)
-    player_4 = models.CharField(max_length = 100, null = True, unique = True, blank = True)
+    player_1 = models.CharField(max_length = 100, null = True, blank = True)
+    player_2 = models.CharField(max_length = 100, null = True, blank = True)
+    player_3 = models.CharField(max_length = 100, null = True, blank = True)
+    player_4 = models.CharField(max_length = 100, null = True, blank = True)
+
+    team_banner = models.URLField(max_length = 1000, default = 'https://play-lh.googleusercontent.com/r2-_2oE9tU_46_n4GIC21PmqNIqPMoQNRPhfVNnK1v8hmDfA_yLuRwCy_E1cf5Wh4oM')
 
     competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE)
 
     data = models.JSONField(default = dict, blank = True)
+    data_stats = models.JSONField(default = dict, blank = True)
+    data_stats_loaded = models.BooleanField(default = False)
     data_to_render = models.JSONField(default = dict, blank = True)
 
     score = models.IntegerField(default = 0)

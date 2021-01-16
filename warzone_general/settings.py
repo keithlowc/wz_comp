@@ -180,3 +180,7 @@ LOGGING = {
 }
 
 django_on_heroku.settings(locals(), logging = False)
+
+# Django backgroun tasks settings
+
+MAX_ATTEMPTS = 4

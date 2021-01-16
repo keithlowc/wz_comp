@@ -34,6 +34,15 @@ body {
     overflow: hidden;
 }
 
+/* Team images */
+.circular-teams {
+    width: 50;
+    height: 50px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
 .circular img {
     min-width: 100%;
     min-height: 100%;
@@ -56,6 +65,12 @@ body {
 
 /* Fa icons style */
 
+/* kill icon */
+
+.kill-icon {
+    color: black!important;
+}
+
 /* Match crowns */
 
 .first-place {
@@ -69,3 +84,8 @@ body {
 .third-place {
     color: brown!important;
 }
+
+/* Responsive text */
+
+
+/* Pop up for graphs and stats */

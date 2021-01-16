@@ -15,12 +15,38 @@ admin.site.register(Teams)
 admin.site.register(ConfigController)
 
 class StaffCustomTeamAdmin(admin.ModelAdmin):
+    def has_view_permission(self, request, obj=None):
+        if obj is not None and obj.competition.created_by != request.user:
+            if request.user.is_superuser:
+                return True
+            else:
+                return False
+        return True
+
+    def has_change_permission(self, request, obj=None):
+        if obj is not None and obj.competition.created_by != request.user:
+            if request.user.is_superuser:
+                return True
+            else:
+                return False
+        return True
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None and obj.competition.created_by != request.user:
+            if request.user.is_superuser:
+                return True
+            else:
+                return False
+        return True
+
     search_fields = ('team_name',)
+    list_display = ('team_name', 'competition', 'score',)
     list_filter = ('competition',)
 
     if 'SERVER' in os.environ:
         fields = (
             'team_name',
+            'team_banner',
             'player_1',
             'player_2',
             'player_3',
@@ -30,13 +56,16 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
     else:
         fields = (
             'team_name',
+            'team_banner',
             'player_1',
             'player_2',
             'player_3',
             'player_4',
             'competition',
             'data',
+            'data_stats',
             'data_to_render',
+            'data_stats_loaded',
             'score',
         )
 
@@ -74,23 +103,47 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
             instance.created_by = user
         instance.save()
         return instance
+    
+    def has_view_permission(self, request, obj=None):
+        if obj is not None and obj.created_by != request.user:
+            if request.user.is_superuser:
+                return True
+            else:
+                return False
+        return True
+
+    def has_change_permission(self, request, obj=None):
+        if obj is not None and obj.created_by != request.user:
+            if request.user.is_superuser:
+                return True
+            else:
+                return False
+        return True
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None and obj.created_by != request.user:
+            if request.user.is_superuser:
+                return True
+            else:
+                return False
+        return True
 
     inlines = [InLineStaffCustomTeam]
     search_fields = ('competition_name',)
     list_filter = ('created_by', 'competition_type',)
-    list_display = ('competition_name', 'competition_type',)
+    list_display = ('competition_name', 'competition_type', 'created_by')
     fields = (
-        'competition_name',
-        'competition_description',
-        'competition_banner',
-        'competition_type',
-        'number_of_matches_to_count_points',
-        'points_per_kill',
-        'points_per_first_place',
-        'points_per_second_place',
-        'points_per_third_place',
-        'start_time',
-        'end_time',
-    )
+            'competition_name',
+            'competition_description',
+            'competition_banner',
+            'competition_type',
+            'number_of_matches_to_count_points',
+            'points_per_kill',
+            'points_per_first_place',
+            'points_per_second_place',
+            'points_per_third_place',
+            'start_time',
+            'end_time',
+        )
 
 admin.site.register(StaffCustomCompetition, StaffCustomCompetitionAdmin)

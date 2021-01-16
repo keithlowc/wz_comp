@@ -34,15 +34,6 @@ body {
     overflow: hidden;
 }
 
-/* Team images */
-.circular-teams {
-    width: 50;
-    height: 50px;
-    border-radius: 50%;
-    position: relative;
-    overflow: hidden;
-}
-
 .circular img {
     min-width: 100%;
     min-height: 100%;
@@ -86,6 +77,3 @@ body {
 }
 
 /* Responsive text */
-
-
-/* Pop up for graphs and stats */

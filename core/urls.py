@@ -6,7 +6,9 @@ from . import views
 urlpatterns = [
     path('', views.home, name = 'home'),
 
-    path('competition/<str:comp_name>/test', views.test, name = 'test'),
+    # Competition charts
+    path('competition/chart/stats/<str:team_name>/<str:user>/<str:key>', views.chart_stats_key, name = 'chart_stats_key'),
+    path('competition/user/chart', views.show_chart, name = 'show_chart'),
 
     path('competition/recalculate_scores/<str:comp_name>', views.recalculate_scores, name = 'recalculate_scores'),
     
@@ -14,6 +16,7 @@ urlpatterns = [
     path('competition/<str:comp_name>', views.get_competition, name = 'get_competition'),
     path('competition/<str:comp_name>/refresh', views.manually_recalculate_score_once, name = 'manually_recalculate_score_once'),
 
+    # Old application routes
     path('profile/', views.view_profile, name = 'view_profile'),
     path('profile/edit', views.edit_profile, name = 'edit_profile'),
     path('profile/refresh', views.refresh_profile, name = 'refresh_profile'),
