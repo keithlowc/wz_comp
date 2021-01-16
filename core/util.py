@@ -68,7 +68,12 @@ def get_values_from_matches(matches_list, user_tag = None):
         data = {}
         data['kd'] = matches['playerStats']['kdRatio']
         data['kills'] = matches['playerStats']['kills']
-        data['teamPlacement'] = matches['playerStats']['teamPlacement']
+        try:
+            data['teamPlacement'] = matches['playerStats']['teamPlacement']
+        except Exception as e:
+            print('Error teamplacement not found!')
+            data['teamPlacement'] = 100
+
         data['damageDone'] = matches['playerStats']['damageDone']
         data['matchID'] = matches['matchID']
 
@@ -189,13 +194,13 @@ def filter_for_time(matches_list, competition_start_time, competition_end_time, 
     return top_matches
 
 
-def get_custom_data(user_tag, competition_start_time, competition_end_time, competition_type):
+def get_custom_data(user_tag, user_id_type, competition_start_time, competition_end_time, competition_type):
     '''
     Gets the matches for user_tag
     '''
 
-    warzone_api = WarzoneApi(tag = user_tag.replace('#', '%23'), platform = 'acti')
-
+    warzone_api = WarzoneApi(tag = user_tag.replace('#', '%23'), platform = user_id_type)
+    
     matches = warzone_api.get_warzone_matches()
 
     total_matches_len = len(matches['matches'])

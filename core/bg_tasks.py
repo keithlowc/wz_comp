@@ -23,31 +23,40 @@ def recalculate_competition_stats(comp_name):
     competition_end_time = competition.end_time     # Datetime.datetime format
     competition_type = competition.competition_type
 
-    team_users = []
+    team_users = {}
 
     teams = StaffCustomTeams.objects.filter(competition = competition.id)
 
     for team in teams:
-        team_users.append(team.player_1)
-        team_users.append(team.player_2)
-        team_users.append(team.player_3)
-        team_users.append(team.player_4)
+        team_users = {
+            team.player_1: team.player_1_id_type,
+            team.player_2: team.player_2_id_type,
+            team.player_3: team.player_3_id_type,
+            team.player_4: team.player_4_id_type,
+        }
+
+        filtered = {k: v for k, v in team_users.items() if k is not None}
+        team_users.clear()
+        team_users.update(filtered)
+
+        print('******* Team Users ********')
+        print(team_users)
+        print('***************************')
 
         data_list = []
         old_matches_list = []
 
-        for users in team_users:
-            if users is not None:
-                time.sleep(1)
-                clean_data, matches_without_time_filter = util.get_custom_data(users, competition_start_time, competition_end_time, competition_type)
+        for user, user_id_type in team_users.items():
+            time.sleep(1)
+            clean_data, matches_without_time_filter = util.get_custom_data(user, user_id_type, competition_start_time, competition_end_time, competition_type)
 
-                data_list.append(clean_data)
-                old_matches_list.append(matches_without_time_filter)
+            data_list.append(clean_data)
+            old_matches_list.append(matches_without_time_filter)
 
         # match matches per team with match id
         organized_data = util.match_matches_with_matches_id(data_list, team_users)
 
-        team_users = []
+        team_users = {}
 
         team = StaffCustomTeams.objects.get(team_name = team.team_name)
         team.data = data_list

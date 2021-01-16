@@ -48,9 +48,16 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
             'team_name',
             'team_banner',
             'player_1',
+            'player_1_id_type',
+
             'player_2',
+            'player_2_id_type',
+
             'player_3',
+            'player_3_id_type',
+
             'player_4',
+            'player_4_id_type',
             'competition',
         )
     else:
@@ -58,9 +65,17 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
             'team_name',
             'team_banner',
             'player_1',
+            'player_1_id_type',
+
             'player_2',
+            'player_2_id_type',
+
             'player_3',
+            'player_3_id_type',
+
             'player_4',
+            'player_4_id_type',
+
             'competition',
             'data',
             'data_stats',
@@ -81,10 +96,20 @@ class InLineStaffCustomTeam(admin.StackedInline):
     model = StaffCustomTeams
     fields = (
         'team_name',
+        'team_banner',
+
         'player_1',
+        'player_1_id_type',
+
         'player_2',
+        'player_2_id_type',
+
         'player_3',
+        'player_3_id_type',
+
         'player_4',
+        'player_4_id_type',
+
         'competition',
     )
     extra = 1
