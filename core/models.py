@@ -96,11 +96,25 @@ class StaffCustomCompetition(models.Model):
 
 
 class StaffCustomTeams(models.Model):
+    user_id_type = [
+        ('battle', 'Battlenet ID'),
+        ('psnet', 'PSNET ID'),
+        # ('acti', 'Activision ID'),
+    ]
+
     team_name = models.CharField(max_length = 100, null = True, unique = True)
+
     player_1 = models.CharField(max_length = 100, null = True, blank = True)
+    player_1_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
+
     player_2 = models.CharField(max_length = 100, null = True, blank = True)
+    player_2_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
+
     player_3 = models.CharField(max_length = 100, null = True, blank = True)
+    player_3_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
+
     player_4 = models.CharField(max_length = 100, null = True, blank = True)
+    player_4_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
 
     team_banner = models.URLField(max_length = 1000, default = 'https://play-lh.googleusercontent.com/r2-_2oE9tU_46_n4GIC21PmqNIqPMoQNRPhfVNnK1v8hmDfA_yLuRwCy_E1cf5Wh4oM')
 
