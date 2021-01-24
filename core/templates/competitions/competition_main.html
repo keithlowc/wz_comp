@@ -16,7 +16,7 @@
 
 <div class="row"> 
   <div class="col">
-    <h1>All competitions:</h1>
+    <h1 class="white-color-font">All competitions:</h1>
   </div>
 </div>
 
@@ -111,7 +111,15 @@
                         </tbody>
                       </table>
                       
-                      <a class="btn btn-info" href="{% url 'get_competition' comp_name=competition.competition_name %}">View competition</a>
+                      <div class="row">
+                        <div class="col-6">
+                          <a class="btn btn-info" href="{% url 'get_competition' comp_name=competition.competition_name %}">View competition</a>
+                        </div>
+                        <div class="col-6">
+                          <a class="btn btn-success" href="{% url 'join_request_competition' comp_name=competition.competition_name %}">Sign up for competition</a>
+                        </div>
+                      </div>
+                      
 
                     </div>
                   </div>

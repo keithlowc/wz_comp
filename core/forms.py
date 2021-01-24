@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Profile, Teams
+from .models import Profile, Teams, StaffCustomTeams
 
 from django.core.exceptions import ValidationError
 
@@ -29,4 +29,18 @@ class TeamsForm(forms.ModelForm):
         if profiles.count() > 4:
             raise ValidationError("Max squad is 4 people!")
         return self.cleaned_data
+
+
+class JoinCompetitionRequestForm(forms.ModelForm):
+
+    class Meta:
+        model = StaffCustomTeams
+        fields = ('team_name', 
+                'team_banner', 
+                'team_twitch_stream_user',
+                'player_1', 'player_1_id_type', 
+                'player_2', 'player_2_id_type', 
+                'player_3', 'player_3_id_type', 
+                'player_4', 'player_4_id_type',)
+
             

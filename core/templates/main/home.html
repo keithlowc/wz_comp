@@ -1,10 +1,10 @@
 {% extends 'main/base.html' %}
 {% block content %}
     {% if user.is_authenticated%}
-            <h1>Welcome {{ user.username }} !</h1>
+            <h1 class="white-color-font">Welcome {{ user.username }} !</h1>
     {% else %}
-        <h1>User is not authenticated</h1>
-        <a href="{% url 'login' %}">Please Log in!</a>
+        <h1 class="white-color-font">User is not authenticated</h1>
+        <a class="white-color-font" href="{% url 'login' %}">Please Log in!</a>
     {% endif %}
 
 {% endblock content %}

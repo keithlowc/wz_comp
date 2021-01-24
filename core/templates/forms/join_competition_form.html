@@ -1,0 +1,404 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="border rounded">
+    <div class="row p-4">
+        <div class="col-12">
+            <div class="row">
+                <div class="col">
+                    <h2 class="display-3">{{ comp_name }}</h2>
+                </div>
+            </div>
+
+            <div class="row pt-2">
+                <div class="col">
+                    <h4>This form will verify that your account meets the following:</h4>
+                    <ul>
+                        <li class="white-color-font">You have provided the username without typos</li>
+                        <li class="white-color-font">You have provided an username that exists</li>
+                        <li class="white-color-font">You have provided the proper id type</li>
+                        <li class="white-color-font">Your account is older than 5 days of total played time</li>
+                        <li class="white-color-font">You have played more than {{ competition.cod_verification_total_games_played }} matches in your entire account life</li>
+                    </ul>
+                </div>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="row">
+                    <div class="col">
+                        {{ form.team_name|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        {{ form.team_banner|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        {{ form.team_twitch_stream_user|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                        {{ form.player_1|as_crispy_field }}
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                        {{ form.player_1_id_type|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                        {{ form.player_2|as_crispy_field }}
+                    </div>
+                    
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                        {{ form.player_2_id_type|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                        {{ form.player_3|as_crispy_field }}
+                    </div>
+                    
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                        {{ form.player_3_id_type|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                        {{ form.player_4|as_crispy_field }}
+                    </div>
+                    
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                        {{ form.player_4_id_type|as_crispy_field }} 
+                    </div>
+                </div>
+
+                <div class="row" id="progressBar">
+                    <div class="col">
+                        <div class="progress" style="height:35px">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%">Validating.. 0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="notValidUsers">
+                </div>
+
+                <div class="row pt-4">
+                    <div class="col-6">
+                        <a class="btn btn-success" href="#" onclick="validate_users();">Validate</a>
+                    </div>
+                    <div class="col-6">
+                        <input type="submit" value="Submit" class="btn btn-primary" id="submitButton">
+                    </div>
+                </div>
+
+                <div class="row pt-4">
+                    <div class="col">
+                        <h4>Note: Validate your data before submitting!</h4>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    const timer = ms => new Promise(res => setTimeout(res, ms))
+
+    // Api keys and stuff
+    let x_rapidapi_key =                        "{{ config.cod_x_rapidapi_key }}";
+    let x_rapidapi_host =                       "{{ config.cod_x_rapidapi_host }}";
+    let cod_url_warzone_stats =                 "{{ config.cod_url_warzone_stats }}";
+    let twitch_api_verfication_client_id =      "{{ config.twitch_api_verfication_client_id }}";
+    let twitch_api_verfication_client_secret =  "{{ config.twitch_api_verfication_client_secret }}";
+
+    // Rules
+    let total_games_played =        "{{ competition.cod_verification_total_games_played }}";
+    let total_time_played =         "{{ competition.cod_verification_total_time_played }}";
+
+    // Progress  bar
+    let progress_bar_row = document.getElementById('progressBar');
+    let progress_bar = document.getElementsByClassName('progress-bar');
+
+    progress_bar_row.style.display = "none";
+
+    async function validate_users() {
+        let user_1 = document.getElementById('id_player_1').value;
+        let id_player_1_id_type = document.getElementById('id_player_1_id_type').value;
+
+        let user_2 = document.getElementById('id_player_2').value;
+        let id_player_2_id_type = document.getElementById('id_player_2_id_type').value;
+
+        let user_3 = document.getElementById('id_player_3').value;
+        let id_player_3_id_type = document.getElementById('id_player_3_id_type').value;
+
+        let user_4 = document.getElementById('id_player_4').value;
+        let id_player_4_id_type = document.getElementById('id_player_4_id_type').value;
+
+        let twitch_user = document.getElementById("id_team_twitch_stream_user").value;
+
+        let not_valid_users = [];
+        let total_users = []
+        let accounts_validated = true;
+        let twitch_account_exists = true;
+        let messages = [];
+        
+        let token = "";
+        let token_type = "";
+
+        disable_submit_button();
+
+        // Delete those all chiled elements
+        // from notValidUsers and get all
+        // span values
+        let divrow = document.getElementById("notValidUsers");
+
+        if (divrow != undefined) {
+            while (divrow.firstChild) {
+                divrow.removeChild(divrow.lastChild);
+            }
+        }
+
+        // Display progress bar
+        // Progress bar at 25%
+        progress_bar_row.style.display = "block";
+        progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
+        progress_bar[0].style.width = "25%";
+        progress_bar[0].textContent = "Validating.. 25%";
+
+        // Verifying that twitch user exists
+
+        if (twitch_user != "") {
+
+            let twitch_token_promise = await ajax_request_get_twitch_token(twitch_api_verfication_client_id, twitch_api_verfication_client_secret);
+            
+            token = twitch_token_promise['access_token'];
+            token_type = twitch_token_promise['token_type'][0].toUpperCase() + twitch_token_promise['token_type'].slice(1);
+
+            let twitch_account = await ajax_request_check_twitch_acc_exists(twitch_user, token, token_type)
+
+
+            if (twitch_account['data'].length == 0) {
+                messages.push("Unable to find your twitch user");
+                twitch_account_exists = false;
+                progress_bar[0].textContent = "Twitch account does not exist.. 35%";
+            } else {
+                progress_bar[0].style.width = "35%";
+                progress_bar[0].textContent = "Validating twitch account.. 35%";
+            }
+        } else {
+            // Will make the twitch account validation to fail
+            messages.push("You did not input a twitch account");
+            twitch_account_exists = false;
+        }
+
+        // Need to fix this to make the code smaller
+        // Could use dictionaries but running them 
+        // async is a problem this is why i did it 
+        // like this
+
+        if (user_1 != "") {
+            let user_1_data = await ajax_request_check_user_data(user_1, id_player_1_id_type, cod_url_warzone_stats, x_rapidapi_key, x_rapidapi_host);
+
+            if (user_1_data['error'] == true) {
+                not_valid_users.push(user_1);
+                total_users.push({"user_1": false});
+
+                messages.push(user_1 + " does not exist or id type wrong");
+
+            } else {
+                let user_1_verified = verification_rules(user_1_data["br_all"], user_1);
+                total_users.push({"user_1": user_1_verified})
+            }
+        }
+        
+        if (user_2 != "") {
+            let user_2_data = await ajax_request_check_user_data(user_2, id_player_2_id_type, cod_url_warzone_stats, x_rapidapi_key, x_rapidapi_host);
+
+            if (user_2_data['error'] == true) {
+                not_valid_users.push(user_2);
+                total_users.push({"user_2": false});
+
+                messages.push(user_2 + " does not exist or id type wrong");
+
+            } else {
+                let user_2_verified = verification_rules(user_2_data["br_all"], user_2);
+                total_users.push({"user_2": user_2_verified})
+            }
+        }
+
+        // Progress bar at 55%
+        progress_bar[0].style.width = "55%";
+        progress_bar[0].textContent = "Validating.. 55%";
+
+        if (user_3 != "") {
+            let user_3_data = await ajax_request_check_user_data(user_3, id_player_3_id_type, cod_url_warzone_stats, x_rapidapi_key, x_rapidapi_host);
+
+            if (user_3_data['error'] == true) {
+                not_valid_users.push(user_3);
+                total_users.push({"user_3": false});
+
+                messages.push(user_3 + " does not exist or id type wrong");
+
+            } else {
+                let user_3_verified = verification_rules(user_3_data["br_all"], user_3);
+                total_users.push({"user_3": user_3_verified})
+            }
+        }
+        
+        if (user_4 != "") {
+            let user_4_data = await ajax_request_check_user_data(user_4, id_player_4_id_type, cod_url_warzone_stats, x_rapidapi_key, x_rapidapi_host);
+
+            if (user_4_data['error'] == true) {
+                not_valid_users.push(user_4);
+                total_users.push({"user_4": false});
+
+                messages.push(user_4 + " does not exist or id type wrong");
+
+            } else {
+                let user_4_verified = verification_rules(user_4_data["br_all"], user_4);
+                total_users.push({"user_4": user_4_verified})
+            }
+        }
+
+        // If atleast one is false it 
+        // will not pass validation
+        if (total_users.length == 0) {
+            accounts_validated = false;
+        } else {
+            total_users.forEach(element => 
+                Object.entries(element).forEach(([k,v]) => {
+                    if (v == false) {
+                        accounts_validated = false;
+                    }
+                })
+            );
+        }
+        
+        // Progress bar at 75%
+        progress_bar[0].style.width = "75%";
+        progress_bar[0].textContent = "Validating.. 75%";
+
+        // Validate all users
+        if (accounts_validated == true && twitch_account_exists == true) {
+            // Progress bar at 100%
+            progress_bar[0].style.width = "100%";
+            progress_bar[0].textContent = "Users and twitch account were validated.. 100%";
+            enable_submit_button();
+
+        } else {
+            // Here we create and add
+            // span with users who did not pass
+            // validation
+            progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated bg-danger";
+            progress_bar[0].style.width = "100%";
+            progress_bar[0].textContent = "Did not pass validation.. 100%";
+
+            not_valid_users = not_valid_users.filter(n => n);
+
+            let unique_errors = [ ...new Set(messages) ]; // Gets rid of duplicates
+
+            for (let i = 0; i < unique_errors.length; i++) {
+                let div = document.createElement('div');
+                div.className = "col not-valid-users";
+
+                let span = document.createElement('span');
+                span.innerHTML = unique_errors[i];
+                span.className = "badge badge-danger not-valid-users";
+
+                div.appendChild(span);
+                divrow.appendChild(div);
+            }
+        }
+    }
+
+    async function ajax_request_check_user_data(user, user_type, cod_url, api_key, api_host) {
+        // This function makes the api call
+        // to the warzone api
+
+        await timer(1000);
+
+        let new_url = cod_url + user.replace("#", "%23") + "/" + user_type;
+
+        return $.ajax({
+            beforeSend: function(request) {
+                request.setRequestHeader("x-rapidapi-key", api_key);
+                request.setRequestHeader("x-rapidapi-host", api_host);
+            },
+            url: new_url,
+            success: function(data){
+            }
+        });
+    }
+
+    async function ajax_request_get_twitch_token(client_id, client_secret) {
+        return $.ajax({
+            type: "POST", 
+            url: "https://id.twitch.tv/oauth2/token?client_id=" + client_id + "&client_secret=" + client_secret + "&grant_type=client_credentials",
+            success: function (data) {
+                // console.log(data);
+            }
+        })
+    }
+
+    async function ajax_request_check_twitch_acc_exists(twitch_user, token, token_type) {
+        return $.ajax({
+            type: "GET",
+            beforeSend: function(request) {
+                request.setRequestHeader("Authorization", token_type + " " + token);
+                request.setRequestHeader("Client-Id", twitch_api_verfication_client_id)
+            },
+            url: "https://api.twitch.tv/helix/users?login=" + twitch_user,
+            success: function(data) {
+                // console.log(data);
+            }
+        })
+    }
+
+    function verification_rules(user_data, user) {
+        // This function allows us to verify
+        // that is not a new account and 
+        // has enough time played
+
+        if (user_data["gamesPlayed"] >= total_games_played) {
+            if (user_data["timePlayed"] >= total_time_played) {
+                return true;
+            } else {
+                messages.push(user + "Account did not meet total time played required");
+                return false;
+            }
+        } else {
+            messages.push(user + "Account total games played does not meet verification criteria")
+            return false;
+        }
+    }
+
+    function disable_submit_button(){
+        let submit_button = document.getElementById("submitButton");
+        submit_button.disabled = true;
+    }
+
+    function enable_submit_button() {
+        let submit_button = document.getElementById("submitButton");
+        submit_button.disabled = false;
+    }
+
+    disable_submit_button();
+</script>
+{% endblock %}

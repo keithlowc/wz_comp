@@ -1,50 +1,6 @@
 {% extends 'main/base.html' %}
 {% load custom_filtering_tags %}
 
-{% block javascript %}
-    <script>
-        // These functions are basically allowing
-        // the reloading of the page if needed
-        // otherwise, the user can stop the refreshing
-        // by unchecking the box
-
-        let time_to_refresh = {{ config.competitions_page_refresh_time }}
-
-        $('#toggle-silent')[0].checked = false;
-
-        let checked = localStorage.getItem("checkBox");
-
-        function checkStates() {
-            if (checked == "true") {
-                console.log('It was checked');
-                $('#toggle-silent')[0].checked = true;
-            } else if (checked == "false") {
-                console.log('It was not checked!');
-            }
-        }
-
-        function change() {
-            let decider = document.getElementById('toggle-silent');
-            if(decider.checked){
-                localStorage.setItem("checkBox", true);
-                setTimeout(reload, time_to_refresh);
-            } else {
-                clearTimeout(reload);
-                localStorage.removeItem("checkBox");
-                localStorage.setItem("checkBox", false);
-            }
-        }
-
-        function reload() {
-            document.location.reload();
-        }
-
-        checkStates();
-        change();
-
-    </script>
-{% endblock %}
-
 {% block content %}
 
 <div class="row pt-4">
@@ -173,7 +129,7 @@
               </div>
               <div class="row">
                 <div class="col-12 pt-4 pb-4">
-                  <h1 class="display-1 text-center">Leaderboard!</h1>
+                  <h1 class="display-1 text-center white-color-font">Leaderboard!</h1>
                 </div>
 
               </div>
@@ -209,22 +165,26 @@
                     </div>
                     <div id="{{ team }}" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
                       <div class="card-body">
+
+
+                        {% include 'competitions/competition_team_twitch_live_feed.html' with twitch_user=team.team_twitch_stream_user %}
+                        
                         <h5 class="font-color-black">Team members</h5>
-                          {% if team.player_1 != None %}
-                            {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_1 %}
-                          {% endif %}
+                        {% if team.player_1 != None %}
+                          {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_1 %}
+                        {% endif %}
 
-                          {% if team.player_2 != None %}
-                            {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_2 %}
-                          {% endif %}
+                        {% if team.player_2 != None %}
+                          {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_2 %}
+                        {% endif %}
 
-                          {% if team.player_3 != None %}
-                            {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_3 %}
-                          {% endif %}
+                        {% if team.player_3 != None %}
+                          {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_3 %}
+                        {% endif %}
 
-                          {% if team.player_4 != None %}
-                            {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_4 %}
-                          {% endif %}
+                        {% if team.player_4 != None %}
+                          {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_4 %}
+                        {% endif %}
 
                         <div id="accordionInside">
 
@@ -322,7 +282,7 @@
                                         </div>
                                 {% endfor %}
                             {% else %}
-                                    <h3>Competition has not started or been loaded!</h3>
+                                    <h3 class="black-color-font">Competition has not started or been loaded!</h3>
                             {% endif %}
 
                         </div>
@@ -339,3 +299,53 @@
 </div>
 
 {% endblock content %}
+
+{% block javascript %}
+    <script>
+        // These functions are basically allowing
+        // the reloading of the page if needed
+        // otherwise, the user can stop the refreshing
+        // by unchecking the box
+
+        let time_to_refresh = {{ config.competitions_page_refresh_time }}
+
+        $('#toggle-silent')[0].checked = false;
+
+        let checked = localStorage.getItem("checkBox");
+
+        function checkStates() {
+            if (checked == "true") {
+                console.log('It was checked');
+                $('#toggle-silent')[0].checked = true;
+            } else if (checked == "false") {
+                console.log('It was not checked!');
+            }
+        }
+
+        function change() {
+            let decider = document.getElementById('toggle-silent');
+            if(decider.checked){
+                localStorage.setItem("checkBox", true);
+                setTimeout(reload, time_to_refresh);
+            } else {
+                clearTimeout(reload);
+                localStorage.removeItem("checkBox");
+                localStorage.setItem("checkBox", false);
+            }
+        }
+
+        function reload() {
+            document.location.reload();
+        }
+
+        // new Twitch.Embed("twitch-embed", {
+        //   width: "100%",
+        //   height: "480",
+        //   channel: "JillyBe4n",
+        // });
+
+        checkStates();
+        change();
+
+    </script>
+{% endblock %}

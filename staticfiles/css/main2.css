@@ -2,8 +2,16 @@ body {
     background-color:#1E242B;
 }
 
-.h1, h1, h5, h2, a, i{
+.h1, h2, h3, h4, h5, a, i{
     color:#EFEFEF!important;
+}
+
+.white-color-font {
+    color:#EFEFEF!important;
+}
+
+.black-color-font {
+    color: black!important;
 }
 
 /* Miscellaneous */
@@ -89,3 +97,10 @@ body {
 
 
 /* Pop up for graphs and stats */
+
+
+/* Forms labels */
+
+label {
+    color: white;
+}
