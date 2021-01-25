@@ -7,7 +7,6 @@ from .forms import ProfileForm, TeamsForm, JoinCompetitionRequestForm
 
 from . import signals, util, bg_tasks
 from .warzone_api import WarzoneApi
-from warzone_general.settings import headers
 
 import requests, datetime, time, ast, os
 
@@ -456,7 +455,7 @@ def recalculate_scores(request, comp_name):
         # if competition is true
         # We activate the bg task
 
-        bg_tasks.calculate_status_of_competition(comp_name, repeat = config.competitions_bg_tasks,
+        bg_tasks.calculate_status_of_competition(config.cod_x_rapidapi_key, config.cod_x_rapidapi_host, comp_name, repeat = config.competitions_bg_tasks,
                                                  repeat_until = competition.end_time + datetime.timedelta(seconds = 120))
 
     # When press ready
@@ -488,7 +487,7 @@ def manually_recalculate_score_once(request, comp_name):
 
         print('Manually calling recalculation once!')
 
-        bg_tasks.calculate_status_of_competition(comp_name)
+        bg_tasks.calculate_status_of_competition(config.cod_x_rapidapi_key, config.cod_x_rapidapi_host, comp_name)
 
     return redirect('get_competition', comp_name = comp_name)
 

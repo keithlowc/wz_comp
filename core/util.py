@@ -1,6 +1,5 @@
 from .warzone_api import WarzoneApi
 from .models import ConfigController
-from warzone_general.settings import headers
 
 import datetime, time
 
@@ -194,12 +193,12 @@ def filter_for_time(matches_list, competition_start_time, competition_end_time, 
     return top_matches
 
 
-def get_custom_data(user_tag, user_id_type, competition_start_time, competition_end_time, competition_type):
+def get_custom_data(user_tag, user_id_type, competition_start_time, competition_end_time, competition_type, cod_x_rapidapi_key, cod_x_rapidapi_host):
     '''
     Gets the matches for user_tag
     '''
 
-    warzone_api = WarzoneApi(tag = user_tag.replace('#', '%23'), platform = user_id_type)
+    warzone_api = WarzoneApi(tag = user_tag.replace('#', '%23'), platform = user_id_type, cod_x_rapidapi_key = cod_x_rapidapi_key, cod_x_rapidapi_host = cod_x_rapidapi_host)
     
     matches = warzone_api.get_warzone_matches()
 

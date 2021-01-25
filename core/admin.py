@@ -157,23 +157,47 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
     search_fields = ('competition_name',)
     list_filter = ('created_by', 'competition_type',)
     list_display = ('competition_name', 'competition_type', 'created_by')
-    fields = (
-            'competition_name',
-            'competition_description',
-            'competition_banner',
 
-            # Verification values
-            'cod_verification_total_games_played',
-            'cod_verification_total_time_played',
+    if 'SERVER' in os.environ:
+        fields = (
+                'competition_name',
+                'competition_description',
+                'competition_banner',
 
-            'competition_type',
-            'number_of_matches_to_count_points',
-            'points_per_kill',
-            'points_per_first_place',
-            'points_per_second_place',
-            'points_per_third_place',
-            'start_time',
-            'end_time',
+                # Verification values
+                'cod_verification_total_games_played',
+                'cod_verification_total_time_played',
+
+                'competition_type',
+                'number_of_matches_to_count_points',
+                'points_per_kill',
+                'points_per_first_place',
+                'points_per_second_place',
+                'points_per_third_place',
+                'start_time',
+                'end_time',
+
+                )
+    else:
+        fields = (
+        'competition_name',
+        'competition_description',
+        'competition_banner',
+
+        # Verification values
+        'cod_verification_total_games_played',
+        'cod_verification_total_time_played',
+
+        'competition_type',
+        'number_of_matches_to_count_points',
+        'points_per_kill',
+        'points_per_first_place',
+        'points_per_second_place',
+        'points_per_third_place',
+        'start_time',
+        'end_time',
+
+        'competition_ready',
         )
 
 admin.site.register(StaffCustomCompetition, StaffCustomCompetitionAdmin)
