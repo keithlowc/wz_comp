@@ -73,6 +73,10 @@ class StaffCustomCompetition(models.Model):
 
     competition_banner = models.URLField(max_length = 1000, default = 'https://cdn1.dotesports.com/wp-content/uploads/2019/12/16125403/cod38.jpg')
     
+    # Verification rules
+    cod_verification_total_games_played = models.IntegerField(default = 50, verbose_name = "Total amount of matches needed to be verified") # 50 games total
+    cod_verification_total_time_played = models.IntegerField(default = 432000, verbose_name = "Total amount of time played to be verified (Default = 5 days)") # epoch seconds per day - 86400 * 5 = 5 days
+
     # Rules
     number_of_matches_to_count_points = models.IntegerField(default = 5)
     points_per_kill = models.IntegerField(default = 1)
@@ -98,11 +102,15 @@ class StaffCustomCompetition(models.Model):
 class StaffCustomTeams(models.Model):
     user_id_type = [
         ('battle', 'Battlenet ID'),
-        ('psnet', 'PSNET ID'),
-        # ('acti', 'Activision ID'),
+        ('psnet', 'Psnet ID'),
+        ('xbl', 'XboxLive ID'),
     ]
 
     team_name = models.CharField(max_length = 100, null = True, unique = True)
+    
+    team_banner = models.URLField(max_length = 1000, default = 'https://play-lh.googleusercontent.com/r2-_2oE9tU_46_n4GIC21PmqNIqPMoQNRPhfVNnK1v8hmDfA_yLuRwCy_E1cf5Wh4oM')
+
+    team_twitch_stream_user = models.CharField(max_length = 150, null = True, blank = True)
 
     player_1 = models.CharField(max_length = 100, null = True, blank = True)
     player_1_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
@@ -115,8 +123,6 @@ class StaffCustomTeams(models.Model):
 
     player_4 = models.CharField(max_length = 100, null = True, blank = True)
     player_4_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
-
-    team_banner = models.URLField(max_length = 1000, default = 'https://play-lh.googleusercontent.com/r2-_2oE9tU_46_n4GIC21PmqNIqPMoQNRPhfVNnK1v8hmDfA_yLuRwCy_E1cf5Wh4oM')
 
     competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE)
 
@@ -151,6 +157,14 @@ class ConfigController(models.Model):
     competitions_page_refresh_time = models.IntegerField(default = 5000)
     competitions_bg_tasks = models.IntegerField(default = 100)
     competitions_dummy_data = models.BooleanField(default = False)
+
+    cod_url_warzone_stats = models.CharField(max_length = 500,  null = True, unique = True)
+    cod_url_warzone_matches = models.CharField(max_length = 500,  null = True, unique = True)
+    cod_x_rapidapi_key = models.CharField(max_length = 250,  null = True, unique = True)
+    cod_x_rapidapi_host = models.CharField(max_length = 250,  null = True, unique = True)
+
+    twitch_api_verfication_client_id = models.CharField(max_length = 100,  null = True, unique = True)
+    twitch_api_verfication_client_secret = models.CharField(max_length = 100,  null = True, unique = True)
 
     class Meta:
         verbose_name = 'ConfigController'

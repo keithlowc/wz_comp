@@ -9,12 +9,18 @@ urlpatterns = [
     # Competition charts
     path('competition/chart/stats/<str:team_name>/<str:user>/<str:key>', views.chart_stats_key, name = 'chart_stats_key'),
     path('competition/user/chart', views.show_chart, name = 'show_chart'),
-
     path('competition/recalculate_scores/<str:comp_name>', views.recalculate_scores, name = 'recalculate_scores'),
     
     path('competitions/all', views.get_competitions_all, name = 'get_competitions_all'),
     path('competition/<str:comp_name>', views.get_competition, name = 'get_competition'),
     path('competition/<str:comp_name>/refresh', views.manually_recalculate_score_once, name = 'manually_recalculate_score_once'),
+
+    # Stage 1
+    path('competition/join/<str:comp_name>', views.join_request_competition, name = 'join_request_competition'),
+
+    # Stage 2
+
+    # Stage 3
 
     # Old application routes
     path('profile/', views.view_profile, name = 'view_profile'),

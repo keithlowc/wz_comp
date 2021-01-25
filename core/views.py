@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.db import transaction
 
 from .models import Profile, Teams, StaffCustomTeams, StaffCustomCompetition, ConfigController
-from .forms import ProfileForm, TeamsForm
+from .forms import ProfileForm, TeamsForm, JoinCompetitionRequestForm
 
 from . import signals, util, bg_tasks
 from .warzone_api import WarzoneApi
@@ -389,6 +389,48 @@ def leave_team(request, team_name):
 
 # Competition related
 
+# Stage 1
+# Users submit request to enter competition
+# ID'S are submitted and validations happen
+
+def join_request_competition(request, comp_name):
+    '''
+    Allows you to create
+    a team
+    '''
+
+    config = ConfigController.objects.get(name = 'main_config_controller')
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+
+    if request.method == "POST":
+        form = JoinCompetitionRequestForm(request.POST)
+        if form.is_valid():
+            team = form.save(commit = False)
+            team.competition = competition
+            team.save()
+
+            signals.send_message.send(sender = None,
+                                      request = request,
+                                      message = 'Succesfully requested entry to tournament: {}'.format(comp_name),
+                                      type = 'SUCCESS')
+
+            return redirect('get_competition', comp_name = comp_name)
+    else:
+        form = JoinCompetitionRequestForm()
+    return render(request, 'forms/join_competition_form.html', {'form': form, 'comp_name': comp_name, 'config': config, 'competition': competition})
+
+
+# Stage 2
+# User data has to be approved by admin
+# Admin can check payments whatever
+# Adming approves
+
+# Stage 3
+# They show on the competition view
+
+
+# Without new changes
+
 def recalculate_scores(request, comp_name):
     signals.send_message.send(sender = None,
                     request = request,
@@ -413,7 +455,7 @@ def recalculate_scores(request, comp_name):
         # if competition is true
         # We activate the bg task
 
-        bg_tasks.calculate_status_of_competition(comp_name, repeat = config.competitions_bg_tasks,
+        bg_tasks.calculate_status_of_competition(config.cod_x_rapidapi_key, config.cod_x_rapidapi_host, comp_name, repeat = config.competitions_bg_tasks,
                                                  repeat_until = competition.end_time + datetime.timedelta(seconds = 120))
 
     # When press ready
@@ -445,7 +487,7 @@ def manually_recalculate_score_once(request, comp_name):
 
         print('Manually calling recalculation once!')
 
-        bg_tasks.calculate_status_of_competition(comp_name)
+        bg_tasks.calculate_status_of_competition(config.cod_x_rapidapi_key, config.cod_x_rapidapi_host, comp_name)
 
     return redirect('get_competition', comp_name = comp_name)
 

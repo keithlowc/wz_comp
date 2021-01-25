@@ -89,8 +89,6 @@
         // Otherwise the modal will not
         // be able to show anything
         // https://stackoverflow.com/questions/36650455/chart-js-cannot-read-property-length-of-undefined
-        // console.log("Initialized chart for");
-        // console.log(chartId);
 
         chart = new Chart(document.getElementById(chartId), {
             type: 'line',
@@ -111,16 +109,6 @@
   
     function createChart(user, chartId, label, color, title, xAxisLabel, yAxisLabel) {
         var $chart = $(chartId);
-
-        // $("canvas#damage-chart-" + user).remove();
-        // $("canvas#kda-chart-" + user).remove();
-        // $("canvas#placement-chart-" + user).remove();
-
-        // on
-
-        // $("div.col-12").append('<canvas id="damage-chart-" + user></canvas>');
-        // $("div.col-12").append('<canvas id="kda-chart-" + user></canvas>');
-        // $("div.col-12").append('<canvas id="placement-chart-" + user></canvas>');
 
         if (typeof chart)
   

@@ -1,18 +1,17 @@
 import requests
 
-from warzone_general.settings import headers
-
-headers = headers
-
 '''
 https://rapidapi.com/elreco/api/call-of-duty-modern-warfare?endpoint=apiendpoint_c8a294f3-e186-4365-a85c-5ef29d0fe735
 '''
 
 class WarzoneApi:
-    def __init__(self, tag, platform, headers = headers):
+    def __init__(self, tag, platform, cod_x_rapidapi_key, cod_x_rapidapi_host):
         self.tag = tag.replace('#', '%23')
         self.platform = platform
-        self.headers = headers
+        self.headers = {
+            'x-rapidapi-key': cod_x_rapidapi_key,
+            'x-rapidapi-host': cod_x_rapidapi_host,
+        }
     
     def get_warzone_matches(self):
         '''
