@@ -102,7 +102,7 @@ class StaffCustomCompetition(models.Model):
 class StaffCustomTeams(models.Model):
     user_id_type = [
         ('battle', 'Battlenet ID'),
-        ('psnet', 'Psnet ID'),
+        ('psn', 'Psnet ID'),
         ('xbl', 'XboxLive ID'),
     ]
 
@@ -154,8 +154,8 @@ class ConfigController(models.Model):
     competitions_bg_tasks = 100 seconds
     '''
     name = models.CharField(max_length = 100, null = True, unique = True, default = 'main_config_controller')
-    competitions_page_refresh_time = models.IntegerField(default = 5000)
-    competitions_bg_tasks = models.IntegerField(default = 100)
+    competitions_page_refresh_time = models.IntegerField(default = 15000)
+    competitions_bg_tasks = models.IntegerField(default = 900)
     competitions_dummy_data = models.BooleanField(default = False)
 
     cod_url_warzone_stats = models.CharField(max_length = 500,  null = True, unique = True)

@@ -4,7 +4,8 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('', views.home, name = 'home'),
+    # path('', views.home, name = 'home'),
+    path('', views.get_competitions_all, name = 'get_competitions_all'),
 
     # Competition charts
     path('competition/chart/stats/<str:team_name>/<str:user>/<str:key>', views.chart_stats_key, name = 'chart_stats_key'),

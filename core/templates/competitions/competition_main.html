@@ -29,14 +29,12 @@
             
               <div class="col">
                 <div class="card">
-                  <!-- <img src="{{ competition.competition_banner }}" class="card-img-top"> -->
-                  <!-- <div class="card-header card-img-overlay" role="tab" id="headingInside"> -->
                   <div class="card-header" role="tab" id="headingInside">
                     <h5 class="mb-0">
                       <a class="collapsed" data-toggle="collapse" href="#{{ forloop.counter0|add }}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }}">
                         <div class="row">
                           <div class="col-xl-2 col-lg-2 col-md-4 d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
-                            <img src="{{ competition.competition_banner }}" class="circular">
+                            <img src="{{ competition.competition_banner }}" class="circular border">
                           </div>
                           <div class="col-lg-4 col-md-4 col-sm-12 col-xm-12 my-auto">
                             <h2 class="align-middle"> {{ competition.competition_name }} </h2>
@@ -78,7 +76,8 @@
                       <div class="row">
                         <div class="col">
                           <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><p class="lead"><b>Start Time:</b> {{ competition.start_time }} - <b>End Time:</b> {{ competition.end_time }}</p></li>
+                            <li class="list-group-item"><p class="lead"><b>Start Time:</b> {{ competition.start_time }}</p></li>
+                            <li class="list-group-item"><p class="lead"><b>End Time:</b> {{ competition.end_time }}</p></li>
                             <li class="list-group-item"><p class="lead">Note: Only the top <b>{{ competition.number_of_matches_to_count_points }}</b> matches are calculated</p></li>
                           </ul>
                         </div>
@@ -112,15 +111,14 @@
                       </table>
                       
                       <div class="row">
-                        <div class="col-6">
-                          <a class="btn btn-info" href="{% url 'get_competition' comp_name=competition.competition_name %}">View competition</a>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xm-6 pt-1">
+                          <a class="btn btn-info" href="{% url 'get_competition' comp_name=competition.competition_name %}">View Competition</a>
                         </div>
-                        <div class="col-6">
-                          <a class="btn btn-success" href="{% url 'join_request_competition' comp_name=competition.competition_name %}">Sign up for competition</a>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xm-6 pt-1">
+                          <a class="btn btn-success" href="{% url 'join_request_competition' comp_name=competition.competition_name %}">Sign Up Competition</a>
                         </div>
                       </div>
                       
-
                     </div>
                   </div>
                 </div>
