@@ -6,21 +6,10 @@
     <div class="row p-4">
         <div class="col-12">
             <div class="row">
-                <div class="col">
-                    <h2 class="display-3">{{ comp_name }}</h2>
-                </div>
-            </div>
-
-            <div class="row pt-2">
-                <div class="col">
-                    <h4>This form will verify that your account meets the following:</h4>
-                    <ul>
-                        <li class="white-color-font">You have provided the username without typos</li>
-                        <li class="white-color-font">You have provided an username that exists</li>
-                        <li class="white-color-font">You have provided the proper id type</li>
-                        <li class="white-color-font">Your account is older than 5 days of total played time</li>
-                        <li class="white-color-font">You have played more than {{ competition.cod_verification_total_games_played }} matches in your entire account life</li>
-                    </ul>
+                <div class="col pb-2">
+                    <h2 class="notranslate display-3 text-center">{{ comp_name }}</h2>
+                    <h3 class="text-center pt-2"><u>Inscription Form:</u></h3>
+                    <h5 class="pt-4"><i class="fas fa-sticky-note note-icon"></i> To work your account needs to be public! Tutorial Here: <a class="badge badge-primary" href="https://www.youtube.com/watch?v=k_IMsQ3crME&feature=emb_title">Make Account Public Link</a></h5>
                 </div>
             </div>
 
@@ -28,20 +17,17 @@
                 {% csrf_token %}
                 
                 <div class="row">
-                    <div class="col">
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
                         {{ form.team_name|as_crispy_field }}
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                        {{ form.team_twitch_stream_user|as_crispy_field }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col">
                         {{ form.team_banner|as_crispy_field }}
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
-                        {{ form.team_twitch_stream_user|as_crispy_field }}
                     </div>
                 </div>
 
@@ -84,6 +70,28 @@
                     </div>
                 </div>
 
+                <div class="row pt-2">
+                    <div class="col">
+                        <h4>This form will verify that your account meets the following:</h4>
+                        <ul>
+                            <li class="white-color-font"><p class="lead">You have provided the username without typos <i class="fas fa-check check-mark-icon"></i></p></li>
+                            <li class="white-color-font"><p class="lead">You have provided an username that exists <i class="fas fa-check check-mark-icon"></i></p></li>
+                            <li class="white-color-font"><p class="lead">You have provided the proper id type <i class="fas fa-check check-mark-icon"></i></p></li>
+                            <li class="white-color-font"><p class="lead">Your account is older than 5 days of total played time <i class="fas fa-check check-mark-icon"></i></p></li>
+                            <li class="white-color-font"><p class="lead">You have played more than {{ competition.cod_verification_total_games_played }} matches in your entire account life <i class="fas fa-check check-mark-icon"></i> </p></li>
+                            <li class="white-color-font"><p class="lead">Twitch Live Stream during competition is required <i class="fab fa-twitch twitch-icon-color"></i> </p></li>
+                            <li class="white-color-font"><p class="lead"><span class="notranslate">Reverse Boosting</span> is prohibited. <i class="fas fa-ban red-icon"></i> </p></li>
+                            <li class="white-color-font"><p class="lead">Any sort of <span class="notranslate">Hack</span> is prohibited. <i class="fas fa-ban red-icon"></i> </p></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row pt-2">
+                    <div class="col">
+                        <h5>Note: Validate your data before submitting!</h5>
+                    </div>
+                </div>
+
                 <div class="row" id="progressBar">
                     <div class="col">
                         <div class="progress" style="height:35px">
@@ -97,16 +105,10 @@
 
                 <div class="row pt-4">
                     <div class="col-6">
-                        <a class="btn btn-success" href="#" onclick="validate_users();">Validate</a>
+                        <a class="btn btn-success" href="javascript:void();" onclick="validate_users();">Validate</a>
                     </div>
                     <div class="col-6">
                         <input type="submit" value="Submit" class="btn btn-primary" id="submitButton">
-                    </div>
-                </div>
-
-                <div class="row pt-4">
-                    <div class="col">
-                        <h4>Note: Validate your data before submitting!</h4>
                     </div>
                 </div>
 

@@ -43,4 +43,9 @@ class JoinCompetitionRequestForm(forms.ModelForm):
                 'player_3', 'player_3_id_type', 
                 'player_4', 'player_4_id_type',)
 
+        labels = {
+            'team_banner': 'Team logo (URL only)',
+            'team_twitch_stream_user': 'Team Twitch User (User only - Not URL)',
+        }
+
             
