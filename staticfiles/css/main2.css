@@ -65,6 +65,10 @@ body {
     transform: translate(-50%, -50%);
 }
 
+.border-image {
+    border: 2px solid white!important;
+}
+
 /* Card header */
 
 .card-header:first-child {
@@ -82,15 +86,39 @@ body {
 /* Match crowns */
 
 .first-place {
-    color: gold!important;
+    color:#ffd700!important;
 }
 
 .second-place {
-    color: silver!important;
+    color: #c0c0c0!important;
 }
 
 .third-place {
-    color: brown!important;
+    color: #cd7f32!important;
+}
+
+/* Banned or prohibited icon */
+
+.red-icon {
+    color: red!important;
+}
+
+/* Twitch-icon color */
+
+.twitch-icon-color {
+    color: #772CE8!important;
+}
+
+/* Check mark */
+
+.check-mark-icon {
+    color: green!important;
+}
+
+/* Note icon */
+
+.note-icon {
+    color: yellow!important;
 }
 
 /* Responsive text */

@@ -48,13 +48,14 @@
                   <!-- <a class="nav-item nav-link" href="{% url 'view_teams' %}">My Competitions</a> -->
                   <!-- <a class="nav-item nav-link" href="{% url 'view_teams' %}">My Teams</a> -->
                   <!-- <a class="nav-item nav-link" href="{% url 'view_profile' %}">Profile</a> -->
-
                   <!-- <a class="nav-item nav-link" href="{% url 'logout' %}">Log out</a> -->
             </div>
                 {% if user.is_staff or user.is_superuser %}
                   <a class="nav-item nav-link" href="/admin">Administration</a>
                 {% endif %}
                 <a class="nav-item nav-link" href="{% url 'logout' %}">Log out</a>
+              {% else %}
+                <!-- <a class="nav-item nav-link" href="{% url 'login' %}">Log in</a> -->
               {% endif %}
           </div>
     </nav>
