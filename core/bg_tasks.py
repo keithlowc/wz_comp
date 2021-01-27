@@ -7,7 +7,7 @@ from datetime import datetime
 import time
 
 @background(schedule = 1)
-def recalculate_competition_stats(cod_x_rapidapi_key, cod_x_rapidapi_host, comp_name):
+def recalculate_competition_stats(custom_config, comp_name):
     '''
     Caculates all the competition stack
     based on the rest api data for 
@@ -48,7 +48,11 @@ def recalculate_competition_stats(cod_x_rapidapi_key, cod_x_rapidapi_host, comp_
 
         for user, user_id_type in team_users.items():
             time.sleep(1)
-            clean_data, matches_without_time_filter = util.get_custom_data(user, user_id_type, competition_start_time, competition_end_time, competition_type, cod_x_rapidapi_key, cod_x_rapidapi_host)
+            clean_data, matches_without_time_filter = util.get_custom_data(user, user_id_type,
+                                                                        competition_start_time,
+                                                                        competition_end_time,
+                                                                        competition_type,
+                                                                        custom_config)
 
             data_list.append(clean_data)
             old_matches_list.append(matches_without_time_filter)
@@ -176,7 +180,7 @@ def calculate_competition_scores(comp_name):
 
 
 @background(schedule = 1)
-def calculate_status_of_competition(config, comp_name):
+def calculate_status_of_competition(custom_config, comp_name):
     '''
     Calculates the status of the competition
     based on the competition ending time
@@ -186,7 +190,7 @@ def calculate_status_of_competition(config, comp_name):
     print()
     print('** Starting bg calculations! **')
 
-    recalculate_competition_stats(config.cod_x_rapidapi_key, config.cod_x_rapidapi_host, comp_name)
+    recalculate_competition_stats(custom_config, comp_name)
     calculate_competition_scores(comp_name)
 
     ts = time.time()

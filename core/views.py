@@ -174,7 +174,7 @@ def edit_profile(request):
     try:
         my_instance = get_object_or_404(Profile, account = request.user.id)
 
-        if request.method == "POST":
+        if request.method == 'POST':
 
             form = ProfileForm(request.POST, instance = my_instance)
             
@@ -201,7 +201,7 @@ def edit_profile(request):
                                     message = 'Error from edit_profile: {}'.format(e),
                                     type = 'ERROR')
 
-    if request.method == "POST":
+    if request.method == 'POST':
 
         form = ProfileForm(request.POST)
 
@@ -280,7 +280,7 @@ def create_team(request):
     a team
     '''
 
-    if request.method == "POST":
+    if request.method == 'POST':
         form = TeamsForm(request.POST)
         if form.is_valid():
             teams = form.save(commit = False)
@@ -392,7 +392,7 @@ def leave_team(request, team_name):
 # Stage 1
 # Users submit request to enter competition
 # ID'S are submitted and validations happen
-
+ 
 def join_request_competition(request, comp_name):
     '''
     Allows you to create
@@ -402,7 +402,7 @@ def join_request_competition(request, comp_name):
     config = ConfigController.objects.get(name = 'main_config_controller')
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
-    if request.method == "POST":
+    if request.method == 'POST':
         form = JoinCompetitionRequestForm(request.POST)
         if form.is_valid():
             team = form.save(commit = False)
@@ -438,24 +438,31 @@ def recalculate_scores(request, comp_name):
                     type = 'INFO')
 
     config = ConfigController.objects.get(name = 'main_config_controller')
+
+    custom_config = {
+        'cod_x_rapidapi_key': config.cod_x_rapidapi_key,
+        'cod_x_rapidapi_host': config.cod_x_rapidapi_host,
+        'competitions_dummy_data': config.competitions_dummy_data
+    }
+
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
-    if competition.competition_ready:
+    if competition.competition_started:
         # If competition is ready
         # we set it to false
-        competition.competition_ready = False
+        competition.competition_started = False
         competition.save()
     else:
         # If competition is not ready = false
         # we set it to True
-        competition.competition_ready = True
+        competition.competition_started = True
         competition.save()
 
-    if competition.competition_ready:
+    if competition.competition_started:
         # if competition is true
         # We activate the bg task
 
-        bg_tasks.calculate_status_of_competition(config.cod_x_rapidapi_key, config.cod_x_rapidapi_host, comp_name, repeat = config.competitions_bg_tasks,
+        bg_tasks.calculate_status_of_competition(custom_config, comp_name, repeat = config.competitions_bg_tasks,
                                                  repeat_until = competition.end_time + datetime.timedelta(seconds = 120))
 
     # When press ready
@@ -479,15 +486,22 @@ def manually_recalculate_score_once(request, comp_name):
                     type = 'INFO')
 
     config = ConfigController.objects.get(name = 'main_config_controller')
+
+    custom_config = {
+        'cod_x_rapidapi_key': config.cod_x_rapidapi_key,
+        'cod_x_rapidapi_host': config.cod_x_rapidapi_host,
+        'competitions_dummy_data': config.competitions_dummy_data
+    }
+
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
-    if competition.competition_ready:
+    if competition.competition_started:
         # if competition is true
         # We activate the bg task
 
         print('Manually calling recalculation once!')
 
-        bg_tasks.calculate_status_of_competition(config.cod_x_rapidapi_key, config.cod_x_rapidapi_host, comp_name)
+        bg_tasks.calculate_status_of_competition(custom_config, comp_name)
 
     return redirect('get_competition', comp_name = comp_name)
 

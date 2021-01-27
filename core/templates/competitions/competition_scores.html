@@ -8,7 +8,7 @@
     <div class="row">
 
       <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
-        {% if user == competition.created_by and competition.competition_ready == False %}
+        {% if user == competition.created_by and competition.competition_started == False %}
           <a class="notranslate btn btn-success" href="{% url 'recalculate_scores' comp_name=competition.competition_name %}">Start Competition</a>
         {% else %}
           <h5>Competition has been started!</h5>
@@ -18,7 +18,7 @@
       <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12">
         <div class = "row">
           <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
-            {% if user == competition.created_by and competition.competition_ready == True %}
+            {% if user == competition.created_by and competition.competition_started == True %}
               <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
             {% endif %}
           </div>
@@ -44,17 +44,13 @@
                       <tr id="headingOne" data-toggle="collapse" data-target="#header">
                         <div class="row">
                             <div class="col-xl-2 col-lg-2 col-md-4 d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
-                              <td class="border-0 align-middle">
-                                <img src="{{ competition.competition_banner }}" class="circular border d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-image">
-                              </td>
+                                <td class="border-0 align-middle">
+                                  <img src="{{ competition.competition_banner }}" class="circular border d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-image">
+                                </td>
                             </div>
                             <div class="col-6">
                                 <td class="border-0 align-middle">
                                   <h2 class="display-4">{{ competition.competition_name }}</h2>
-                                </td>
-                            <div class="col-2">
-                                <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
-                                  <i>Created by: {{ competition.created_by }}</i>
                                 </td>
                             </div>
                             <div class="col-2">
@@ -72,13 +68,21 @@
                                   </div>
                               {% endif %}
                             </div>
+                            <div class="col-2">
+                              <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
+                                <i>Created by: {{ competition.created_by }}</i>
+                                <i class="fas fa-chevron-down"></i>
+                              </td>
+                            </div>
                         </div>
 
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <div id="header" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                <!-- <div id="header" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion"> -->
+
+                <div id="header" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                   <div class="card-body">
 
                     <div class="row">
@@ -325,6 +329,8 @@
         // the reloading of the page if needed
         // otherwise, the user can stop the refreshing
         // by unchecking the box
+
+        // div id = header = collapse to maintain it closed
 
         let time_to_refresh = {{ config.competitions_page_refresh_time }}
 

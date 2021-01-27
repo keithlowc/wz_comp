@@ -9,8 +9,9 @@
             <div class="row">
                 <div class="col pb-2">
                     <h2 class="notranslate display-3 text-center">{{ comp_name }}</h2>
+                    <h2 class="notranslate display-3 text-center">({{ competition.competition_type }})</h2>
                     <h3 class="text-center pt-2"><u>Inscription Form:</u></h3>
-                    <h5 class="pt-4"><i class="fas fa-sticky-note note-icon"></i> To work your account needs to be public! Tutorial Here: <a class="badge badge-primary" href="https://www.youtube.com/watch?v=k_IMsQ3crME&feature=emb_title">Make Account Public Link</a></h5>
+                    <h5 class="pt-4"><i class="fas fa-sticky-note note-icon"></i> To work your account needs to be public! Tutorial Here: <a class="badge badge-primary" href="https://www.youtube.com/watch?v=k_IMsQ3crME&feature=emb_title">Make Account Public</a></h5>
                 </div>
             </div>
 
@@ -78,7 +79,7 @@
                             <li class="white-color-font"><p class="lead">You have provided the username without typos <i class="fas fa-check check-mark-icon"></i></p></li>
                             <li class="white-color-font"><p class="lead">You have provided an username that exists <i class="fas fa-check check-mark-icon"></i></p></li>
                             <li class="white-color-font"><p class="lead">You have provided the proper id type <i class="fas fa-check check-mark-icon"></i></p></li>
-                            <li class="white-color-font"><p class="lead">You meet the KD criteria of <b>{{ competition.cod_kd_limit_per_player_verification|stringformat:".2f" }}</b> <i class="fas fa-check check-mark-icon"></i></p></li>
+                            <li class="white-color-font"><p class="lead">You meet the KD criteria of <b>{{ competition.cod_kd_minimum_per_player_verification|stringformat:".2f" }} <= KD <= {{ competition.cod_kd_maximum_per_player_verification|stringformat:".2f" }}</b> <i class="fas fa-check check-mark-icon"></i></p></li>
                             <li class="white-color-font"><p class="lead">Your account is older than <b>{{ competition.cod_verification_total_time_played }}</b> days of total played time <i class="fas fa-check check-mark-icon"></i></p></li>
                             <li class="white-color-font"><p class="lead">You have played more than <b>{{ competition.cod_verification_total_games_played }}</b> matches in your entire account life <i class="fas fa-check check-mark-icon"></i></p></li>
                             <li class="white-color-font"><p class="lead">Twitch Live Stream during competition is required <i class="fab fa-twitch twitch-icon-color"></i> </p></li>
@@ -133,7 +134,9 @@
     let twitch_api_verfication_client_secret =  "{{ config.twitch_api_verfication_client_secret }}";
 
     // Rules and verification
-    let kd_per_player =             parseFloat("{{ competition.cod_kd_limit_per_player_verification }}".replace(",","."));
+    let max_kd_per_player =             parseFloat("{{ competition.cod_kd_maximum_per_player_verification }}".replace(",","."));
+    let min_kd_per_player =             parseFloat("{{ competition.cod_kd_minimum_per_player_verification }}".replace(",","."));
+
 
     let total_games_played =        "{{ competition.cod_verification_total_games_played }}";
     let total_time_played =         "{{ competition.cod_verification_total_time_played|convert_days_to_epoch }}".replace(",",".");
@@ -386,10 +389,10 @@
 
         if (user_data["gamesPlayed"] >= total_games_played) {
             if (user_data["timePlayed"] >= total_time_played) {
-                if (user_data["kdRatio"] <= kd_per_player) {
+                if (user_data["kdRatio"] >= min_kd_per_player && user_data["kdRatio"] <= max_kd_per_player) {
                     return true;
                 } else {
-                    messages.push(user + " KD is " + user_data["kdRatio"].toFixed(2) + " > " + " KD limit " + kd_per_player);
+                    messages.push(user + " KD is " + user_data["kdRatio"].toFixed(2) + " - Does not meet KD requirements of Min: " + min_kd_per_player + " or Max: " + max_kd_per_player);
                     return false;
                 }
             } else {

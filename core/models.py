@@ -74,7 +74,9 @@ class StaffCustomCompetition(models.Model):
     competition_banner = models.URLField(max_length = 1000, default = 'https://cdn1.dotesports.com/wp-content/uploads/2019/12/16125403/cod38.jpg')
     
     # Verification rules
-    cod_kd_limit_per_player_verification = models.FloatField(default = 3, verbose_name = "Account Verification: KD limit per player. Leave default for open KD tournament (Default = 3)")
+    cod_kd_maximum_per_player_verification = models.FloatField(default = 3, verbose_name = "Account Verification: KD maximum per player (Default = 3)")
+    cod_kd_minimum_per_player_verification = models.FloatField(default = 1, verbose_name = "Account Verification: KD minimum per player (Default = 1)")
+
     cod_verification_total_games_played = models.IntegerField(default = 100, verbose_name = "Account Verification: Total amount of matches needed to verify account (Default = 100 games)") # 50 games total
     cod_verification_total_time_played = models.IntegerField(default = 5, verbose_name = "Account Verification: Total amount of time played to verify account (Default = 5 days)") # epoch seconds per day - 86400 * 5 = 5 days
 
@@ -89,7 +91,7 @@ class StaffCustomCompetition(models.Model):
     end_time = models.DateTimeField(default = datetime.now, blank = True)
 
     # Competition flag should flip based on time started
-    competition_ready = models.BooleanField(default = False)
+    competition_started = models.BooleanField(default = False)
     competition_status = models.IntegerField(default = 3)   # 'Not started': 3, 'Ended': 2, 'In-Progress': 1
 
     class Meta:
