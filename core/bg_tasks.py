@@ -176,7 +176,7 @@ def calculate_competition_scores(comp_name):
 
 
 @background(schedule = 1)
-def calculate_status_of_competition(cod_x_rapidapi_key, cod_x_rapidapi_host, comp_name):
+def calculate_status_of_competition(config, comp_name):
     '''
     Calculates the status of the competition
     based on the competition ending time
@@ -186,7 +186,7 @@ def calculate_status_of_competition(cod_x_rapidapi_key, cod_x_rapidapi_host, com
     print()
     print('** Starting bg calculations! **')
 
-    recalculate_competition_stats(cod_x_rapidapi_key, cod_x_rapidapi_host, comp_name)
+    recalculate_competition_stats(config.cod_x_rapidapi_key, config.cod_x_rapidapi_host, comp_name)
     calculate_competition_scores(comp_name)
 
     ts = time.time()

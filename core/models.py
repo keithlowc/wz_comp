@@ -74,23 +74,23 @@ class StaffCustomCompetition(models.Model):
     competition_banner = models.URLField(max_length = 1000, default = 'https://cdn1.dotesports.com/wp-content/uploads/2019/12/16125403/cod38.jpg')
     
     # Verification rules
-    cod_kd_limit_per_player_verification = models.FloatField(default = 3)
-    cod_verification_total_games_played = models.IntegerField(default = 50, verbose_name = "Total amount of matches needed to be verified") # 50 games total
-    cod_verification_total_time_played = models.IntegerField(default = 432000, verbose_name = "Total amount of time played to be verified (Default = 5 days)") # epoch seconds per day - 86400 * 5 = 5 days
+    cod_kd_limit_per_player_verification = models.FloatField(default = 3, verbose_name = "Account Verification: KD limit per player. Leave default for open KD tournament (Default = 3)")
+    cod_verification_total_games_played = models.IntegerField(default = 100, verbose_name = "Account Verification: Total amount of matches needed to verify account (Default = 100 games)") # 50 games total
+    cod_verification_total_time_played = models.IntegerField(default = 5, verbose_name = "Account Verification: Total amount of time played to verify account (Default = 5 days)") # epoch seconds per day - 86400 * 5 = 5 days
 
     # Rules
     number_of_matches_to_count_points = models.IntegerField(default = 5)
     points_per_kill = models.IntegerField(default = 1)
-    points_per_first_place = models.IntegerField(default = 10)
-    points_per_second_place = models.IntegerField(default = 5)
-    points_per_third_place = models.IntegerField(default = 3)
+    points_per_first_place = models.IntegerField(default = 10, verbose_name = "Points for placing - 1st Place")
+    points_per_second_place = models.IntegerField(default = 5, verbose_name = "Points for placing - 2nd Place")
+    points_per_third_place = models.IntegerField(default = 3, verbose_name = "Points for placing - 3rd Place")
 
     start_time = models.DateTimeField(default = datetime.now, blank = True)
     end_time = models.DateTimeField(default = datetime.now, blank = True)
 
     # Competition flag should flip based on time started
     competition_ready = models.BooleanField(default = False)
-    competition_status = models.IntegerField(default = 3)       # 'Not started': 3, 'Ended': 2, 'In-Progress': 1
+    competition_status = models.IntegerField(default = 3)   # 'Not started': 3, 'Ended': 2, 'In-Progress': 1
 
     class Meta:
         verbose_name = 'CustomCompetition'

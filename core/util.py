@@ -1,5 +1,4 @@
 from .warzone_api import WarzoneApi
-from .models import ConfigController
 
 import datetime, time
 
@@ -141,7 +140,7 @@ def collect_data(key_id, match_id, data_list):
     return d
 
 
-def filter_for_time(matches_list, competition_start_time, competition_end_time, threshold_time_seconds = 7200):
+def filter_for_time(config, matches_list, competition_start_time, competition_end_time, threshold_time_seconds = 7200):
     '''
     Filters matches for 2 hours by default
 
@@ -151,7 +150,7 @@ def filter_for_time(matches_list, competition_start_time, competition_end_time, 
     add to lists values
     '''
 
-    config = ConfigController.objects.get(name = 'main_config_controller')
+    config = config
 
     if config.competitions_dummy_data:
         start_time = matches_list[0]['utcStartSeconds']
@@ -193,26 +192,34 @@ def filter_for_time(matches_list, competition_start_time, competition_end_time, 
     return top_matches
 
 
-def get_custom_data(user_tag, user_id_type, competition_start_time, competition_end_time, competition_type, cod_x_rapidapi_key, cod_x_rapidapi_host):
+def get_custom_data(user_tag, user_id_type, competition_start_time, competition_end_time, competition_type, config):
     '''
     Gets the matches for user_tag
     '''
 
-    warzone_api = WarzoneApi(tag = user_tag.replace('#', '%23'), platform = user_id_type, cod_x_rapidapi_key = cod_x_rapidapi_key, cod_x_rapidapi_host = cod_x_rapidapi_host)
+    warzone_api = WarzoneApi(tag = user_tag.replace('#', '%23'),
+                             platform = user_id_type, 
+                             cod_x_rapidapi_key = config.cod_x_rapidapi_key, 
+                             cod_x_rapidapi_host = config.cod_x_rapidapi_host)
     
     matches = warzone_api.get_warzone_matches()
 
     total_matches_len = len(matches['matches'])
 
-    filtered_matches = filter_matches(matches['matches'][0:total_matches_len - 1], competition_type)
+    filtered_matches = filter_matches(matches['matches'][0:total_matches_len - 1],
+                                     competition_type)
 
     matches_without_time_filter = matches['matches'][0:total_matches_len - 1] # All matches
 
-    data = filter_for_time(filtered_matches, competition_start_time, competition_end_time)
+    data = filter_for_time(config,
+                          filtered_matches, 
+                          competition_start_time, 
+                          competition_end_time)
 
     clean_data = get_values_from_matches(data, user_tag)
 
-    matches_without_time_filter = get_values_from_matches(matches_without_time_filter, user_tag)
+    matches_without_time_filter = get_values_from_matches(matches_without_time_filter,
+                                                         user_tag)
 
     return clean_data, matches_without_time_filter
 
