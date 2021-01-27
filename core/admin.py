@@ -6,9 +6,9 @@ from .models import Profile, Teams, StaffCustomTeams, StaffCustomCompetition, Co
 
 # Register your models here.
 
-admin.site.site_header = 'Codify Manager'
-admin.site.site_title = 'Codify Admin Portal'
-admin.site.index_title = 'Welcome to Codify Portal'
+admin.site.site_header = 'Duelout Manager'
+admin.site.site_title = 'Duelout Admin Portal'
+admin.site.index_title = 'Welcome to Duelout Portal'
 
 admin.site.register(Profile)
 admin.site.register(Teams)
@@ -176,7 +176,6 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
                 'points_per_third_place',
                 'start_time',
                 'end_time',
-
                 )
     else:
         fields = (
