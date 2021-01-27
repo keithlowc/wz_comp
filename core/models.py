@@ -74,6 +74,7 @@ class StaffCustomCompetition(models.Model):
     competition_banner = models.URLField(max_length = 1000, default = 'https://cdn1.dotesports.com/wp-content/uploads/2019/12/16125403/cod38.jpg')
     
     # Verification rules
+    cod_kd_limit_per_player_verification = models.FloatField(default = 3)
     cod_verification_total_games_played = models.IntegerField(default = 50, verbose_name = "Total amount of matches needed to be verified") # 50 games total
     cod_verification_total_time_played = models.IntegerField(default = 432000, verbose_name = "Total amount of time played to be verified (Default = 5 days)") # epoch seconds per day - 86400 * 5 = 5 days
 

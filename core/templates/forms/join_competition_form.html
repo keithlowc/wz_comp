@@ -77,8 +77,9 @@
                             <li class="white-color-font"><p class="lead">You have provided the username without typos <i class="fas fa-check check-mark-icon"></i></p></li>
                             <li class="white-color-font"><p class="lead">You have provided an username that exists <i class="fas fa-check check-mark-icon"></i></p></li>
                             <li class="white-color-font"><p class="lead">You have provided the proper id type <i class="fas fa-check check-mark-icon"></i></p></li>
-                            <li class="white-color-font"><p class="lead">Your account is older than 5 days of total played time <i class="fas fa-check check-mark-icon"></i></p></li>
-                            <li class="white-color-font"><p class="lead">You have played more than {{ competition.cod_verification_total_games_played }} matches in your entire account life <i class="fas fa-check check-mark-icon"></i> </p></li>
+                            <li class="white-color-font"><p class="lead">You meet the KD criteria of <b>{{ competition.cod_kd_limit_per_player_verification|stringformat:".2f" }}</b> <i class="fas fa-check check-mark-icon"></i></p></li>
+                            <li class="white-color-font"><p class="lead">Your account is older than <b>5</b> days of total played time <i class="fas fa-check check-mark-icon"></i></p></li>
+                            <li class="white-color-font"><p class="lead">You have played more than <b>{{ competition.cod_verification_total_games_played }}</b> matches in your entire account life <i class="fas fa-check check-mark-icon"></i></p></li>
                             <li class="white-color-font"><p class="lead">Twitch Live Stream during competition is required <i class="fab fa-twitch twitch-icon-color"></i> </p></li>
                             <li class="white-color-font"><p class="lead"><span class="notranslate">Reverse Boosting</span> is prohibited. <i class="fas fa-ban red-icon"></i> </p></li>
                             <li class="white-color-font"><p class="lead">Any sort of <span class="notranslate">Hack</span> is prohibited. <i class="fas fa-ban red-icon"></i> </p></li>
@@ -130,13 +131,17 @@
     let twitch_api_verfication_client_id =      "{{ config.twitch_api_verfication_client_id }}";
     let twitch_api_verfication_client_secret =  "{{ config.twitch_api_verfication_client_secret }}";
 
-    // Rules
+    // Rules and verification
+    let kd_per_player =             parseFloat("{{ competition.cod_kd_limit_per_player_verification }}".replace(",","."));
+
     let total_games_played =        "{{ competition.cod_verification_total_games_played }}";
     let total_time_played =         "{{ competition.cod_verification_total_time_played }}";
 
     // Progress  bar
     let progress_bar_row = document.getElementById('progressBar');
     let progress_bar = document.getElementsByClassName('progress-bar');
+
+    let messages = [];
 
     progress_bar_row.style.display = "none";
 
@@ -159,8 +164,7 @@
         let total_users = []
         let accounts_validated = true;
         let twitch_account_exists = true;
-        let messages = [];
-        
+
         let token = "";
         let token_type = "";
 
@@ -377,10 +381,16 @@
         // This function allows us to verify
         // that is not a new account and 
         // has enough time played
+        // and meet kdratio
 
         if (user_data["gamesPlayed"] >= total_games_played) {
             if (user_data["timePlayed"] >= total_time_played) {
-                return true;
+                if (user_data["kdRatio"] <= kd_per_player) {
+                    return true;
+                } else {
+                    messages.push(user + " KD is " + user_data["kdRatio"].toFixed(2) + " > " + " KD limit " + kd_per_player);
+                    return false;
+                }
             } else {
                 messages.push(user + "Account did not meet total time played required");
                 return false;
