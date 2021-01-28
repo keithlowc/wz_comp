@@ -165,7 +165,6 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
                 'competition_banner',
 
                 # Verification values
-                'cod_kd_limit_per_player_verification',
                 'cod_verification_total_games_played',
                 'cod_verification_total_time_played',
 
