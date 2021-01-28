@@ -154,6 +154,8 @@
     let player_3_has_text = false;
     let player_4_has_text = false;
 
+    let messages = [];
+
     progress_bar_row.style.display = "none";
 
     disable_submit_button();
@@ -184,7 +186,7 @@
 
         let not_valid_users = [];
         let total_users = [];
-        let messages = [];
+        messages = [];
 
         let accounts_validated = true;
         let twitch_account_exists = true;
