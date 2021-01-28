@@ -6,9 +6,9 @@ from .models import Profile, Teams, StaffCustomTeams, StaffCustomCompetition, Co
 
 # Register your models here.
 
-admin.site.site_header = 'Codify Manager'
-admin.site.site_title = 'Codify Admin Portal'
-admin.site.index_title = 'Welcome to Codify Portal'
+admin.site.site_header = 'Duelout Manager'
+admin.site.site_title = 'Duelout Admin Portal'
+admin.site.index_title = 'Welcome to Duelout Portal'
 
 admin.site.register(Profile)
 admin.site.register(Teams)
@@ -165,6 +165,8 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
                 'competition_banner',
 
                 # Verification values
+                'cod_kd_minimum_per_player_verification',
+                'cod_kd_maximum_per_player_verification',
                 'cod_verification_total_games_played',
                 'cod_verification_total_time_played',
 
@@ -176,7 +178,6 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
                 'points_per_third_place',
                 'start_time',
                 'end_time',
-
                 )
     else:
         fields = (
@@ -185,6 +186,8 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
         'competition_banner',
 
         # Verification values
+        'cod_kd_minimum_per_player_verification',
+        'cod_kd_maximum_per_player_verification',
         'cod_verification_total_games_played',
         'cod_verification_total_time_played',
 
@@ -197,7 +200,7 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
         'start_time',
         'end_time',
 
-        'competition_ready',
+        'competition_started',
         )
 
 admin.site.register(StaffCustomCompetition, StaffCustomCompetitionAdmin)

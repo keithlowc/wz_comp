@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load custom_filtering_tags %}
 {% load crispy_forms_tags %}
 
 {% block content %}
@@ -8,8 +9,9 @@
             <div class="row">
                 <div class="col pb-2">
                     <h2 class="notranslate display-3 text-center">{{ comp_name }}</h2>
+                    <h2 class="notranslate display-3 text-center">({{ competition.competition_type }})</h2>
                     <h3 class="text-center pt-2"><u>Inscription Form:</u></h3>
-                    <h5 class="pt-4"><i class="fas fa-sticky-note note-icon"></i> To work your account needs to be public! Tutorial Here: <a class="badge badge-primary" href="https://www.youtube.com/watch?v=k_IMsQ3crME&feature=emb_title">Make Account Public Link</a></h5>
+                    <h5 class="pt-4"><i class="fas fa-sticky-note note-icon"></i> To work your account needs to be public! Tutorial Here: <a class="badge badge-primary" href="https://www.youtube.com/watch?v=k_IMsQ3crME&feature=emb_title">Make Account Public</a></h5>
                 </div>
             </div>
 
@@ -31,7 +33,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" id="player_1">
                     <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
                         {{ form.player_1|as_crispy_field }}
                     </div>
@@ -40,7 +42,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" id="player_2">
                     <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
                         {{ form.player_2|as_crispy_field }}
                     </div>
@@ -50,7 +52,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" id="player_3">
                     <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
                         {{ form.player_3|as_crispy_field }}
                     </div>
@@ -60,7 +62,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" id="player_4">
                     <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
                         {{ form.player_4|as_crispy_field }}
                     </div>
@@ -77,8 +79,9 @@
                             <li class="white-color-font"><p class="lead">You have provided the username without typos <i class="fas fa-check check-mark-icon"></i></p></li>
                             <li class="white-color-font"><p class="lead">You have provided an username that exists <i class="fas fa-check check-mark-icon"></i></p></li>
                             <li class="white-color-font"><p class="lead">You have provided the proper id type <i class="fas fa-check check-mark-icon"></i></p></li>
-                            <li class="white-color-font"><p class="lead">Your account is older than 5 days of total played time <i class="fas fa-check check-mark-icon"></i></p></li>
-                            <li class="white-color-font"><p class="lead">You have played more than {{ competition.cod_verification_total_games_played }} matches in your entire account life <i class="fas fa-check check-mark-icon"></i> </p></li>
+                            <li class="white-color-font"><p class="lead">You meet the KD criteria of <b>{{ competition.cod_kd_minimum_per_player_verification|stringformat:".2f" }} <= KD <= {{ competition.cod_kd_maximum_per_player_verification|stringformat:".2f" }}</b> <i class="fas fa-check check-mark-icon"></i></p></li>
+                            <li class="white-color-font"><p class="lead">Your account is older than <b>{{ competition.cod_verification_total_time_played }}</b> days of total played time <i class="fas fa-check check-mark-icon"></i></p></li>
+                            <li class="white-color-font"><p class="lead">You have played more than <b>{{ competition.cod_verification_total_games_played }}</b> matches in your entire account life <i class="fas fa-check check-mark-icon"></i></p></li>
                             <li class="white-color-font"><p class="lead">Twitch Live Stream during competition is required <i class="fab fa-twitch twitch-icon-color"></i> </p></li>
                             <li class="white-color-font"><p class="lead"><span class="notranslate">Reverse Boosting</span> is prohibited. <i class="fas fa-ban red-icon"></i> </p></li>
                             <li class="white-color-font"><p class="lead">Any sort of <span class="notranslate">Hack</span> is prohibited. <i class="fas fa-ban red-icon"></i> </p></li>
@@ -121,7 +124,11 @@
 
 {% block javascript %}
 <script>
+
+
     const timer = ms => new Promise(res => setTimeout(res, ms))
+
+    let competition_type =                      "{{ competition.competition_type }}";
 
     // Api keys and stuff
     let x_rapidapi_key =                        "{{ config.cod_x_rapidapi_key }}";
@@ -130,37 +137,61 @@
     let twitch_api_verfication_client_id =      "{{ config.twitch_api_verfication_client_id }}";
     let twitch_api_verfication_client_secret =  "{{ config.twitch_api_verfication_client_secret }}";
 
-    // Rules
+    // Rules and verification
+    let max_kd_per_player =             parseFloat("{{ competition.cod_kd_maximum_per_player_verification }}".replace(",","."));
+    let min_kd_per_player =             parseFloat("{{ competition.cod_kd_minimum_per_player_verification }}".replace(",","."));
+
+
     let total_games_played =        "{{ competition.cod_verification_total_games_played }}";
-    let total_time_played =         "{{ competition.cod_verification_total_time_played }}";
+    let total_time_played =         "{{ competition.cod_verification_total_time_played|convert_days_to_epoch }}".replace(",",".");
 
     // Progress  bar
     let progress_bar_row = document.getElementById('progressBar');
     let progress_bar = document.getElementsByClassName('progress-bar');
 
+    let player_1_has_text = false;
+    let player_2_has_text = false;
+    let player_3_has_text = false;
+    let player_4_has_text = false;
+
+    let messages = [];
+
     progress_bar_row.style.display = "none";
+
+    disable_submit_button();
+    displayFieldDependingOnCompType(competition_type);
 
     async function validate_users() {
         let user_1 = document.getElementById('id_player_1').value;
         let id_player_1_id_type = document.getElementById('id_player_1_id_type').value;
 
+        if (user_1 != "") {player_1_has_text = true;}
+
         let user_2 = document.getElementById('id_player_2').value;
         let id_player_2_id_type = document.getElementById('id_player_2_id_type').value;
+
+        if (user_2 != "") {player_2_has_text = true;}
 
         let user_3 = document.getElementById('id_player_3').value;
         let id_player_3_id_type = document.getElementById('id_player_3_id_type').value;
 
+        if (user_3 != "") {player_3_has_text = true;}
+
         let user_4 = document.getElementById('id_player_4').value;
         let id_player_4_id_type = document.getElementById('id_player_4_id_type').value;
+
+        if (user_4 != "") {player_4_has_text = true;}
 
         let twitch_user = document.getElementById("id_team_twitch_stream_user").value;
 
         let not_valid_users = [];
-        let total_users = []
+        let total_users = [];
+        messages = [];
+
         let accounts_validated = true;
         let twitch_account_exists = true;
-        let messages = [];
-        
+        let form_completed = true;
+
         let token = "";
         let token_type = "";
 
@@ -215,68 +246,86 @@
         // async is a problem this is why i did it 
         // like this
 
-        if (user_1 != "") {
+        if (player_1_has_text == true) {
             let user_1_data = await ajax_request_check_user_data(user_1, id_player_1_id_type, cod_url_warzone_stats, x_rapidapi_key, x_rapidapi_host);
 
             if (user_1_data['error'] == true) {
                 not_valid_users.push(user_1);
                 total_users.push({"user_1": false});
 
-                messages.push(user_1 + " does not exist or id type wrong");
+                messages.push(user_1 + user_1_data['message']);
 
             } else {
                 let user_1_verified = verification_rules(user_1_data["br_all"], user_1);
                 total_users.push({"user_1": user_1_verified})
             }
+
+        } else if (competition_type == "SOLOS" || competition_type == "DUOS" || competition_type == "TRIOS" || competition_type == "SQUADS"){
+            messages.push("Field player 1 is empty!");
+            form_completed = false;
         }
-        
-        if (user_2 != "") {
-            let user_2_data = await ajax_request_check_user_data(user_2, id_player_2_id_type, cod_url_warzone_stats, x_rapidapi_key, x_rapidapi_host);
 
-            if (user_2_data['error'] == true) {
-                not_valid_users.push(user_2);
-                total_users.push({"user_2": false});
+        if (player_2_has_text == true) {
+            if (user_2 != "") {
+                let user_2_data = await ajax_request_check_user_data(user_2, id_player_2_id_type, cod_url_warzone_stats, x_rapidapi_key, x_rapidapi_host);
 
-                messages.push(user_2 + " does not exist or id type wrong");
+                if (user_2_data['error'] == true) {
+                    not_valid_users.push(user_2);
+                    total_users.push({"user_2": false});
 
-            } else {
-                let user_2_verified = verification_rules(user_2_data["br_all"], user_2);
-                total_users.push({"user_2": user_2_verified})
+                    messages.push(user_2 + user_2_data['message']);
+
+                } else {
+                    let user_2_verified = verification_rules(user_2_data["br_all"], user_2);
+                    total_users.push({"user_2": user_2_verified})
+                }
             }
+
+        } else if (competition_type == "DUOS" || competition_type == "TRIOS" || competition_type == "SQUADS"){
+            messages.push("Field player 2 is empty!");
+            form_completed = false;
         }
 
         // Progress bar at 55%
         progress_bar[0].style.width = "55%";
         progress_bar[0].textContent = "Validating.. 55%";
 
-        if (user_3 != "") {
+        if (player_3_has_text == true) {
             let user_3_data = await ajax_request_check_user_data(user_3, id_player_3_id_type, cod_url_warzone_stats, x_rapidapi_key, x_rapidapi_host);
 
             if (user_3_data['error'] == true) {
                 not_valid_users.push(user_3);
                 total_users.push({"user_3": false});
 
-                messages.push(user_3 + " does not exist or id type wrong");
+                messages.push(user_3 + user_3_data['message']);
 
             } else {
                 let user_3_verified = verification_rules(user_3_data["br_all"], user_3);
                 total_users.push({"user_3": user_3_verified})
             }
+
+        } else if (competition_type == "TRIOS" || competition_type == "SQUADS") {
+            messages.push("Field player 3 is empty!");
+            form_completed = false;
         }
         
-        if (user_4 != "") {
+        if (player_4_has_text == true) {
             let user_4_data = await ajax_request_check_user_data(user_4, id_player_4_id_type, cod_url_warzone_stats, x_rapidapi_key, x_rapidapi_host);
 
             if (user_4_data['error'] == true) {
                 not_valid_users.push(user_4);
                 total_users.push({"user_4": false});
 
-                messages.push(user_4 + " does not exist or id type wrong");
+                messages.push(user_4 + user_4_data['message']);
 
             } else {
                 let user_4_verified = verification_rules(user_4_data["br_all"], user_4);
                 total_users.push({"user_4": user_4_verified})
             }
+
+        } else if (competition_type == "SQUADS"){
+            messages.push("Field player 4 is empty!");
+            form_completed = false;
         }
 
         // If atleast one is false it 
@@ -298,7 +347,7 @@
         progress_bar[0].textContent = "Validating.. 75%";
 
         // Validate all users
-        if (accounts_validated == true && twitch_account_exists == true) {
+        if (accounts_validated == true && twitch_account_exists == true && form_completed == true) {
             // Progress bar at 100%
             progress_bar[0].style.width = "100%";
             progress_bar[0].textContent = "Users and twitch account were validated.. 100%";
@@ -377,10 +426,16 @@
         // This function allows us to verify
         // that is not a new account and 
         // has enough time played
+        // and meet kdratio
 
         if (user_data["gamesPlayed"] >= total_games_played) {
             if (user_data["timePlayed"] >= total_time_played) {
-                return true;
+                if (user_data["kdRatio"] >= min_kd_per_player && user_data["kdRatio"] <= max_kd_per_player) {
+                    return true;
+                } else {
+                    messages.push(user + " KD is " + user_data["kdRatio"].toFixed(2) + " - Does not meet KD requirements of Min: " + min_kd_per_player + " or Max: " + max_kd_per_player);
+                    return false;
+                }
             } else {
                 messages.push(user + "Account did not meet total time played required");
                 return false;
@@ -401,6 +456,31 @@
         submit_button.disabled = false;
     }
 
-    disable_submit_button();
+    function displayFieldDependingOnCompType(competition_type) {
+        // Displays fields depending on
+        // competition type
+
+        if (competition_type == "SOLOS") {
+            displayNone(["player_2", "player_3", "player_4"]);
+
+        } else if (competition_type == "DUOS") {
+            displayNone(["player_3", "player_4"]);
+
+        } else if (competition_type == "TRIOS") {
+            displayNone(["player_4"]);
+
+        } else {
+            // console.log("Not changing anything");
+        }
+    }
+
+    function displayNone(list) {
+        // Runs through a list 
+        // of ids and makes them invisible
+
+        list.forEach(element =>  {console.log(element); document.getElementById(element).style.display = "none"});
+    }
+
+
 </script>
 {% endblock %}

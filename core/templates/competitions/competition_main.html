@@ -36,30 +36,29 @@
                           <div class="col-xl-2 col-lg-2 col-md-4 d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
                             <img src="{{ competition.competition_banner }}" class="circular border-image">
                           </div>
-                          <div class="col-lg-4 col-md-4 col-sm-12 col-xm-12 my-auto">
+                          <div class="col-xl-5 col-lg-5 col-md-4 col-sm-12 col-xm-12 my-auto">
                             <h2 class="align-middle"> {{ competition.competition_name }} </h2>
-                          </div>
-                          <div class="col-xl-2 col-lg-1 col-md-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
-                              {% if competition.competition_status == 1 %}
-                                <div class="row">
-                                    <td class="border-0 text-right"><span class="badge badge-success"> In-Progress </span></td>
-                                </div>
-                              {% elif competition.competition_status == 2 %}
-                                  <div class="row">
-                                      <td class="border-0 text-right"><span class="badge badge-warning"> Ended </span></td>
-                                  </div>
-                              {% elif competition.competition_status == 3 %}
-                                  <div class="row">
-                                      <td class="border-0 text-right"><span class="badge badge-primary"> Not-Started </span></td>
-                                  </div>
-                              {% endif %}
                           </div>
 
                           <div class="col-lg-2 col-md-2 text-right my-auto d-none d-sm-block d-sm-none d-md-block .d-md-none .d-lg-block">
-                              <i>Created by: {{ competition.created_by }}</i>
+                            <p>Created by: {{ competition.created_by }}</p>
                           </div>
 
-                          <div class="col-2 text-right my-auto">
+                          <div class="col-xl-1 col-lg-1 col-md-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                              {% if competition.competition_status == 1 %}
+                                      <p><span class="badge badge-success"> In-Progress </span></p>
+                              {% elif competition.competition_status == 2 %}
+                                      <p><span class="badge badge-warning"> Ended </span></p>
+                              {% elif competition.competition_status == 3 %}
+                                      <p><span class="badge badge-primary"> Not-Started </span></p>
+                              {% endif %}
+                          </div>
+
+                          <div class="col-lg-1 col-md-2 text-right my-auto d-none d-sm-block d-sm-none d-md-block .d-md-none .d-lg-block p-4">
+                            <p><span class="badge badge-info">{{ competition.competition_type }}</span></p>
+                          </div>
+
+                          <div class="col-1 text-right my-auto">
                             <i class="fas fa-chevron-down"></i>
                           </div>
 
@@ -71,20 +70,34 @@
                   <div id="{{ forloop.counter0|add }}" class="collapse" role="tabpanel" aria-labelledby="headingInside" data-parent="#accordionInside">
                     <div class="card-body">
 
-                      
-
                       <div class="row">
                         <div class="col">
+                          <h4 class="black-color-font">Tournament Description:</h4>
                           <p class="lead">{{ competition.competition_description }}</p>
+                          <h4 class="black-color-font">Schedule:</h4>
                           <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><p class="lead"><b>Start Time:</b> {{ competition.start_time }}  EST</p></li>
-                            <li class="list-group-item"><p class="lead"><b>End Time:</b> {{ competition.end_time }}  EST</p></li>
-                            <li class="list-group-item"><p class="lead">Note: Only the top <b>{{ competition.number_of_matches_to_count_points }}</b> matches are calculated</p></li>
+                            <li class="list-group-item"><p class="lead"><b><i class="fas fa-hourglass-end font-color-black"></i> Start Time:</b> {{ competition.start_time }} EST</p></li>
+                            <li class="list-group-item"><p class="lead"><b><i class="fas fa-hourglass-start font-color-black"></i> End Time:</b> {{ competition.end_time }} EST</p></li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      <div class="row pt-2">
+                        <div class="col">
+                          <ul class="list-group list-group-flush">
+                            <h4 class="black-color-font">General Rules:</h4>
+                            <li class="list-group-item"><p class="lead"><i class="fas fa-users font-color-black"></i><b> Competition Type:</b> {{ competition.competition_type }}</p></li>
+                            <li class="list-group-item"><p class="lead"><i class="fas fa-chart-line font-color-black"></i><b> KD limit per player:</b> {{ competition.cod_kd_limit_per_player_verification|stringformat:".2f" }}</p></li>
+                            <li class="list-group-item"><p class="lead"><i class="fas fa-sort-numeric-up font-color-black"> </i> Only the best <b>{{ competition.number_of_matches_to_count_points }}</b> games are calculated.</p></li>
+                            <li class="list-group-item"><p class="lead"><i class="fab fa-twitch twitch-icon-color"></i> Twitch Live Stream during competition is required.</p></li>
+                            <li class="list-group-item"><p class="lead"><i class="fas fa-ban red-icon"></i> <span class="notranslate">Reverse Boosting</span> is prohibited.</p></li>
+                            <li class="list-group-item"><p class="lead"><i class="fas fa-ban red-icon"></i> Any sort of <span class="notranslate">Hack</span> is prohibited.</p></li>
                           </ul>
                         </div>
                       </div>
 
                       <table class="table table-striped">
+                        <h4 class="black-color-font">Points System:</h4>
                         <thead>
                           <tr>
                             <th scope="col"><p class="lead">Rules</p></th>

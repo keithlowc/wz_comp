@@ -1,5 +1,8 @@
 from django import template
+
 import ast
+
+from datetime import timedelta
 
 register = template.Library()
 
@@ -18,3 +21,8 @@ def add(index):
 @register.filter
 def remove_everything_after_hashtag(user):
     return user.split('#')[0]
+
+
+@register.filter
+def convert_days_to_epoch(days):
+    return timedelta(days = days).total_seconds()

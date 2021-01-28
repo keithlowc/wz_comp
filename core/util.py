@@ -1,12 +1,8 @@
 from .warzone_api import WarzoneApi
-from .models import ConfigController
 
 import datetime, time
 
 from itertools import groupby
-
-def covert_epoch_time_utc(epoch):
-    return datetime.datetime.fromtimestamp(epoch).strftime('%c')
 
 
 def calculate_time_delta(start_1, start_2):
@@ -27,6 +23,24 @@ def calculate_average(matches, element):
     avg = sum(ratios) / len(ratios)
 
     return '{:.3f}'.format(avg)
+
+
+def exclude_matches_of_type(matches_list, competition_type):
+    '''
+    Exclude matches that contain
+    the competition type assigned
+    '''
+
+    clean_matches = []
+
+    for match in matches_list:
+        if match["mode"] != competition_type:
+            clean_matches.append(match)
+        else:
+            print("Skipped this match")
+            print("The match mode is {}".format(match["mode"]))
+    
+    return clean_matches
 
 
 def filter_matches(matches_list, competition_type):
@@ -68,10 +82,16 @@ def get_values_from_matches(matches_list, user_tag = None):
         data['kd'] = matches['playerStats']['kdRatio']
         data['kills'] = matches['playerStats']['kills']
         try:
+            # Plunder matches do not have positioning 
+            # This is important because we are getting 
+            # that initial data for our graphs.
             data['teamPlacement'] = matches['playerStats']['teamPlacement']
         except Exception as e:
+            print()
             print('Error teamplacement not found!')
             data['teamPlacement'] = 100
+            print(matches['playerStats'])
+            print()
 
         data['damageDone'] = matches['playerStats']['damageDone']
         data['matchID'] = matches['matchID']
@@ -141,7 +161,7 @@ def collect_data(key_id, match_id, data_list):
     return d
 
 
-def filter_for_time(matches_list, competition_start_time, competition_end_time, threshold_time_seconds = 7200):
+def filter_for_time(custom_config, matches_list, competition_start_time, competition_end_time, threshold_time_seconds = 7200):
     '''
     Filters matches for 2 hours by default
 
@@ -151,9 +171,9 @@ def filter_for_time(matches_list, competition_start_time, competition_end_time, 
     add to lists values
     '''
 
-    config = ConfigController.objects.get(name = 'main_config_controller')
+    custom_config = custom_config
 
-    if config.competitions_dummy_data:
+    if custom_config["competitions_dummy_data"]:
         start_time = matches_list[0]['utcStartSeconds']
 
         print()
@@ -193,26 +213,36 @@ def filter_for_time(matches_list, competition_start_time, competition_end_time, 
     return top_matches
 
 
-def get_custom_data(user_tag, user_id_type, competition_start_time, competition_end_time, competition_type, cod_x_rapidapi_key, cod_x_rapidapi_host):
+def get_custom_data(user_tag, user_id_type, competition_start_time, competition_end_time, competition_type, custom_config):
     '''
     Gets the matches for user_tag
     '''
 
-    warzone_api = WarzoneApi(tag = user_tag.replace('#', '%23'), platform = user_id_type, cod_x_rapidapi_key = cod_x_rapidapi_key, cod_x_rapidapi_host = cod_x_rapidapi_host)
+    warzone_api = WarzoneApi(tag = user_tag.replace('#', '%23'),
+                             platform = user_id_type, 
+                             cod_x_rapidapi_key = custom_config["cod_x_rapidapi_key"], 
+                             cod_x_rapidapi_host = custom_config["cod_x_rapidapi_host"])
     
     matches = warzone_api.get_warzone_matches()
 
     total_matches_len = len(matches['matches'])
 
-    filtered_matches = filter_matches(matches['matches'][0:total_matches_len - 1], competition_type)
+    filtered_matches = filter_matches(matches['matches'][0:total_matches_len - 1],
+                                     competition_type)
 
     matches_without_time_filter = matches['matches'][0:total_matches_len - 1] # All matches
 
-    data = filter_for_time(filtered_matches, competition_start_time, competition_end_time)
+    data = filter_for_time(custom_config,
+                          filtered_matches, 
+                          competition_start_time, 
+                          competition_end_time)
 
     clean_data = get_values_from_matches(data, user_tag)
 
-    matches_without_time_filter = get_values_from_matches(matches_without_time_filter, user_tag)
+    matches_without_time_filter = exclude_matches_of_type(matches_without_time_filter, "br_dmz_plnbld") #Exclude plunder matches
+
+    matches_without_time_filter = get_values_from_matches(matches_without_time_filter,
+                                                         user_tag)
 
     return clean_data, matches_without_time_filter
 
