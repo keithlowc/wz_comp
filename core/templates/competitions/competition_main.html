@@ -36,30 +36,29 @@
                           <div class="col-xl-2 col-lg-2 col-md-4 d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
                             <img src="{{ competition.competition_banner }}" class="circular border-image">
                           </div>
-                          <div class="col-lg-4 col-md-4 col-sm-12 col-xm-12 my-auto">
+                          <div class="col-xl-5 col-lg-5 col-md-4 col-sm-12 col-xm-12 my-auto">
                             <h2 class="align-middle"> {{ competition.competition_name }} </h2>
-                          </div>
-                          <div class="col-xl-2 col-lg-1 col-md-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
-                              {% if competition.competition_status == 1 %}
-                                <div class="row">
-                                    <td class="border-0 text-right"><span class="badge badge-success"> In-Progress </span></td>
-                                </div>
-                              {% elif competition.competition_status == 2 %}
-                                  <div class="row">
-                                      <td class="border-0 text-right"><span class="badge badge-warning"> Ended </span></td>
-                                  </div>
-                              {% elif competition.competition_status == 3 %}
-                                  <div class="row">
-                                      <td class="border-0 text-right"><span class="badge badge-primary"> Not-Started </span></td>
-                                  </div>
-                              {% endif %}
                           </div>
 
                           <div class="col-lg-2 col-md-2 text-right my-auto d-none d-sm-block d-sm-none d-md-block .d-md-none .d-lg-block">
-                              <i>Created by: {{ competition.created_by }}</i>
+                            <p>Created by: {{ competition.created_by }}</p>
                           </div>
 
-                          <div class="col-2 text-right my-auto">
+                          <div class="col-xl-1 col-lg-1 col-md-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                              {% if competition.competition_status == 1 %}
+                                      <p><span class="badge badge-success"> In-Progress </span></p>
+                              {% elif competition.competition_status == 2 %}
+                                      <p><span class="badge badge-warning"> Ended </span></p>
+                              {% elif competition.competition_status == 3 %}
+                                      <p><span class="badge badge-primary"> Not-Started </span></p>
+                              {% endif %}
+                          </div>
+
+                          <div class="col-lg-1 col-md-2 text-right my-auto d-none d-sm-block d-sm-none d-md-block .d-md-none .d-lg-block">
+                            <p><span class="badge badge-info">{{ competition.competition_type }}</span></p>
+                          </div>
+
+                          <div class="col-1 text-right my-auto">
                             <i class="fas fa-chevron-down"></i>
                           </div>
 
