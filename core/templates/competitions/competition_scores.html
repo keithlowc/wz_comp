@@ -68,6 +68,7 @@
                                   </div>
                               {% endif %}
                             </div>
+
                             <div class="col-2">
                               <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
                                 <i>Created by: {{ competition.created_by }}</i>
@@ -156,6 +157,7 @@
                 </div>
 
               </div>
+              
               {% for team in teams %}
                 <div class="card">
                     <div class="card-header" role="tab" id="headingThree">
@@ -193,21 +195,24 @@
                         {% include 'competitions/competition_team_twitch_live_feed.html' with twitch_user=team.team_twitch_stream_user %}
                         
                         <h5 class="font-color-black pt-2">Team members past matches analysis before the tournament</h5>
-                        {% if team.player_1 != None %}
-                          {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_1 %}
-                        {% endif %}
 
-                        {% if team.player_2 != None %}
-                          {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_2 %}
-                        {% endif %}
+                        <ul>
+                          {% if team.player_1 != None %}
+                            {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_1 %}
+                          {% endif %}
 
-                        {% if team.player_3 != None %}
-                          {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_3 %}
-                        {% endif %}
+                          {% if team.player_2 != None %}
+                            {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_2 %}
+                          {% endif %}
 
-                        {% if team.player_4 != None %}
-                          {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_4 %}
-                        {% endif %}
+                          {% if team.player_3 != None %}
+                            {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_3 %}
+                          {% endif %}
+
+                          {% if team.player_4 != None %}
+                            {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_4 %}
+                          {% endif %}
+                        </ul>
 
                         <div id="accordionInside pt-2">
 
