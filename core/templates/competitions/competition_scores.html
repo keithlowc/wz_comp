@@ -10,8 +10,10 @@
       <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
         {% if user == competition.created_by and competition.competition_started == False %}
           <a class="notranslate btn btn-success" href="{% url 'recalculate_scores' comp_name=competition.competition_name %}">Start Competition</a>
-        {% else %}
+        {% elif competition.competition_started == True %}
           <h5>Competition has been started!</h5>
+        {% else %}
+          <h5>Competition has not been started!</h5>
         {% endif %}
       </div>
 
@@ -106,7 +108,7 @@
                             <ul class="list-group list-group-flush">
                               <h4 class="black-color-font">General Rules:</h4>
                               <li class="list-group-item"><p class="lead"><i class="fas fa-users font-color-black"></i><b> Competition Type:</b> {{ competition.competition_type }}</p></li>
-                              <li class="list-group-item"><p class="lead"><i class="fas fa-chart-line font-color-black"></i><b> KD limit per player:</b> {{ competition.cod_kd_limit_per_player_verification|stringformat:".2f" }}</p></li>
+                              <li class="list-group-item"><p class="lead"><i class="fas fa-chart-line font-color-black"></i><b> KD limit per player:</b> {{ competition.cod_kd_minimum_per_player_verification|stringformat:".2f" }} <= KD <= {{ competition.cod_kd_maximum_per_player_verification|stringformat:".2f" }}</p></li>
                               <li class="list-group-item"><p class="lead"><i class="fas fa-sort-numeric-up font-color-black"> </i> Only the best <b>{{ competition.number_of_matches_to_count_points }}</b> games are calculated.</p></li>
                               <li class="list-group-item"><p class="lead"><i class="fab fa-twitch twitch-icon-color"></i> Twitch Live Stream during competition is required.</p></li>
                               <li class="list-group-item"><p class="lead"><i class="fas fa-ban red-icon"></i> <span class="notranslate">Reverse Boosting</span> is prohibited.</p></li>
