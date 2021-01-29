@@ -253,7 +253,9 @@
                 not_valid_users.push(user_1);
                 total_users.push({"user_1": false});
 
-                messages.push(user_1 + user_1_data['message']);
+                let error_message = getErrorMessage(user_1_data["message"])
+
+                messages.push(user_1 + error_message);
 
             } else {
                 let user_1_verified = verification_rules(user_1_data["br_all"], user_1);
@@ -273,7 +275,9 @@
                     not_valid_users.push(user_2);
                     total_users.push({"user_2": false});
 
-                    messages.push(user_2 + user_2_data['message']);
+                    let error_message = getErrorMessage(user_2_data["message"])
+
+                    messages.push(user_2 + error_message);
 
                 } else {
                     let user_2_verified = verification_rules(user_2_data["br_all"], user_2);
@@ -291,17 +295,22 @@
         progress_bar[0].textContent = "Validating.. 55%";
 
         if (player_3_has_text == true) {
-            let user_3_data = await ajax_request_check_user_data(user_3, id_player_3_id_type, cod_url_warzone_stats, x_rapidapi_key, x_rapidapi_host);
+            if (user_3 != "") {
 
-            if (user_3_data['error'] == true) {
-                not_valid_users.push(user_3);
-                total_users.push({"user_3": false});
+                let user_3_data = await ajax_request_check_user_data(user_3, id_player_3_id_type, cod_url_warzone_stats, x_rapidapi_key, x_rapidapi_host);
 
-                messages.push(user_3 + user_3_data['message']);
+                if (user_3_data['error'] == true) {
+                    not_valid_users.push(user_3);
+                    total_users.push({"user_3": false});
 
-            } else {
-                let user_3_verified = verification_rules(user_3_data["br_all"], user_3);
-                total_users.push({"user_3": user_3_verified})
+                    let error_message = getErrorMessage(user_3_data["message"])
+
+                    messages.push(user_3 + error_message);
+
+                } else {
+                    let user_3_verified = verification_rules(user_3_data["br_all"], user_3);
+                    total_users.push({"user_3": user_3_verified})
+                }
             }
 
         } else if (competition_type == "TRIOS" || competition_type == "SQUADS") {
@@ -310,17 +319,22 @@
         }
         
         if (player_4_has_text == true) {
-            let user_4_data = await ajax_request_check_user_data(user_4, id_player_4_id_type, cod_url_warzone_stats, x_rapidapi_key, x_rapidapi_host);
+            if (user_4 != "") {
 
-            if (user_4_data['error'] == true) {
-                not_valid_users.push(user_4);
-                total_users.push({"user_4": false});
+                let user_4_data = await ajax_request_check_user_data(user_4, id_player_4_id_type, cod_url_warzone_stats, x_rapidapi_key, x_rapidapi_host);
 
-                messages.push(user_4 + user_4_data['message']);
+                if (user_4_data['error'] == true) {
+                    not_valid_users.push(user_4);
+                    total_users.push({"user_4": false});
 
-            } else {
-                let user_4_verified = verification_rules(user_4_data["br_all"], user_4);
-                total_users.push({"user_4": user_4_verified})
+                    let error_message = getErrorMessage(user_4_data["message"])
+
+                    messages.push(user_4 + error_message);
+
+                } else {
+                    let user_4_verified = verification_rules(user_4_data["br_all"], user_4);
+                    total_users.push({"user_4": user_4_verified})
+                }
             }
 
         } else if (competition_type == "SQUADS"){
@@ -479,6 +493,26 @@
         // of ids and makes them invisible
 
         list.forEach(element =>  {console.log(element); document.getElementById(element).style.display = "none"});
+    }
+
+    function getErrorMessage(message) {
+        // Cuando alguien busca un usuario con el id type que no es o el id no existe
+        // 404 - Not found. Incorrect username or platform? Misconfigured privacy settings?
+
+        // El perfil esta en privado
+        // Not permitted: not allowed
+
+        let new_message = "";
+
+        if (message == "404 - Not found. Incorrect username or platform? Misconfigured privacy settings?") {
+            new_message = " Was not found or ID type selection is wrong!";
+        } else if (message == "Not permitted: not allowed") {
+            new_message = " Account is private. Needs to be public to work!";
+        } else {
+            new_message = " " + message;
+        }
+
+        return new_message;
     }
 
 
