@@ -110,6 +110,8 @@ class StaffCustomTeams(models.Model):
     ]
 
     team_name = models.CharField(max_length = 100, null = True, unique = True)
+
+    # team_captain_email = models.EmailField(max_length=254, default="no@email.com")
     
     team_banner = models.URLField(max_length = 1000, default = 'https://play-lh.googleusercontent.com/r2-_2oE9tU_46_n4GIC21PmqNIqPMoQNRPhfVNnK1v8hmDfA_yLuRwCy_E1cf5Wh4oM')
 

@@ -47,6 +47,8 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
         fields = (
             'team_name',
             'team_banner',
+            # 'team_captain_email',
+
             'player_1',
             'player_1_id_type',
 
@@ -64,6 +66,8 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
         fields = (
             'team_name',
             'team_banner',
+            # 'team_captain_email',
+
             'player_1',
             'player_1_id_type',
 
