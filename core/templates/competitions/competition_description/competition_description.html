@@ -1,0 +1,128 @@
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+      <h4 class="black-color-font">Tournament Description:</h4>
+
+      <div class="lead">
+        {{ competition.competition_description|linebreaks }}
+      </div>
+
+      <div class="row pt-2">
+        <div class="col">
+          <ul class="list-group list-group-flush">
+            <h4 class="black-color-font">Tournament Contact Information:</h4>
+            {% if competition.discord_link or competition.instagram_link or competition.facebook_link or competition.twitter_link or competition.twitch_link %}
+                {% if competition.discord_link %}
+                    <li class="list-group-item">
+                        <p class="lead">
+                            <i class="fab fa-discord twitch-icon-color"></i>
+                                <a href="{{ competition.discord_link }}" class="font-color-black"> Discord Link</a>
+                            </p>
+                        </li>
+                {% endif %}
+
+                {% if competition.instagram_link %}
+                    <li class="list-group-item">
+                        <p class="lead">
+                            <i class="fab fa-instagram instagram-icon-color"></i>
+                            <a href="{{ competition.instagram_link }}" class="font-color-black"> Instagram Link</a>
+                        </p>
+                    </li>
+                {% endif %}
+
+                {% if competition.facebook_link %}
+                    <li class="list-group-item">
+                        <p class="lead"><i class="fab fa-facebook facebook-icon-color"></i>
+                            <a href="{{ competition.facebook_link }}" class="font-color-black"> Facebook Link</a>
+                        </p>
+                    </li>
+                {% endif %}
+
+                {% if competition.twitter_link %}
+                    <li class="list-group-item">
+                        <p class="lead">
+                            <i class="fab fa-twitter twitter-icon-color"></i>
+                            <a href="{{ competition.twitter_link }}" class="font-color-black"> Twitter Link</a>
+                        </p>
+                    </li>
+                {% endif %}
+
+                {% if competition.twitch_link %}
+                    <li class="list-group-item">
+                        <p class="lead">
+                            <i class="fab fa-twitch twitch-icon-color"></i>
+                            <a href="{{ competition.twitch_link }}" class="font-color-black"> Twitch Link</a>
+                        </p>
+                    </li>
+                {% endif %}
+            {% else %}
+                <li class="list-group-item">
+                    <p class="lead">
+                        <b> Contact information was not provided</b>
+                    </p>
+                </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <div class="row pt-2">
+        <div class="col">
+          <h4 class="black-color-font">Schedule:</h4>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><p class="lead"><b><i class="fas fa-hourglass-end font-color-black"></i> Start Time:</b> {{ competition.start_time }} EST</p></li>
+            <li class="list-group-item"><p class="lead"><b><i class="fas fa-hourglass-start font-color-black"></i> End Time:</b> {{ competition.end_time }} EST</p></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row pt-2">
+        <div class="col">
+          <ul class="list-group list-group-flush">
+            <h4 class="black-color-font">General Rules:</h4>
+            <li class="list-group-item"><p class="lead"><i class="fas fa-users font-color-black"></i><b> Competition Type:</b> {{ competition.competition_type }}</p></li>
+            <li class="list-group-item"><p class="lead"><i class="fas fa-chart-line font-color-black"></i><b> KD limit per player:</b> {{ competition.cod_kd_minimum_per_player_verification|stringformat:".2f" }} <= KD <= {{ competition.cod_kd_maximum_per_player_verification|stringformat:".2f" }}</p></li>
+            <li class="list-group-item"><p class="lead"><i class="fas fa-sort-numeric-up font-color-black"> </i> Only the best <b>{{ competition.number_of_matches_to_count_points }}</b> games are calculated.</p></li>
+            <li class="list-group-item"><p class="lead"><i class="fab fa-twitch twitch-icon-color"></i> Twitch Live Stream during competition is required.</p></li>
+            <li class="list-group-item"><p class="lead"><i class="fas fa-ban red-icon"></i> <span class="notranslate">Reverse Boosting</span> is prohibited.</p></li>
+            <li class="list-group-item"><p class="lead"><i class="fas fa-ban red-icon"></i> Any sort of <span class="notranslate">Hack</span> is prohibited.</p></li>
+          </ul>
+        </div>
+      </div>
+
+      
+      <div class="table-responsive pt-2">
+        <h4 class="black-color-font">Points System:</h4>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col"><p class="lead">Rules</p></th>
+              <th scope="col"><p class="lead">Points</p></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><p class="lead"><i class="fas fa-skull kill-icon"></i> Each kill</p></td>
+              <td>{{ competition.points_per_kill }}</td>
+            </tr>
+            <tr>
+              <td><p class="lead"><i class="fas fa-crown first-place"></i> First place</p></td>
+              <td>{{ competition.points_per_first_place }}</td>
+            </tr>
+            <tr>
+              <td><p class="lead"><i class="fas fa-crown second-place"></i> Second place</p></td>
+              <td>{{ competition.points_per_second_place }}</td>
+            </tr>
+            <tr>
+              <td><p class="lead"><i class="fas fa-crown third-place"></i> Third place</p></td>
+              <td>{{ competition.points_per_third_place }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}
