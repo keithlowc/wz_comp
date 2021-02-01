@@ -37,7 +37,7 @@ class JoinCompetitionRequestForm(forms.ModelForm):
         model = StaffCustomTeams
         fields = ('team_name', 
                 'team_banner',
-                # 'team_captain_email',
+                'team_captain_email',
                 'team_twitch_stream_user',
 
                 'player_1', 'player_1_id_type', 
@@ -47,7 +47,7 @@ class JoinCompetitionRequestForm(forms.ModelForm):
 
         labels = {
             'team_banner': 'Team logo (URL only - Do not change if you do not have logo)',
-            # 'team_captain_email': 'Team Captain Email (Contact Information)',
+            'team_captain_email': 'Team Captain Email (Contact Information - Any updates will be via email)',
             'team_twitch_stream_user': 'Team Twitch User (User only - Not URL)',
 
             'player_1': 'Player 1 Id - (Battlenet, Psnet or Xbox)',

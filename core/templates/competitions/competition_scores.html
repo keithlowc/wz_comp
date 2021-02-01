@@ -57,17 +57,23 @@
                             </div>
                             <div class="col-2">
                               {% if competition.competition_status == 1 %}
-                                  <div class="row">
-                                      <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle"><span class="badge badge-success"> In-Progress </span></td>
-                                  </div>
+                                  <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
+                                    <span class="badge badge-success"> In-Progress </span>
+                                    <span class="badge badge-info">{{ competition.competition_type }}</span>
+                                    <span class="badge badge-info">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
+                                  </td>
                               {% elif competition.competition_status == 2 %}
-                                  <div class="row">
-                                      <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle"><span class="badge badge-warning"> Ended </span></td>
-                                  </div>
+                                  <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
+                                    <span class="badge badge-warning"> Ended </span>
+                                    <span class="badge badge-info">{{ competition.competition_type }}</span>
+                                    <span class="badge badge-info">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
+                                  </td>
                               {% elif competition.competition_status == 3 %}
-                                  <div class="row">
-                                      <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle"><span class="badge badge-primary"> Not-Started </span></td>
-                                  </div>
+                                  <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
+                                    <span class="badge badge-primary"> Not-Started </span>
+                                    <span class="badge badge-info">{{ competition.competition_type }}</span>
+                                    <span class="badge badge-info">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
+                                  </td>
                               {% endif %}
                             </div>
 
@@ -83,73 +89,12 @@
                     </tbody>
                   </table>
                 </div>
-                <!-- <div id="header" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion"> -->
 
                 <div id="header" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
                   <div class="card-body">
 
-                    <div class="row">
-                      <div class="col-12">
-                        <h4 class="black-color-font">Tournament Description:</h4>
-                        <p class="lead">{{ competition.competition_description }}</p>
-
-                        <div class="row pt-2">
-                          <div class="col">
-                            <h4 class="black-color-font">Schedule:</h4>
-                            <ul class="list-group list-group-flush">
-                              <li class="list-group-item"><p class="lead"><b><i class="fas fa-hourglass-end font-color-black"></i> Start Time:</b> {{ competition.start_time }} EST</p></li>
-                              <li class="list-group-item"><p class="lead"><b><i class="fas fa-hourglass-start font-color-black"></i> End Time:</b> {{ competition.end_time }} EST</p></li>
-                            </ul>
-                          </div>
-                        </div>
-
-                        <div class="row pt-2">
-                          <div class="col">
-                            <ul class="list-group list-group-flush">
-                              <h4 class="black-color-font">General Rules:</h4>
-                              <li class="list-group-item"><p class="lead"><i class="fas fa-users font-color-black"></i><b> Competition Type:</b> {{ competition.competition_type }}</p></li>
-                              <li class="list-group-item"><p class="lead"><i class="fas fa-chart-line font-color-black"></i><b> KD limit per player:</b> {{ competition.cod_kd_minimum_per_player_verification|stringformat:".2f" }} <= KD <= {{ competition.cod_kd_maximum_per_player_verification|stringformat:".2f" }}</p></li>
-                              <li class="list-group-item"><p class="lead"><i class="fas fa-sort-numeric-up font-color-black"> </i> Only the best <b>{{ competition.number_of_matches_to_count_points }}</b> games are calculated.</p></li>
-                              <li class="list-group-item"><p class="lead"><i class="fab fa-twitch twitch-icon-color"></i> Twitch Live Stream during competition is required.</p></li>
-                              <li class="list-group-item"><p class="lead"><i class="fas fa-ban red-icon"></i> <span class="notranslate">Reverse Boosting</span> is prohibited.</p></li>
-                              <li class="list-group-item"><p class="lead"><i class="fas fa-ban red-icon"></i> Any sort of <span class="notranslate">Hack</span> is prohibited.</p></li>
-                            </ul>
-                          </div>
-                        </div>
-
-                        
-                        <div class="table-responsive pt-2">
-                          <h4 class="black-color-font">Points System:</h4>
-                          <table class="table table-striped">
-                            <thead>
-                              <tr>
-                                <th scope="col"><p class="lead">Rules</p></th>
-                                <th scope="col"><p class="lead">Points</p></th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td><p class="lead"><i class="fas fa-skull kill-icon"></i> Each kill</p></td>
-                                <td>{{ competition.points_per_kill }}</td>
-                              </tr>
-                              <tr>
-                                <td><p class="lead"><i class="fas fa-crown first-place"></i> First place</p></td>
-                                <td>{{ competition.points_per_first_place }}</td>
-                              </tr>
-                              <tr>
-                                <td><p class="lead"><i class="fas fa-crown second-place"></i> Second place</p></td>
-                                <td>{{ competition.points_per_second_place }}</td>
-                              </tr>
-                              <tr>
-                                <td><p class="lead"><i class="fas fa-crown third-place"></i> Third place</p></td>
-                                <td>{{ competition.points_per_third_place }}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-
-                      </div>
-                    </div>
+                    {% include 'competitions/competition_description/competition_description.html' %}
+                      
                   </div>
                 </div>
               </div>
@@ -175,7 +120,7 @@
                                 </div>
                                 <div class="col-7">
                                   <td class="border-0 align-middle">
-                                      <h5 class="notranslate">{{ team }}</h5>
+                                      <h5 class="notranslate" onclick="loadVideo();">{{ team }}</h5>
                                   </td>
                                 </div>
                                 <div class="col-2">
@@ -194,8 +139,10 @@
                     <div id="{{ team }}" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
                       <div class="card-body">
 
+                        <!-- <a class="btn btn-success" href="https://embed.twitch.tv?channel={{team.team_twitch_stream_user}}&amp;height=480&amp;migration=true&amp;parent=127.0.0.1&amp;width=100%25" target="twitchframe">Load Stream</a> -->
+
                         {% include 'competitions/competition_team_twitch_live_feed.html' with twitch_user=team.team_twitch_stream_user %}
-                        
+
                         <h5 class="font-color-black pt-2">Team members past matches analysis before the tournament</h5>
 
                         <ul>
@@ -339,6 +286,8 @@
 
         // div id = header = collapse to maintain it closed
 
+        let load_video = false;
+
         let time_to_refresh = {{ config.competitions_page_refresh_time }}
 
         $('#toggle-silent')[0].checked = false;
@@ -368,6 +317,15 @@
 
         function reload() {
             document.location.reload();
+        }
+
+        // Load twitch video 
+        // when user wants to load it
+
+        function loadVideo() {
+          console.log('Loading video');
+          load_video = !load_video;
+          console.log(load_video);
         }
 
         checkStates();

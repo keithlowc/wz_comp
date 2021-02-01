@@ -70,8 +70,15 @@ class StaffCustomCompetition(models.Model):
     competition_description = models.TextField(default = '')
     competition_type = models.CharField(max_length = 6, choices = competition_type)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, default = 0)
-
     competition_banner = models.URLField(max_length = 1000, default = 'https://cdn1.dotesports.com/wp-content/uploads/2019/12/16125403/cod38.jpg')
+    total_teams_allowed_to_compete = models.IntegerField(null = True)
+
+    # Contact Information
+    discord_link = models.URLField(max_length = 1000, null = True, blank = True)
+    instagram_link = models.URLField(max_length = 1000, null = True, blank = True)
+    facebook_link = models.URLField(max_length = 1000, null = True, blank = True)
+    twitter_link = models.URLField(max_length = 1000, null = True, blank = True)
+    twitch_link = models.URLField(max_length = 1000, null = True, blank = True)
     
     # Verification rules
     cod_kd_maximum_per_player_verification = models.FloatField(default = 3, verbose_name = "Account Verification: KD maximum per player (Default = 3)")
@@ -111,7 +118,7 @@ class StaffCustomTeams(models.Model):
 
     team_name = models.CharField(max_length = 100, null = True, unique = True)
 
-    # team_captain_email = models.EmailField(max_length=254, default="no@email.com")
+    team_captain_email = models.EmailField(max_length = 254, null = True, blank = False) # Null = true populates existing values in db as null - blank = false means the field cannot be blank
     
     team_banner = models.URLField(max_length = 1000, default = 'https://play-lh.googleusercontent.com/r2-_2oE9tU_46_n4GIC21PmqNIqPMoQNRPhfVNnK1v8hmDfA_yLuRwCy_E1cf5Wh4oM')
 
@@ -129,7 +136,7 @@ class StaffCustomTeams(models.Model):
     player_4 = models.CharField(max_length = 100, null = True, blank = True)
     player_4_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
 
-    competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE)
+    competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, related_name = 'teams')
 
     data = models.JSONField(default = dict, blank = True)
     data_stats = models.JSONField(default = dict, blank = True)

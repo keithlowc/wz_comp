@@ -47,7 +47,7 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
         fields = (
             'team_name',
             'team_banner',
-            # 'team_captain_email',
+            'team_captain_email',
 
             'player_1',
             'player_1_id_type',
@@ -66,7 +66,7 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
         fields = (
             'team_name',
             'team_banner',
-            # 'team_captain_email',
+            'team_captain_email',
 
             'player_1',
             'player_1_id_type',
@@ -101,6 +101,7 @@ class InLineStaffCustomTeam(admin.StackedInline):
     fields = (
         'team_name',
         'team_banner',
+        'team_captain_email',
 
         'player_1',
         'player_1_id_type',
@@ -167,6 +168,14 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
                 'competition_name',
                 'competition_description',
                 'competition_banner',
+                'total_teams_allowed_to_compete',
+
+                # Contact information
+                'discord_link',
+                'instagram_link',
+                'facebook_link',
+                'twitter_link',
+                'twitch_link',
 
                 # Verification values
                 'cod_kd_minimum_per_player_verification',
@@ -188,6 +197,14 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
         'competition_name',
         'competition_description',
         'competition_banner',
+        'total_teams_allowed_to_compete',
+
+        # Contact information
+        'discord_link',
+        'instagram_link',
+        'facebook_link',
+        'twitter_link',
+        'twitch_link',
 
         # Verification values
         'cod_kd_minimum_per_player_verification',
