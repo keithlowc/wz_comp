@@ -148,3 +148,9 @@ body {
 label {
     color: white;
 }
+
+/* Form color */
+
+.join-competition-form {
+    background-color: #2D3640;
+}

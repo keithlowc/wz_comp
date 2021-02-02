@@ -227,14 +227,21 @@ def get_custom_data(user_tag, user_id_type, competition_start_time, competition_
 
     total_matches_len = len(matches['matches'])
 
-    filtered_matches = filter_matches(matches['matches'][0:total_matches_len - 1],
-                                     competition_type)
+    # For dummy data return all matches 
+    # From last match 2 hours before
+    # And we are not filtering the matches
+    # So we get any match
+    if custom_config["competitions_dummy_data"]:
+        filtered_matches = matches['matches']
+    else:
+        filtered_matches = filter_matches(matches['matches'][0:total_matches_len - 1],
+                                        competition_type)
 
     matches_without_time_filter = matches['matches'][0:total_matches_len - 1] # All matches
 
     data = filter_for_time(custom_config,
                           filtered_matches, 
-                          competition_start_time, 
+                          competition_start_time,
                           competition_end_time)
 
     clean_data = get_values_from_matches(data, user_tag)
