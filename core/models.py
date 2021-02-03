@@ -101,6 +101,9 @@ class StaffCustomCompetition(models.Model):
     competition_started = models.BooleanField(default = False)
     competition_status = models.IntegerField(default = 3)   # 'Not started': 3, 'Ended': 2, 'In-Progress': 1
 
+    # bg_job
+    email_job_created = models.BooleanField(default = False)
+
     class Meta:
         verbose_name = 'CustomCompetition'
         verbose_name_plural = 'CustomCompetitions'
@@ -144,6 +147,9 @@ class StaffCustomTeams(models.Model):
     data_to_render = models.JSONField(default = dict, blank = True)
 
     score = models.IntegerField(default = 0)
+
+    # email checkin
+    email_check_in_sent = models.BooleanField(default = False)
 
     class Meta:
         verbose_name = 'CustomTeam'

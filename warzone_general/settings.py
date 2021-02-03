@@ -182,6 +182,15 @@ LOGGING = {
 
 django_on_heroku.settings(locals(), logging = False)
 
-# Django backgroun tasks settings
+# Django background tasks settings
 
 MAX_ATTEMPTS = 4
+BACKGROUND_TASK_RUN_ASYNC = True
+
+# SendGrid - Email
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
+EMAIL_HOST_PASSWORD = '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'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

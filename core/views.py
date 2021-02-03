@@ -8,7 +8,9 @@ from .forms import ProfileForm, TeamsForm, JoinCompetitionRequestForm
 from . import signals, util, bg_tasks
 from .warzone_api import WarzoneApi
 
-import requests, datetime, time, ast, os
+from warzone_general import settings
+
+import requests, datetime, time, ast
 
 # Create your views here.
 
@@ -574,7 +576,16 @@ def chart_stats_key(request, team_name, user, key):
     })
 
 
-def show_chart(request):
+def show_chart(request, ):
     return render(request,  'competitions/competition_user_chart.html')
 
 
+# def test_send_mail(request):
+#     competition = StaffCustomCompetition.objects.get(id = 17)
+
+#     email = bg_tasks.EmailNotificationSystemJob()
+
+#     email.send_check_in_notification(repeat = 60, repeat_until = competition.end_time)
+#     print('Running background job')
+
+#     return render(request, 'main/home.html')

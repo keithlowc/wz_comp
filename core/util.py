@@ -1,4 +1,7 @@
 from .warzone_api import WarzoneApi
+from .email import EmailNotificationSystem
+
+from core.models import StaffCustomTeams
 
 import datetime, time
 
@@ -24,6 +27,7 @@ def calculate_average(matches, element):
 
     return '{:.3f}'.format(avg)
 
+# Matches related
 
 def exclude_matches_of_type(matches_list, competition_type):
     '''
@@ -71,7 +75,6 @@ def filter_matches(matches_list, competition_type):
     
     return new_matches_list
 
-# Matches related
 
 def get_values_from_matches(matches_list, user_tag = None):
     
@@ -253,4 +256,61 @@ def get_custom_data(user_tag, user_id_type, competition_start_time, competition_
 
     return clean_data, matches_without_time_filter
 
+
+# Email notifications related
+
+def check_if_competition_is_one_hour_from_start(competition_config):
+    '''
+    This function is used on the bg taks for
+    email notifications.
+
+    It is running to see if the competition time
+    - 1 hour is = to current time. If equal then we
+    want to send the email or return true
+    '''
+
+    current_time = datetime.datetime.now()
+
+    start_time = competition_config['start_time']
+
+    delta = start_time - current_time
+
+    print()
+    print('--> Current server time {}'.format(current_time))
+    print('--> Competition start time {}'.format(start_time))
+    print('--> Total Delta {}'.format(delta))
+    print('--> Email list: {}'.format(competition_config['team_emails']))
+    print()
+
+    # If competition time is 1 hour before the current time
+    if (delta <= datetime.timedelta(hours = 1)):
+        email_sys = EmailNotificationSystem()
+
+        # Email data
+        subject = 'Check-In to competition: {}'.format(competition_config['competition_name'])
+        competition_name = competition_config['competition_name']
+
+        # Look into the teams that have not been sent email check in
+        if len(competition_config['team_emails']) > 0:
+            for email in competition_config['team_emails']:
+                team = StaffCustomTeams.objects.get(team_captain_email = email, competition_id = competition_config['competition_id'])
+
+                print('--> Checking the following teams: {}'.format(team))
+
+                if team.email_check_in_sent == False:
+                    print('------> The team {} with email {} will be sent out a check-in notification'.format(team, team.team_captain_email))
+                    email_sent = email_sys.send_competition_email(subject, competition_name, [team.team_captain_email])
+
+                    if email_sent:
+                        team.email_check_in_sent = True
+                        team.save()
+                else:
+                    print('------> Notification was already sent for team {} with email {}'.format(team, team.team_captain_email))
+                    print()
+        else:
+            print('----> No teams registered')
+    # competition is not close to current time
+    else:
+        print('--> Current delta {} is not <= 1 hour'.format(delta))
+        print('--> Emails will not be sent out!')
 

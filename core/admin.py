@@ -4,6 +4,10 @@ import os
 
 from .models import Profile, Teams, StaffCustomTeams, StaffCustomCompetition, ConfigController
 
+# from background_task.models import Task
+
+from core.bg_tasks import EmailNotificationSystemJob
+
 # Register your models here.
 
 admin.site.site_header = 'Duelout Manager'
@@ -14,6 +18,7 @@ admin.site.register(Profile)
 admin.site.register(Teams)
 admin.site.register(ConfigController)
 
+# StaffCustomTeam admin
 class StaffCustomTeamAdmin(admin.ModelAdmin):
     def has_view_permission(self, request, obj=None):
         if obj is not None and obj.competition.created_by != request.user:
@@ -46,8 +51,9 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
     if 'SERVER' in os.environ:
         fields = (
             'team_name',
-            'team_banner',
+            'team_twitch_stream_user',
             'team_captain_email',
+            'team_banner',
 
             'player_1',
             'player_1_id_type',
@@ -65,8 +71,9 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
     else:
         fields = (
             'team_name',
-            'team_banner',
+            'team_twitch_stream_user',
             'team_captain_email',
+            'team_banner',
 
             'player_1',
             'player_1_id_type',
@@ -81,11 +88,16 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
             'player_4_id_type',
 
             'competition',
+
+            # Non visible
             'data',
             'data_stats',
             'data_to_render',
-            'data_stats_loaded',
             'score',
+
+            # Boolean fields
+            'data_stats_loaded',
+            'email_check_in_sent'
         )
 
 admin.site.register(StaffCustomTeams, StaffCustomTeamAdmin)
@@ -100,8 +112,9 @@ class InLineStaffCustomTeam(admin.StackedInline):
     model = StaffCustomTeams
     fields = (
         'team_name',
-        'team_banner',
+        'team_twitch_stream_user',
         'team_captain_email',
+        'team_banner',
 
         'player_1',
         'player_1_id_type',
@@ -119,6 +132,7 @@ class InLineStaffCustomTeam(admin.StackedInline):
     )
     extra = 1
 
+# Competitions admin 
 class StaffCustomCompetitionAdmin(admin.ModelAdmin):
     def save_model(self, request, instance, form, change):
         '''
@@ -132,6 +146,24 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
         if not change or not instance.created_by:
             instance.created_by = user
         instance.save()
+
+        # Starting email job 
+        # when user save new competition
+        # the bg job will run every 1 hour
+        # The bg job should not duplicate
+
+        competition = StaffCustomCompetition.objects.get(competition_name = instance.competition_name)
+        
+        if competition.email_job_created == False:
+            email_job = EmailNotificationSystemJob()
+            email_job.send_check_in_notification(competition_name = instance.competition_name,
+                                                competition_id = instance.id,
+                                                repeat = 30,
+                                                repeat_until = instance.start_time, 
+                                                verbose_name = "Check-in email - for {}".format(instance.competition_name), 
+                                                creator = user)
+        else:
+            print('Did not create a new BG job')
         return instance
     
     def has_view_permission(self, request, obj=None):
@@ -222,6 +254,17 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
         'end_time',
 
         'competition_started',
+        
+        # Jobs
+        'email_job_created',
         )
 
 admin.site.register(StaffCustomCompetition, StaffCustomCompetitionAdmin)
+
+# Background tasks admin
+# The model Task is already registered with 'background_task.BackgroundTasksAdmin'
+
+# class BackgroundTasksAdmin(admin.ModelAdmin):
+#     list_filter = ('verbose_name', 'task_name',)
+
+# admin.site.register(Task, BackgroundTasksAdmin)
