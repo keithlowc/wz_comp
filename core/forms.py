@@ -50,10 +50,10 @@ class JoinCompetitionRequestForm(forms.ModelForm):
             'team_captain_email': 'Team Captain Email (Contact Information - Any updates will be via email)',
             'team_twitch_stream_user': 'Team Twitch User (User only - Not URL)',
 
-            'player_1': 'Player 1 Id - (Battlenet, Psnet or Xbox)',
-            'player_2': 'Player 2 Id - (Battlenet, Psnet or Xbox)',
-            'player_3': 'Player 3 Id - (Battlenet, Psnet or Xbox)',
-            'player_4': 'Player 4 Id - (Battlenet, Psnet or Xbox)',
+            'player_1': 'Player 1 Id - (Activision, Battlenet, Psnet or Xbox Id)',
+            'player_2': 'Player 2 Id - (Activision, Battlenet, Psnet or Xbox Id)',
+            'player_3': 'Player 3 Id - (Activision, Battlenet, Psnet or Xbox Id)',
+            'player_4': 'Player 4 Id - (Activision, Battlenet, Psnet or Xbox Id)',
 
             'player_1_id_type': 'Player 1 - Id type',
             'player_2_id_type': 'Player 2 - Id type',

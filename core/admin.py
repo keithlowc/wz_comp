@@ -158,7 +158,7 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
             email_job = EmailNotificationSystemJob()
             email_job.send_check_in_notification(competition_name = instance.competition_name,
                                                 competition_id = instance.id,
-                                                repeat = 30,
+                                                repeat = 60 * 60,
                                                 repeat_until = instance.start_time, 
                                                 verbose_name = "Check-in email - for {}".format(instance.competition_name), 
                                                 creator = user)
