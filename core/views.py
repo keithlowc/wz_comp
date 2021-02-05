@@ -527,12 +527,12 @@ def get_competition(request, comp_name):
     Gets specific competition
     '''
 
-    try:
-        config = ConfigController.objects.get(name = 'main_config_controller')
-        competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
-        teams = StaffCustomTeams.objects.filter(competition = competition.id).order_by('-score')
-    except Exception as e:
-        print(e)
+    # try:
+    config = ConfigController.objects.get(name = 'main_config_controller')
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+    teams = StaffCustomTeams.objects.filter(competition = competition.id, checked_in = True).order_by('-score')
+    # except Exception as e:
+    #     print(e)
     
     context = { 
         'teams': teams,
@@ -580,12 +580,37 @@ def show_chart(request, ):
     return render(request,  'competitions/competition_user_chart.html')
 
 
-# def test_send_mail(request):
-#     competition = StaffCustomCompetition.objects.get(id = 17)
+def check_in_to_competition(request, comp_name, checked_in_uuid):
+    '''
+    Allows the user to manually
+    check in to the tournament
+    and edit their teammembers
+    or streamer before joining 
+    the competition
+    '''
 
-#     email = bg_tasks.EmailNotificationSystemJob()
+    team = get_object_or_404(StaffCustomTeams, checked_in_uuid = checked_in_uuid)
 
-#     email.send_check_in_notification(repeat = 60, repeat_until = competition.end_time)
-#     print('Running background job')
+    context = {
+        'team': team,
+        'uuid': checked_in_uuid,
+        'comp_name': comp_name,
+    }
 
-#     return render(request, 'main/home.html')
+    return render(request, 'check_in/check_in.html', context)
+
+
+def check_in(request, comp_name, team_name, checked_in_uuid):
+    '''
+    Completes the team check in
+    finds the team based on team
+    name and uuid and changes
+    attribute of checked in to
+    True
+    '''
+
+    team = StaffCustomTeams.objects.get(team_name = team_name, checked_in_uuid = checked_in_uuid)
+    team.checked_in = True
+    team.save()
+
+    return redirect('get_competition', comp_name = comp_name)

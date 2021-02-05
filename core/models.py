@@ -4,6 +4,8 @@ from django.contrib import admin
 
 from datetime import datetime
 
+import uuid
+
 # Create your models here.
 
 class Profile(models.Model):
@@ -152,6 +154,10 @@ class StaffCustomTeams(models.Model):
     # email checkin
     email_check_in_sent = models.BooleanField(default = False)
 
+    # checked in to competition
+    checked_in = models.BooleanField(default = False)
+    checked_in_uuid = models.UUIDField(default = uuid.uuid4)
+
     class Meta:
         verbose_name = 'CustomTeam'
         verbose_name_plural = 'CustomTeams'
@@ -176,6 +182,7 @@ class ConfigController(models.Model):
     competitions_page_refresh_time = models.IntegerField(default = 15000)
     competitions_bg_tasks = models.IntegerField(default = 900)
     competitions_dummy_data = models.BooleanField(default = False)
+    competition_email_active = models.BooleanField(default = True)
 
     cod_url_warzone_stats = models.CharField(max_length = 500,  null = True, unique = True)
     cod_url_warzone_matches = models.CharField(max_length = 500,  null = True, unique = True)
