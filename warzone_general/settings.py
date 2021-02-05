@@ -185,7 +185,7 @@ django_on_heroku.settings(locals(), logging = False)
 # Django background tasks settings
 
 MAX_ATTEMPTS = 4
-BACKGROUND_TASK_RUN_ASYNC = True
+# BACKGROUND_TASK_RUN_ASYNC = True
 
 # SendGrid - Email
 
