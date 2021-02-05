@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+{% load custom_filtering_tags %}
+
+{% block content %}
+    <div class="container"> 
+        <div class="row">
+            <div class="col">
+                <h1 class="white-color-font">Competition: {{ comp_name|convert_plus_to_empty }}</h1>
+                <h1 class="white-color-font">Team name: {{ team.team_name }}</h1>
+                <h3 class="white-color-font">Team members:</h3>
+                {% if team.player_1 != None %}
+                <p class="white-color-font">Player 1: {{ team.player_1 }}</p>
+                {% endif %}
+
+                {% if team.player_2 != None %}
+                <p class="white-color-font">Player 2: {{ team.player_2 }}</p>
+                {% endif %}
+
+                {% if team.player_3 != None %}
+                <p class="white-color-font">Player 3: {{ team.player_3 }}</p>
+                {% endif %}
+
+                {% if team.player_4 != None %}
+                <p class="white-color-font">Player 4: {{ team.player_4 }}</p>
+                {% endif %}
+                <a class="btn btn-success" href="{% url 'check_in' checked_in_uuid=uuid comp_name=comp_name|convert_plus_to_empty team_name=team.team_name%}">Check In</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

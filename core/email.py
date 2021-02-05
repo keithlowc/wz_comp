@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 
 
 class EmailNotificationSystem:
-    def send_competition_email(self, subject, competition_name, email_list):
+    def send_competition_email(self, check_in_url, subject, competition_name, email_list):
         '''
         This function sends an email notification
         to the current email list and should
@@ -20,7 +20,7 @@ class EmailNotificationSystem:
             print('--------> SENDING EMAIL!')
             html_content = render_to_string('email/check_in_email.html', {
                                                 'competition_name': competition_name,
-                                                'competition_check_in_url': 'http://www.duelout.com/competition/Total%20Upgrade%20Torneo%20%232%20Kill%20Race%20Trios',
+                                                'competition_check_in_url': check_in_url,
                                             })
 
             text_content = strip_tags(html_content)

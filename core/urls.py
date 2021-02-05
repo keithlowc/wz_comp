@@ -16,12 +16,10 @@ urlpatterns = [
     path('competition/<str:comp_name>', views.get_competition, name = 'get_competition'),
     path('competition/<str:comp_name>/refresh', views.manually_recalculate_score_once, name = 'manually_recalculate_score_once'),
 
-    # Stage 1
     path('competition/join/<str:comp_name>', views.join_request_competition, name = 'join_request_competition'),
 
-    # Stage 2
-
-    # Stage 3
+    path('competition/checkin/<str:comp_name>/<uuid:checked_in_uuid>', views.check_in_to_competition, name = 'check_in_to_competition'),
+    path('competition/checkin/<str:comp_name>/<str:team_name>/<uuid:checked_in_uuid>', views.check_in, name = 'check_in'),
 
     # Old application routes
     path('profile/', views.view_profile, name = 'view_profile'),

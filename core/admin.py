@@ -18,6 +18,10 @@ admin.site.register(Profile)
 admin.site.register(Teams)
 admin.site.register(ConfigController)
 
+# Start config controller
+
+
+
 # StaffCustomTeam admin
 class StaffCustomTeamAdmin(admin.ModelAdmin):
     def has_view_permission(self, request, obj=None):
@@ -67,6 +71,8 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
             'player_4',
             'player_4_id_type',
             'competition',
+
+            'checked_in',
         )
     else:
         fields = (
@@ -97,7 +103,11 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
 
             # Boolean fields
             'data_stats_loaded',
-            'email_check_in_sent'
+            'email_check_in_sent',
+
+            # Checking in
+            'checked_in',
+            'checked_in_uuid'
         )
 
 admin.site.register(StaffCustomTeams, StaffCustomTeamAdmin)
@@ -151,19 +161,21 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
         # when user save new competition
         # the bg job will run every 1 hour
         # The bg job should not duplicate
+        config = ConfigController.objects.get(name = 'main_config_controller')
 
-        competition = StaffCustomCompetition.objects.get(competition_name = instance.competition_name)
-        
-        if competition.email_job_created == False:
-            email_job = EmailNotificationSystemJob()
-            email_job.send_check_in_notification(competition_name = instance.competition_name,
-                                                competition_id = instance.id,
-                                                repeat = 60 * 60,
-                                                repeat_until = instance.start_time, 
-                                                verbose_name = "Check-in email - for {}".format(instance.competition_name), 
-                                                creator = user)
-        else:
-            print('Did not create a new BG job')
+        if config.competition_email_active:
+            competition = StaffCustomCompetition.objects.get(id = instance.id)
+
+            if competition.email_job_created == False:
+                email_job = EmailNotificationSystemJob()
+                email_job.send_check_in_notification(competition_name = instance.competition_name,
+                                                    competition_id = instance.id,
+                                                    repeat = 30,
+                                                    repeat_until = instance.start_time, 
+                                                    verbose_name = "Check-in email - for competition with id: {}".format(instance.id), 
+                                                    creator = user)
+            else:
+                print('Did not create a new BG job')
         return instance
     
     def has_view_permission(self, request, obj=None):

@@ -294,12 +294,16 @@ def check_if_competition_is_one_hour_from_start(competition_config):
         if len(competition_config['team_emails']) > 0:
             for email in competition_config['team_emails']:
                 team = StaffCustomTeams.objects.get(team_captain_email = email, competition_id = competition_config['competition_id'])
+                uuid = team.checked_in_uuid
+
+                check_in_url = 'https://www.duelout.com/competition/checkin/{}/{}'.format(competition_name, uuid)
+                check_in_url.replace('+','%20')
 
                 print('--> Checking the following teams: {}'.format(team))
 
                 if team.email_check_in_sent == False:
                     print('------> The team {} with email {} will be sent out a check-in notification'.format(team, team.team_captain_email))
-                    email_sent = email_sys.send_competition_email(subject, competition_name, [team.team_captain_email])
+                    email_sent = email_sys.send_competition_email(check_in_url, subject, competition_name, [team.team_captain_email])
 
                     if email_sent:
                         team.email_check_in_sent = True

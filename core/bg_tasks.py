@@ -256,7 +256,7 @@ class EmailNotificationSystemJob:
         competition_object_exist = False
 
         try:
-            competition = StaffCustomCompetition.objects.get(competition_name = competition_name, id = competition_id)
+            competition = StaffCustomCompetition.objects.get(id = competition_id)
 
             email_list = [team.team_captain_email for team in competition.teams.all()]
 
