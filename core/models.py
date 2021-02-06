@@ -114,6 +114,15 @@ class StaffCustomCompetition(models.Model):
         return str(self.competition_name)
 
 
+class CompetitionCommunicationEmails(models.Model):
+    subject = models.CharField(max_length = 150)
+    body = models.TextField()
+    date = models.DateTimeField(default = datetime.now)
+
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, related_name = 'emails')
+
+
 class StaffCustomTeams(models.Model):
     user_id_type = [
         ('acti', 'Activision ID'),

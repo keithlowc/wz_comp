@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.db import transaction
 
-from .models import Profile, Teams, StaffCustomTeams, StaffCustomCompetition, ConfigController
-from .forms import ProfileForm, TeamsForm, JoinCompetitionRequestForm
+from .models import Profile, Teams, StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
+from .forms import ProfileForm, TeamsForm, JoinCompetitionRequestForm, EmailCommunicationForm
 
 from . import signals, util, bg_tasks
 from .warzone_api import WarzoneApi
@@ -422,17 +422,6 @@ def join_request_competition(request, comp_name):
     return render(request, 'forms/join_competition_form.html', {'form': form, 'comp_name': comp_name, 'config': config, 'competition': competition})
 
 
-# Stage 2
-# User data has to be approved by admin
-# Admin can check payments whatever
-# Adming approves
-
-# Stage 3
-# They show on the competition view
-
-
-# Without new changes
-
 def recalculate_scores(request, comp_name):
     signals.send_message.send(sender = None,
                     request = request,
@@ -527,12 +516,9 @@ def get_competition(request, comp_name):
     Gets specific competition
     '''
 
-    # try:
     config = ConfigController.objects.get(name = 'main_config_controller')
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
     teams = StaffCustomTeams.objects.filter(competition = competition.id, checked_in = True).order_by('-score')
-    # except Exception as e:
-    #     print(e)
     
     context = { 
         'teams': teams,
@@ -542,6 +528,7 @@ def get_competition(request, comp_name):
 
     return render(request, 'competitions/competition_scores.html', context)
 
+# Charts data
 
 def chart_stats_key(request, team_name, user, key):
     '''
@@ -580,6 +567,8 @@ def show_chart(request, ):
     return render(request,  'competitions/competition_user_chart.html')
 
 
+# Competition check in
+
 def check_in_to_competition(request, comp_name, checked_in_uuid):
     '''
     Allows the user to manually
@@ -614,3 +603,68 @@ def check_in(request, comp_name, team_name, checked_in_uuid):
     team.save()
 
     return redirect('get_competition', comp_name = comp_name)
+
+# Competition Communication
+
+def send_competition_email(request, comp_name):
+    
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+    teams = StaffCustomTeams.objects.filter(competition = competition.id)
+    config = ConfigController.objects.get(name = 'main_config_controller')
+
+    sent_emails = CompetitionCommunicationEmails.objects.filter(competition = competition.id).order_by('-date')
+
+    team_emails = [team.team_captain_email for team in teams]
+
+    if request.method == 'POST':
+        form = EmailCommunicationForm(request.POST)
+        if form.is_valid():
+            email = form.save(commit = False)
+            email.competition = competition
+            email.created_by = request.user
+            email.save()
+
+            print(email.subject)
+            print(email.body)
+
+            # Send email
+            if config.competition_email_active:
+                if len(team_emails) > 0:
+                    email_sys = bg_tasks.EmailNotificationSystemJob()
+                    email_sys.send_email_update(competition.competition_name, 
+                                                email.subject, 
+                                                email.body,
+                                                team_emails)
+                    
+                    signals.send_message.send(sender = None,
+                                    request = request,
+                                    message = 'Succesfully sent email! for competition: {}'.format(comp_name),
+                                    type = 'SUCCESS')
+                else:
+                    signals.send_message.send(sender = None,
+                                    request = request,
+                                    message = 'Did not send email since there are no teams in competition!',
+                                    type = 'WARNING')
+            else:
+                signals.send_message.send(sender = None,
+                                            request = request,
+                                            message = 'Email systems are disabled for the current time - Contact Admin if urgent',
+                                            type = 'WARNING')
+
+            return redirect('send_competition_email', comp_name = comp_name)
+    else:
+        form = EmailCommunicationForm()
+    return render(request, 'forms/email_communication_form.html', {'form': form, 
+                                                                'comp_name': comp_name, 
+                                                                'team_emails': team_emails, 
+                                                                'sent_emails': sent_emails})
+
+
+    # context = {
+    #     'team_emails': team_emails,
+    # }
+
+    # print(context)
+
+    # return redirect('get_competition', comp_name = comp_name)
+    

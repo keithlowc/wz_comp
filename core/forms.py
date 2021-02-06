@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Profile, Teams, StaffCustomTeams
+from .models import Profile, Teams, StaffCustomTeams, CompetitionCommunicationEmails
 
 from django.core.exceptions import ValidationError
 
@@ -61,4 +61,14 @@ class JoinCompetitionRequestForm(forms.ModelForm):
             'player_4_id_type': 'Player 4 - Id type',
         }
 
-            
+class EmailCommunicationForm(forms.ModelForm):
+
+    class Meta:
+        model = CompetitionCommunicationEmails
+        fields = ('subject',
+                  'body',)
+
+        labels = {
+            'subject': 'Subject',
+            'body': 'Body'
+        }

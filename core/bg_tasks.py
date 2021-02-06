@@ -1,6 +1,8 @@
 from background_task import background
 from core.models import StaffCustomTeams, StaffCustomCompetition
 
+from .email import EmailNotificationSystem
+
 from . import util, signals
 from pytz import timezone
 from datetime import datetime
@@ -281,3 +283,29 @@ class EmailNotificationSystemJob:
             print('--> Competition does not exists! Orphan Bg Job with id {}'.format(competition_id))
         print('** ENDING Email notification BG Job for {} with id {} **'.format(competition_name, competition_id))
         print()
+    
+
+    @background(schedule = 1)
+    def send_email_update(competiton_name, subject, body, recipients_list):
+        email_sys = EmailNotificationSystem()
+
+        data_email = ('Duelout Tournament Update: ' + subject,
+                     body,
+                    'noreply@duelout.com',
+                    'something')
+
+        all_data = []
+
+        # Convert tuples to list 
+        # to manipulate and then
+        # back to tuples
+
+        for email in recipients_list:
+            new = list(data_email)
+            new[-1] = [email]
+            all_data.append(tuple(new))
+        
+        all_data = tuple(all_data)
+
+        email_sys.send_mass_email_to_teams(all_data)
+    
