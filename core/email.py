@@ -1,9 +1,12 @@
-from django.core.mail import send_mail, EmailMultiAlternatives
+from django.core.mail import send_mail, send_mass_mail, EmailMultiAlternatives
 from django.utils.html import strip_tags
 from django.template.loader import render_to_string
 
 
 class EmailNotificationSystem:
+    def __init__(self):
+        self.from_email = 'noreply@duelout.com'
+
     def send_competition_email(self, check_in_url, subject, competition_name, email_list):
         '''
         This function sends an email notification
@@ -39,3 +42,27 @@ class EmailNotificationSystem:
             print('--------> NOT SENDING! EMAIL')
 
         return email_sent
+
+
+    def send_mail_text(self, subject, body, recipient):
+        '''
+        Send mail with only text
+        '''
+
+        try:
+            send_mail(subject, body, self.from_email, recipient)
+        except Exception as e:
+            print('--------> There was an error - Unable to send email')
+    
+
+    def send_mass_email_to_teams(self, data_tuple):
+        '''
+        Send mass email. Each recipient
+        gets one email and it seems to be
+        more efficient than send_mail
+        '''
+
+        try:
+            send_mass_mail(data_tuple)
+        except Exception as e:
+            print('--------> There was an error - Unable to send mass email {}'.format(e))

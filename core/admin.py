@@ -2,7 +2,7 @@ from django.contrib import admin
 
 import os
 
-from .models import Profile, Teams, StaffCustomTeams, StaffCustomCompetition, ConfigController
+from .models import Profile, Teams, StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
 
 # from background_task.models import Task
 
@@ -272,6 +272,14 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
         )
 
 admin.site.register(StaffCustomCompetition, StaffCustomCompetitionAdmin)
+
+
+class CompetitionCommunicationEmailsAdmin(admin.ModelAdmin):
+    search_fields = ('competition',)
+    list_filter = ('competition', 'created_by')
+    list_display = ('competition', 'subject', 'date', 'created_by')
+
+admin.site.register(CompetitionCommunicationEmails, CompetitionCommunicationEmailsAdmin)
 
 # Background tasks admin
 # The model Task is already registered with 'background_task.BackgroundTasksAdmin'

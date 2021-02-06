@@ -15,11 +15,11 @@ urlpatterns = [
     path('competitions/all', views.get_competitions_all, name = 'get_competitions_all'),
     path('competition/<str:comp_name>', views.get_competition, name = 'get_competition'),
     path('competition/<str:comp_name>/refresh', views.manually_recalculate_score_once, name = 'manually_recalculate_score_once'),
-
     path('competition/join/<str:comp_name>', views.join_request_competition, name = 'join_request_competition'),
-
     path('competition/checkin/<str:comp_name>/<uuid:checked_in_uuid>', views.check_in_to_competition, name = 'check_in_to_competition'),
     path('competition/checkin/<str:comp_name>/<str:team_name>/<uuid:checked_in_uuid>', views.check_in, name = 'check_in'),
+
+    path('competition/communication/<str:comp_name>', views.send_competition_email, name = 'send_competition_email'),
 
     # Old application routes
     path('profile/', views.view_profile, name = 'view_profile'),
