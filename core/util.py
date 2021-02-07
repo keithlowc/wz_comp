@@ -183,37 +183,37 @@ def filter_for_time(custom_config, matches_list, competition_start_time, competi
         print('** Using Dummy data **')
         print('The start_time: ', start_time)
 
-        threshold_time = datetime.timedelta(seconds = threshold_time_seconds)
+        dummy_matches = []
 
-        end_time = time.time()
+        for match in matches_list:
+            dummy_matches.append(match)
+        
+        return dummy_matches[0:5]
+
     else:
         # Should slice the matches based on the 
         # time range give.
-        start_time = competition_start_time.timestamp()
-        end_time = competition_end_time.timestamp()
-        threshold_time = calculate_time_delta(end_time, start_time)
+        start_time = competition_start_time
+        end_time = competition_end_time
     
         print()
         print('** Using Real Sliced data **')
         print('The start_time: ', start_time)
 
-    top_matches = []
+        top_matches = []
 
-    for match in matches_list:
-        delta = calculate_time_delta(start_time, match['utcStartSeconds'])
-        print('Start Time: {} - Match time {} = delta {} - {}'.format(datetime.datetime.fromtimestamp(start_time),
-                                                               datetime.datetime.fromtimestamp(match['utcStartSeconds']), 
-                                                               delta, 
-                                                               match['matchID']))
+        for match in matches_list:
+            match_time = datetime.datetime.fromtimestamp(match['utcStartSeconds'])
 
-        if delta <= threshold_time and match['utcStartSeconds'] <= end_time:
-            top_matches.append(match)
-            print('--------------> {} - Selected Match: The delta: {} < {} threshold and match time {} <= {} end'.format(len(top_matches), 
-                                                                                                                delta, threshold_time, 
-                                                                                                                datetime.datetime.fromtimestamp(match['utcStartSeconds']), 
-                                                                                                                datetime.datetime.fromtimestamp(end_time)))
-        
-    return top_matches
+            print('Match time: {}'.format(match_time))
+
+            if match_time >= start_time and match_time <= end_time:
+                top_matches.append(match)
+                print('--------------> {} - Selected Match with Start Time: {} - Competition Start Time {} and END TIME: {}'.format(len(top_matches), 
+                                                                        datetime.datetime.fromtimestamp(match['utcStartSeconds']),
+                                                                        start_time, end_time))
+
+        return top_matches
 
 
 def get_custom_data(user_tag, user_id_type, competition_start_time, competition_end_time, competition_type, custom_config):

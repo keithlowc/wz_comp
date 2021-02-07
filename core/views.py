@@ -455,6 +455,12 @@ def recalculate_scores(request, comp_name):
 
         bg_tasks.calculate_status_of_competition(custom_config, comp_name, repeat = config.competitions_bg_tasks,
                                                  repeat_until = competition.end_time + datetime.timedelta(seconds = 120))
+        
+        if custom_config['competitions_dummy_data']:
+            signals.send_message.send(sender = None,
+                    request = request,
+                    message = 'The data being loaded is Dummy Data! For real data message Admin to change settings',
+                    type = 'WARNING')
 
     # When press ready
     # if competition ready:
@@ -493,6 +499,12 @@ def manually_recalculate_score_once(request, comp_name):
         print('Manually calling recalculation once!')
 
         bg_tasks.calculate_status_of_competition(custom_config, comp_name)
+
+        if custom_config['competitions_dummy_data']:
+            signals.send_message.send(sender = None,
+                    request = request,
+                    message = 'The data being loaded is Dummy Data! For real data message Admin to change settings',
+                    type = 'WARNING')
 
     return redirect('get_competition', comp_name = comp_name)
 
@@ -563,7 +575,7 @@ def chart_stats_key(request, team_name, user, key):
     })
 
 
-def show_chart(request, ):
+def show_chart(request):
     return render(request,  'competitions/competition_user_chart.html')
 
 
@@ -624,9 +636,6 @@ def send_competition_email(request, comp_name):
             email.created_by = request.user
             email.save()
 
-            print(email.subject)
-            print(email.body)
-
             # Send email
             if config.competition_email_active:
                 if len(team_emails) > 0:
@@ -658,13 +667,3 @@ def send_competition_email(request, comp_name):
                                                                 'comp_name': comp_name, 
                                                                 'team_emails': team_emails, 
                                                                 'sent_emails': sent_emails})
-
-
-    # context = {
-    #     'team_emails': team_emails,
-    # }
-
-    # print(context)
-
-    # return redirect('get_competition', comp_name = comp_name)
-    
