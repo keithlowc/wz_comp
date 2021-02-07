@@ -107,8 +107,8 @@ class StaffCustomCompetition(models.Model):
     email_job_created = models.BooleanField(default = False)
 
     class Meta:
-        verbose_name = 'CustomCompetition'
-        verbose_name_plural = 'CustomCompetitions'
+        verbose_name = 'Custom Competition'
+        verbose_name_plural = 'Custom Competitions'
     
     def __str__(self):
         return str(self.competition_name)
@@ -121,6 +121,10 @@ class CompetitionCommunicationEmails(models.Model):
 
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
     competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, related_name = 'emails')
+
+    class Meta:
+        verbose_name = 'Competition Communication'
+        verbose_name_plural = 'Competition Communications'
 
 
 class StaffCustomTeams(models.Model):
@@ -168,8 +172,8 @@ class StaffCustomTeams(models.Model):
     checked_in_uuid = models.UUIDField(default = uuid.uuid4)
 
     class Meta:
-        verbose_name = 'CustomTeam'
-        verbose_name_plural = 'CustomTeams'
+        verbose_name = 'Custom Team'
+        verbose_name_plural = 'Custom Teams'
     
     def __str__(self):
         return str(self.team_name)
@@ -202,8 +206,8 @@ class ConfigController(models.Model):
     twitch_api_verfication_client_secret = models.CharField(max_length = 100,  null = True, unique = True)
 
     class Meta:
-        verbose_name = 'ConfigController'
-        verbose_name_plural = 'ConfigControllers'
+        verbose_name = 'Application Configuration'
+        verbose_name_plural = 'Application Configuration'
     
     def __str__(self):
         return str("Configuration controller - Do not delete - Do not create more objects")
