@@ -20,17 +20,4 @@ urlpatterns = [
     path('competition/checkin/<str:comp_name>/<str:team_name>/<uuid:checked_in_uuid>', views.check_in, name = 'check_in'),
 
     path('competition/communication/<str:comp_name>', views.send_competition_email, name = 'send_competition_email'),
-
-    # Old application routes
-    path('profile/', views.view_profile, name = 'view_profile'),
-    path('profile/edit', views.edit_profile, name = 'edit_profile'),
-    path('profile/refresh', views.refresh_profile, name = 'refresh_profile'),
-    path('profile/search/<str:tag>', views.get_profile, name = 'get_profile'),
-
-    path('team/myteams', views.view_teams, name = 'view_teams'),
-    path('team/search/<str:team_name>', views.view_team, name = 'view_team'),
-    path('team/create', views.create_team, name = 'create_team'),
-    path('team/edit/<str:team_name>', views.edit_team, name = 'edit_team'),
-    path('team/delete/<str:team_name>', views.delete_team, name = 'delete_team'),
-    path('team/leave/<str:team_name>', views.leave_team, name = 'leave_team'),
 ]

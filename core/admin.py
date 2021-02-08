@@ -2,7 +2,7 @@ from django.contrib import admin
 
 import os
 
-from .models import Profile, Teams, StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
+from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
 
 # from background_task.models import Task
 
@@ -14,13 +14,7 @@ admin.site.site_header = 'Duelout Manager'
 admin.site.site_title = 'Duelout Admin Portal'
 admin.site.index_title = 'Welcome to Duelout Portal'
 
-admin.site.register(Profile)
-admin.site.register(Teams)
 admin.site.register(ConfigController)
-
-# Start config controller
-
-
 
 # StaffCustomTeam admin
 class StaffCustomTeamAdmin(admin.ModelAdmin):

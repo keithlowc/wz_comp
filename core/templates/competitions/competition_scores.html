@@ -22,11 +22,12 @@
           <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12 pt-2">
             {% if user == competition.created_by and competition.competition_started == True %}
               <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
-            {% endif %}
+            
           </div>
           <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12 pt-2">
             <a class="btn btn-secondary " href="{% url 'send_competition_email' comp_name=competition.competition_name %}">Tournament Communication</a>
           </div>
+            {% endif %}
           <div class="col-lg-4 col-md-6 col-sm-12 col-xm-12 pt-2">
             <input id="toggle-silent" type="checkbox" data-toggle="toggle" onchange="change()" data-on="Auto-Refresh On" data-off="Auto-Refresh Off" data-onstyle="success" data-offstyle="danger">
           </div>
@@ -304,10 +305,10 @@
 
         function checkStates() {
             if (checked == "true") {
-                console.log('It was checked');
+                // console.log('It was checked');
                 $('#toggle-silent')[0].checked = true;
             } else if (checked == "false") {
-                console.log('It was not checked!');
+                // console.log('It was not checked!');
             }
         }
 
@@ -326,9 +327,6 @@
         function reload() {
             document.location.reload();
         }
-
-        // Load twitch video 
-        // when user wants to load it
 
         function loadStreamVideoToFrame(collapsable_element_id, twitch_header_id, twitch_frame_id) {
           // Loads stream video depending 
