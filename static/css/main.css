@@ -2,8 +2,22 @@ body {
     background-color:#1E242B;
 }
 
-.h1, h1, h5, h2, a, i{
+.h1, h2, h3, h4, h5, a, i{
     color:#EFEFEF!important;
+}
+
+.white-color-font {
+    color:#EFEFEF!important;
+}
+
+.black-color-font {
+    color: black!important;
+}
+
+/* Miscellaneous */
+
+.font-color-black {
+    color: black!important;;
 }
 
 /* Navigation bar */
@@ -28,6 +42,15 @@ body {
     overflow: hidden;
 }
 
+/* Team images */
+.circular-teams {
+    width: 50;
+    height: 50px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
 .circular img {
     min-width: 100%;
     min-height: 100%;
@@ -42,8 +65,112 @@ body {
     transform: translate(-50%, -50%);
 }
 
+.border-image {
+    border: 2px solid white!important;
+}
+
 /* Card header */
 
 .card-header:first-child {
     background-color: #212529!important;
+}
+
+/* Fa icons style */
+
+/* kill icon */
+
+.kill-icon {
+    color: black!important;
+}
+
+/* Match crowns */
+
+.first-place {
+    color:#ffd700!important;
+}
+
+.second-place {
+    color: #c0c0c0!important;
+}
+
+.third-place {
+    color: #cd7f32!important;
+}
+
+/* Banned or prohibited icon */
+
+.red-icon {
+    color: red!important;
+}
+
+/* Twitch-icon color */
+
+.twitch-icon-color {
+    color: #772CE8!important;
+}
+
+.discord-icon-color {
+    color: #677BC4!important;
+}
+
+.facebook-icon-color {
+    color: #285091!important;
+}
+
+.instagram-icon-color {
+    color: #F17412!important;
+}
+
+.twitter-icon-color {
+    color: #1D9CEB!important;
+}
+
+/* Check mark */
+
+.check-mark-icon {
+    color: green!important;
+}
+
+/* Note icon */
+
+.note-icon {
+    color: yellow!important;
+}
+
+/* Responsive text */
+
+
+/* Pop up for graphs and stats */
+
+
+/* Forms labels */
+
+label {
+    color: white;
+}
+
+/* Form color */
+
+.join-competition-form {
+    background-color: #2D3640;
+}
+
+
+/* SCROLL BAR */
+
+::-webkit-scrollbar {
+    width: 10px
+}
+
+::-webkit-scrollbar-track {
+    background: #eee
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555
+}
 }

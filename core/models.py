@@ -6,59 +6,6 @@ from datetime import datetime
 
 import uuid
 
-# Create your models here.
-
-class Profile(models.Model):
-    activision_tag = models.CharField(max_length = 100, unique = True, null = True)
-    account = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True)
-    kda = models.FloatField(default = 0)
-    wins = models.IntegerField(default = 0)
-    total_kills = models.IntegerField(default = 0)
-
-    last_ten_matches = models.JSONField(default = dict, blank = True)
-
-    last_calculated_matches = models.JSONField(default = dict, blank = True)
-
-    avg_kills_over_last_ten_matches = models.FloatField(default = 0)
-    avg_kda_over_last_ten_matches = models.FloatField(default = 0)
-    avg_damage_over_last_ten_matches = models.FloatField(default = 0)
-
-    class Meta:
-        verbose_name = 'Profile'
-        verbose_name_plural = 'Profiles'
-    
-    def __str__(self):
-        return f'{self.activision_tag}'
-
-
-class Teams(models.Model):
-    team_types = [
-        ('SQUAD', 'squad'),
-        ('TRIOS', 'trios'),
-        ('DUOS', 'duos'),
-        ('SOLOS', 'solos')
-    ]
-    
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, default = 0)
-    profiles = models.ManyToManyField(Profile)
-    team_name = models.CharField(max_length = 100, null = True, unique = True)
-    team_type = models.CharField(
-        max_length = 5,
-        choices = team_types,
-        default = 'SQUAD'
-    )
-    cummulative_kd = models.FloatField(default = 0)
-    total_wins = models.IntegerField(default = 0)
-    total_kills = models.IntegerField(default = 0)
-
-    class Meta:
-        verbose_name = 'Teams'
-        verbose_name_plural = 'Teams'
-    
-    def __str__(self):
-        return str(self.team_name) + ' - ' + str(self.team_type)
-
-
 # Custom competitions
 class StaffCustomCompetition(models.Model):
     competition_type = [
