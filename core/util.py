@@ -8,15 +8,6 @@ import datetime, time
 from itertools import groupby
 
 
-def calculate_time_delta(start_1, start_2):
-    a = datetime.datetime.fromtimestamp(start_1)
-    b = datetime.datetime.fromtimestamp(start_2)
-
-    total_delta = a - b
-
-    return total_delta
-
-
 def calculate_average(matches, element):
     ratios = []
     for match in matches:
