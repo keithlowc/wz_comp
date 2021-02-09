@@ -57,7 +57,7 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
         return True
 
     search_fields = ('team_name',)
-    list_display = ('team_name', 'competition', 'score',)
+    list_display = ('team_name', 'competition', 'score', 'checked_in')
     list_filter = ('competition',)
 
 admin.site.register(StaffCustomTeams, StaffCustomTeamAdmin)
@@ -169,7 +169,7 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
     inlines = [InLineStaffCustomTeam]
     search_fields = ('competition_name',)
     list_filter = ('created_by', 'competition_type',)
-    list_display = ('competition_name', 'competition_type', 'created_by')
+    list_display = ('competition_name', 'competition_type', 'created_by', 'start_time')
 
 admin.site.register(StaffCustomCompetition, StaffCustomCompetitionAdmin)
 
