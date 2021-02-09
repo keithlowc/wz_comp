@@ -3,6 +3,7 @@ from django.contrib import admin
 import os
 
 from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
+from .forms import TeamFormAdminPage, TeamFormAdminPageSuperUser, CompetitionAdminPage, CompetitionAdminPageSuperUser
 
 # from background_task.models import Task
 
@@ -18,6 +19,19 @@ admin.site.register(ConfigController)
 
 # StaffCustomTeam admin
 class StaffCustomTeamAdmin(admin.ModelAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        '''
+        Controls the fields we display 
+        on admin page
+        '''
+
+        if request.user.is_superuser:
+            kwargs['form'] = TeamFormAdminPageSuperUser
+        else:
+            kwargs['form'] = TeamFormAdminPage
+        
+        return super().get_form(request, obj, **kwargs)
+
     def has_view_permission(self, request, obj=None):
         if obj is not None and obj.competition.created_by != request.user:
             if request.user.is_superuser:
@@ -45,64 +59,6 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
     search_fields = ('team_name',)
     list_display = ('team_name', 'competition', 'score',)
     list_filter = ('competition',)
-
-    if 'SERVER' in os.environ:
-        fields = (
-            'team_name',
-            'team_twitch_stream_user',
-            'team_captain_email',
-            'team_banner',
-
-            'player_1',
-            'player_1_id_type',
-
-            'player_2',
-            'player_2_id_type',
-
-            'player_3',
-            'player_3_id_type',
-
-            'player_4',
-            'player_4_id_type',
-            'competition',
-
-            'checked_in',
-        )
-    else:
-        fields = (
-            'team_name',
-            'team_twitch_stream_user',
-            'team_captain_email',
-            'team_banner',
-
-            'player_1',
-            'player_1_id_type',
-
-            'player_2',
-            'player_2_id_type',
-
-            'player_3',
-            'player_3_id_type',
-
-            'player_4',
-            'player_4_id_type',
-
-            'competition',
-
-            # Non visible
-            'data',
-            'data_stats',
-            'data_to_render',
-            'score',
-
-            # Boolean fields
-            'data_stats_loaded',
-            'email_check_in_sent',
-
-            # Checking in
-            'checked_in',
-            'checked_in_uuid'
-        )
 
 admin.site.register(StaffCustomTeams, StaffCustomTeamAdmin)
 
@@ -132,12 +88,26 @@ class InLineStaffCustomTeam(admin.StackedInline):
         'player_4',
         'player_4_id_type',
 
-        'competition',
+        'checked_in',
     )
     extra = 1
 
 # Competitions admin 
 class StaffCustomCompetitionAdmin(admin.ModelAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        '''
+        Controls the fields we display 
+        on admin page
+        '''
+
+        if request.user.is_superuser:
+            kwargs['form'] = CompetitionAdminPageSuperUser
+        else:
+            kwargs['form'] = CompetitionAdminPage
+        
+        return super().get_form(request, obj, **kwargs)
+
+
     def save_model(self, request, instance, form, change):
         '''
         This allows us to save the 
@@ -201,69 +171,69 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
     list_filter = ('created_by', 'competition_type',)
     list_display = ('competition_name', 'competition_type', 'created_by')
 
-    if 'SERVER' in os.environ:
-        fields = (
-                'competition_name',
-                'competition_description',
-                'competition_banner',
-                'total_teams_allowed_to_compete',
+    # if 'SERVER' in os.environ:
+    #     fields = (
+    #             'competition_name',
+    #             'competition_description',
+    #             'competition_banner',
+    #             'total_teams_allowed_to_compete',
 
-                # Contact information
-                'discord_link',
-                'instagram_link',
-                'facebook_link',
-                'twitter_link',
-                'twitch_link',
+    #             # Contact information
+    #             'discord_link',
+    #             'instagram_link',
+    #             'facebook_link',
+    #             'twitter_link',
+    #             'twitch_link',
 
-                # Verification values
-                'cod_kd_minimum_per_player_verification',
-                'cod_kd_maximum_per_player_verification',
-                'cod_verification_total_games_played',
-                'cod_verification_total_time_played',
+    #             # Verification values
+    #             'cod_kd_minimum_per_player_verification',
+    #             'cod_kd_maximum_per_player_verification',
+    #             'cod_verification_total_games_played',
+    #             'cod_verification_total_time_played',
 
-                'competition_type',
-                'number_of_matches_to_count_points',
-                'points_per_kill',
-                'points_per_first_place',
-                'points_per_second_place',
-                'points_per_third_place',
-                'start_time',
-                'end_time',
-                )
-    else:
-        fields = (
-        'competition_name',
-        'competition_description',
-        'competition_banner',
-        'total_teams_allowed_to_compete',
+    #             'competition_type',
+    #             'number_of_matches_to_count_points',
+    #             'points_per_kill',
+    #             'points_per_first_place',
+    #             'points_per_second_place',
+    #             'points_per_third_place',
+    #             'start_time',
+    #             'end_time',
+    #             )
+    # else:
+    #     fields = (
+    #     'competition_name',
+    #     'competition_description',
+    #     'competition_banner',
+    #     'total_teams_allowed_to_compete',
 
-        # Contact information
-        'discord_link',
-        'instagram_link',
-        'facebook_link',
-        'twitter_link',
-        'twitch_link',
+    #     # Contact information
+    #     'discord_link',
+    #     'instagram_link',
+    #     'facebook_link',
+    #     'twitter_link',
+    #     'twitch_link',
 
-        # Verification values
-        'cod_kd_minimum_per_player_verification',
-        'cod_kd_maximum_per_player_verification',
-        'cod_verification_total_games_played',
-        'cod_verification_total_time_played',
+    #     # Verification values
+    #     'cod_kd_minimum_per_player_verification',
+    #     'cod_kd_maximum_per_player_verification',
+    #     'cod_verification_total_games_played',
+    #     'cod_verification_total_time_played',
 
-        'competition_type',
-        'number_of_matches_to_count_points',
-        'points_per_kill',
-        'points_per_first_place',
-        'points_per_second_place',
-        'points_per_third_place',
-        'start_time',
-        'end_time',
+    #     'competition_type',
+    #     'number_of_matches_to_count_points',
+    #     'points_per_kill',
+    #     'points_per_first_place',
+    #     'points_per_second_place',
+    #     'points_per_third_place',
+    #     'start_time',
+    #     'end_time',
 
-        'competition_started',
+    #     'competition_started',
         
-        # Jobs
-        'email_job_created',
-        )
+    #     # Jobs
+    #     'email_job_created',
+    #     )
 
 admin.site.register(StaffCustomCompetition, StaffCustomCompetitionAdmin)
 
@@ -274,11 +244,3 @@ class CompetitionCommunicationEmailsAdmin(admin.ModelAdmin):
     list_display = ('competition', 'subject', 'date', 'created_by')
 
 admin.site.register(CompetitionCommunicationEmails, CompetitionCommunicationEmailsAdmin)
-
-# Background tasks admin
-# The model Task is already registered with 'background_task.BackgroundTasksAdmin'
-
-# class BackgroundTasksAdmin(admin.ModelAdmin):
-#     list_filter = ('verbose_name', 'task_name',)
-
-# admin.site.register(Task, BackgroundTasksAdmin)
