@@ -76,7 +76,6 @@ class CompetitionCommunicationEmails(models.Model):
 
 class StaffCustomTeams(models.Model):
     user_id_type = [
-        ('acti', 'Activision ID'),
         ('battle', 'Battlenet ID'),
         ('psn', 'Psnet ID'),
         ('xbl', 'XboxLive ID'),
@@ -91,16 +90,16 @@ class StaffCustomTeams(models.Model):
     team_twitch_stream_user = models.CharField(max_length = 150, null = True, blank = True)
 
     player_1 = models.CharField(max_length = 100, null = True, blank = True)
-    player_1_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'acti')
+    player_1_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
 
     player_2 = models.CharField(max_length = 100, null = True, blank = True)
-    player_2_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'acti')
+    player_2_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
 
     player_3 = models.CharField(max_length = 100, null = True, blank = True)
-    player_3_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'acti')
+    player_3_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
 
     player_4 = models.CharField(max_length = 100, null = True, blank = True)
-    player_4_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'acti')
+    player_4_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
 
     competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, related_name = 'teams')
 
