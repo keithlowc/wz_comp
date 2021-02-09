@@ -154,7 +154,7 @@ def get_competition(request, comp_name):
 
     config = ConfigController.objects.get(name = 'main_config_controller')
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
-    teams = StaffCustomTeams.objects.filter(competition = competition.id, checked_in = True).order_by('-score')
+    teams = StaffCustomTeams.objects.filter(competition = competition.id).order_by('-score','-checked_in')
     
     context = { 
         'teams': teams,

@@ -13,7 +13,7 @@ import time
 @background(schedule = 1)
 def recalculate_competition_stats(custom_config, comp_name):
     '''
-    Caculates all the competition stack
+    Caculates all the competition stats
     based on the rest api data for 
     later use and parsing
     '''
@@ -29,7 +29,7 @@ def recalculate_competition_stats(custom_config, comp_name):
 
     team_users = {}
 
-    teams = StaffCustomTeams.objects.filter(competition = competition.id)
+    teams = StaffCustomTeams.objects.filter(competition = competition.id, checked_in = True)
 
     for team in teams:
         team_users = {
