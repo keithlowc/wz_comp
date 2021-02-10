@@ -71,7 +71,7 @@
     function runCharts (user) {
       initializeCharts(user).then(() => {
         createChart(user, chartId = "#damage-chart-" + user, label = "Damage", color = "#1d8187", title = "Damage over last games", xAxisLabel = "Matches", yAxisLabel = "Damage");
-        createChart(user, chartId = "#kda-chart-" + user, label = "KD", color = "#1e242b", title = "KD over last games", xAxisLabel = "Matches", yAxisLabel = "KD");
+        createChart(user, chartId = "#kda-chart-" + user, label = "KD", color = "#1e242b", title = "KD over last games", xAxisLabel = "Matches", yAxisLabel = "KD", kdGraph = true);
         createChart(user, chartId = "#placement-chart-" + user, label = "Placements", color = "#7d838d", title = "Placements over last games", xAxisLabel = "Matches", yAxisLabel = "Placements");
       })
     }
@@ -106,10 +106,8 @@
         });
     }
   
-    function createChart(user, chartId, label, color, title, xAxisLabel, yAxisLabel) {
+    function createChart(user, chartId, label, color, title, xAxisLabel, yAxisLabel, kdGraph = false) {
         var $chart = $(chartId);
-
-        if (typeof chart)
   
         $.ajax({
                 url: $chart.data("url"),
@@ -117,17 +115,39 @@
   
                     var ctx = $chart[0].getContext("2d");
 
+                    console.log(data);
+
                     chart.clear();
+
+                    // If kdGraph adds extra 
+                    // dataset with average kd of
+                    // player
+                    if (kdGraph == true ) {
+                      dataGraph = [{
+                          label: label,
+                          borderColor: color,
+                          data: data.key,
+                          fill: false
+                        },{
+                          label: 'Average KD of past matches',
+                          borderColor: '#C5283D',
+                          data: data.avg,
+                          fill: false
+                        }]
+                    } else {
+                      dataGraph = [{
+                          label: label,
+                          borderColor: color,
+                          data: data.key,
+                          fill: false
+                        }]
+                    }
+
                     chart = new Chart(ctx, {
                         type: 'line',
                         data: {
                             labels: data.matches,
-                            datasets: [{
-                                label: label,
-                                borderColor: color,
-                                data: data.key,
-                                fill: false
-                            }]        
+                            datasets: dataGraph,
                         },
                         options: {
                             events: [],
@@ -153,8 +173,8 @@
                                             labelString: xAxisLabel
                                         }
                                     }]
-                                }
-                        }
+                            },
+                        },
                     });
   
                 }
