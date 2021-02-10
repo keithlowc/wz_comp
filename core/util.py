@@ -24,6 +24,8 @@ def exclude_matches_of_type(matches_list, competition_type):
     '''
     Exclude matches that contain
     the competition type assigned
+
+    Exclude this one too br_dmz_plunquad
     '''
 
     clean_matches = []
@@ -71,8 +73,10 @@ def get_values_from_matches(matches_list, user_tag = None):
     
     all_matches = []
 
+    print('Player name: {}'.format(matches_list[0]['player']['username']))
+
     for index, matches in enumerate(matches_list):
-        print('Player name: {}'.format(matches['player']['username']))
+        # print('Player name: {}'.format(matches['player']['username']))
 
         data = {}
         try:
@@ -87,8 +91,8 @@ def get_values_from_matches(matches_list, user_tag = None):
         except Exception as e:
             print()
             print('There was an error with: {} - Probably a plunder match'.format(e))
-            data['teamPlacement'] = 45
-            print(matches['playerStats'])
+            data['teamPlacement'] = 200
+            print('A Match of {} with stats: {}'.format(matches['mode'], matches['playerStats']))
             print()
 
         all_matches.append(data)
