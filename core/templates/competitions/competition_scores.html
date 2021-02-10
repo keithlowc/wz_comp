@@ -19,12 +19,19 @@
 
       <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12">
         <div class = "row">
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
-            {% if user == competition.created_by and competition.competition_started == True %}
-              <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
-            {% endif %}
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
+          {% if user == competition.created_by and competition.competition_started == True %}
+            <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12 pt-2">
+                <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
+            </div>
+          {% endif %}
+
+          {% if user == competition.created_by %}
+            <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12 pt-2">
+              <a class="btn btn-secondary " href="{% url 'send_competition_email' comp_name=competition.competition_name %}">Tournament Communication</a>
+            </div>
+          {% endif %}
+
+          <div class="col-lg-4 col-md-6 col-sm-12 col-xm-12 pt-2">
             <input id="toggle-silent" type="checkbox" data-toggle="toggle" onchange="change()" data-on="Auto-Refresh On" data-off="Auto-Refresh Off" data-onstyle="success" data-offstyle="danger">
           </div>
         </div>
@@ -60,19 +67,19 @@
                                   <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
                                     <span class="badge badge-success"> In-Progress </span>
                                     <span class="badge badge-info">{{ competition.competition_type }}</span>
-                                    <span class="badge badge-info">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
+                                    <span class="badge badge-light">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
                                   </td>
                               {% elif competition.competition_status == 2 %}
                                   <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
                                     <span class="badge badge-warning"> Ended </span>
                                     <span class="badge badge-info">{{ competition.competition_type }}</span>
-                                    <span class="badge badge-info">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
+                                    <span class="badge badge-light">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
                                   </td>
                               {% elif competition.competition_status == 3 %}
                                   <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
                                     <span class="badge badge-primary"> Not-Started </span>
                                     <span class="badge badge-info">{{ competition.competition_type }}</span>
-                                    <span class="badge badge-info">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
+                                    <span class="badge badge-light">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
                                   </td>
                               {% endif %}
                             </div>
@@ -100,7 +107,7 @@
               </div>
               <div class="row">
                 <div class="col-12 pt-4 pb-4">
-                  <h1 class="display-4 text-center white-color-font">Leaderboard!</h1>
+                  <h1 class="display-3 text-center white-color-font">Leaderboard!</h1>
                 </div>
 
               </div>
@@ -109,29 +116,38 @@
                 <div class="card">
                     <div class="card-header" role="tab" id="headingThree">
                       <h5 class="mb-0">
-                        <a class="collapsed" data-toggle="collapse" href="#{{ team }}" aria-expanded="false" aria-controls="{{ team }}">
-                          <table class="table table-sm mb-0 table-hover">
-                            <tbody>
+                        <a id="{{team}}-collapse" onclick="loadStreamVideoToFrame('{{team}}-collapse', '{{team.team_twitch_stream_user}}-header-twitch', '{{team.team_twitch_stream_user}}-iframe');" class="collapsed" data-toggle="collapse" href="#{{ team }}" aria-expanded="false" aria-controls="{{ team }}">
                               <div class="row">
+                                
                                 <div class="col-1">
-                                  <td class="border-0 align-middle">
                                     <img src="{{ team.team_banner }}" class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block circular-teams border-image">
-                                  </td>
                                 </div>
-                                <div class="col-7">
-                                  <td class="border-0 align-middle">
-                                      <h5 class="notranslate" onclick="loadVideo();">{{ team }}</h5>
-                                  </td>
+
+                                <div class="col-7 my-auto">
+                                      <h4 id="{{team.team_twitch_stream_user}}-header" class="notranslate" data-url="https://embed.twitch.tv?channel={{team.team_twitch_stream_user}}&amp;height=480&amp;migration=true&amp;parent=127.0.0.1&amp;width=100%25">{{ team }}</h4>
                                 </div>
-                                <div class="col-2">
-                                  <td class="border-0 text-right align-middle">{{ team.score }}</td>
+
+                                {% if team.checked_in %}
+                                
+                                  <div class="col-2 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                                      <span class="badge badge-success">Checked in</span>
+                                  </div>
+
+                                {% else %}
+
+                                  <div class="col-2 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                                    <span class="badge badge-danger">Not checked in</span>
+                                  </div>
+
+                                {% endif %}
+
+                                <div class="col-1 my-auto text-right">
+                                    {{ team.score }}
                                 </div>
-                                <div class="col-2">
-                                  <td class="border-0 text-right align-middle"><i class="fas fa-chevron-down"></i></td>
+                                <div class="col-1 my-auto text-right">
+                                    <i class="fas fa-chevron-down"></i>
                                 </div>
                               </div>
-                            </tbody>
-                          </table>
                         </a>
                       </h5>
                     </div>
@@ -139,9 +155,23 @@
                     <div id="{{ team }}" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
                       <div class="card-body">
 
-                        <!-- <a class="btn btn-success" href="https://embed.twitch.tv?channel={{team.team_twitch_stream_user}}&amp;height=480&amp;migration=true&amp;parent=127.0.0.1&amp;width=100%25" target="twitchframe">Load Stream</a> -->
-
-                        {% include 'competitions/competition_team_twitch_live_feed.html' with twitch_user=team.team_twitch_stream_user %}
+                        <div class="row">
+                          <div class="col">
+                              <h1 id="{{team.team_twitch_stream_user}}-header-twitch" data-url="https://embed.twitch.tv?channel={{team.team_twitch_stream_user}}&amp;height=480&amp;migration=true&amp;parent=127.0.0.1&amp;width=100%25">{{team.team_twitch_stream_user}} Live!</h1>
+                              <iframe src=""
+                                  allowfullscreen="" 
+                                  scrolling="no" 
+                                  frameborder="0" 
+                                  title="Twitch" 
+                                  autoplay="false"
+                                  name = "twitchframe"
+                                  sandbox="allow-modals allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" 
+                                  width="100%" 
+                                  height="480"
+                                  id = "{{team.team_twitch_stream_user}}-iframe">
+                              </iframe>
+                          </div>
+                        </div>
 
                         <h5 class="font-color-black pt-2">Team members past matches analysis before the tournament</h5>
 
@@ -279,15 +309,6 @@
 
 {% block javascript %}
     <script>
-        // These functions are basically allowing
-        // the reloading of the page if needed
-        // otherwise, the user can stop the refreshing
-        // by unchecking the box
-
-        // div id = header = collapse to maintain it closed
-
-        let load_video = false;
-
         let time_to_refresh = {{ config.competitions_page_refresh_time }}
 
         $('#toggle-silent')[0].checked = false;
@@ -296,10 +317,10 @@
 
         function checkStates() {
             if (checked == "true") {
-                console.log('It was checked');
+                // console.log('It was checked');
                 $('#toggle-silent')[0].checked = true;
             } else if (checked == "false") {
-                console.log('It was not checked!');
+                // console.log('It was not checked!');
             }
         }
 
@@ -319,13 +340,26 @@
             document.location.reload();
         }
 
-        // Load twitch video 
-        // when user wants to load it
+        function loadStreamVideoToFrame(collapsable_element_id, twitch_header_id, twitch_frame_id) {
+          // Loads stream video depending 
+          // on which card is collapsed
+          // collapsable_element_id is taken as false
+          // since the function is being called first
+          // before it can convert to true
 
-        function loadVideo() {
-          console.log('Loading video');
-          load_video = !load_video;
-          console.log(load_video);
+          let card = document.getElementById(collapsable_element_id);
+          let twitch_frame = document.getElementById(twitch_frame_id);
+
+          is_not_expanded = card.getAttribute("aria-expanded");
+
+          if (is_not_expanded == "false") {
+            let stream_url = document.getElementById(twitch_header_id).getAttribute("data-url")
+            twitch_frame.setAttribute("src", stream_url)
+          } 
+          else {
+            let stream_url = "";
+            twitch_frame.setAttribute("src", stream_url)
+          }
         }
 
         checkStates();

@@ -1,15 +1,19 @@
 from background_task import background
 from core.models import StaffCustomTeams, StaffCustomCompetition
 
+from .email import EmailNotificationSystem
+
 from . import util, signals
 from pytz import timezone
 from datetime import datetime
 import time
 
+# Competition bg jobs
+
 @background(schedule = 1)
 def recalculate_competition_stats(custom_config, comp_name):
     '''
-    Caculates all the competition stack
+    Caculates all the competition stats
     based on the rest api data for 
     later use and parsing
     '''
@@ -25,7 +29,7 @@ def recalculate_competition_stats(custom_config, comp_name):
 
     team_users = {}
 
-    teams = StaffCustomTeams.objects.filter(competition = competition.id)
+    teams = StaffCustomTeams.objects.filter(competition = competition.id, checked_in = True)
 
     for team in teams:
         team_users = {
@@ -232,3 +236,76 @@ def calculate_status_of_competition(custom_config, comp_name):
     
     print('--------')
 
+# Notification bg jobs
+
+class EmailNotificationSystemJob:
+    @background(schedule = 1)
+    def send_check_in_notification(competition_name, competition_id):
+        '''
+        Background job that sends email notification
+        if the competition time - 1 hour is >= to 
+        the current time
+        '''
+        
+        print()
+        print('** STARTING Email notification BG Job for {} with id {} **'.format(competition_name, competition_id))
+
+        # Check that competition exist
+        # If try fails, then it will mean
+        # that the competition no longer 
+        # exists, but there will be an
+        # orphan bg job..
+        competition_object_exist = False
+
+        try:
+            competition = StaffCustomCompetition.objects.get(id = competition_id)
+
+            email_list = [team.team_captain_email for team in competition.teams.all()]
+
+            competition_config = {
+                'competition_name': competition.competition_name,
+                'competition_id': competition.id,
+                'start_time': competition.start_time,
+                'team_emails': email_list,
+            }
+
+            competition_object_exist = True
+
+        except Exception as e:
+            print()
+            print('--> Competition {} does not exist'.format(competition_name))
+        
+        if competition_object_exist:
+            util.check_if_competition_is_one_hour_from_start(competition_config)
+            competition.email_job_created = True
+            competition.save()
+        else:
+            print('--> Competition does not exists! Orphan Bg Job with id {}'.format(competition_id))
+        print('** ENDING Email notification BG Job for {} with id {} **'.format(competition_name, competition_id))
+        print()
+    
+
+    @background(schedule = 1)
+    def send_email_update(competiton_name, subject, body, recipients_list):
+        email_sys = EmailNotificationSystem()
+
+        data_email = ('Duelout Tournament Update: ' + subject,
+                     body,
+                    'noreply@duelout.com',
+                    'something')
+
+        all_data = []
+
+        # Convert tuples to list 
+        # to manipulate and then
+        # back to tuples
+
+        for email in recipients_list:
+            new = list(data_email)
+            new[-1] = [email]
+            all_data.append(tuple(new))
+        
+        all_data = tuple(all_data)
+
+        email_sys.send_mass_email_to_teams(all_data)
+    

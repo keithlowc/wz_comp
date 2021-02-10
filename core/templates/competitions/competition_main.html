@@ -1,17 +1,6 @@
 {% extends 'main/base.html' %}
 {% load custom_filtering_tags %}
 
-{% block javascript %}
-  <!-- <script>
-    function reload() {
-      console.log('Reloading');
-      document.location.reload();
-    }
-
-    setTimeout(reload, 10000);
-  </script> -->
-{% endblock %}
-
 {% block content %}
 
 <div class="row"> 
@@ -48,7 +37,7 @@
                                       <span class="badge badge-primary"> Not-Started </span>
                               {% endif %}
                               <span class="badge badge-info">{{ competition.competition_type }}</span>
-                              <span class="badge badge-info">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
+                              <span class="badge badge-light">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
                           </div>
 
                           <div class="col-lg-2 col-md-2 text-right my-auto d-none d-sm-block d-sm-none d-md-block .d-md-none .d-lg-block">
@@ -89,3 +78,6 @@
 </div>
 
 {% endblock content %}
+
+{% block javascript %}
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'main/base.html' %}
+{% load custom_filtering_tags %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="border rounded join-competition-form">
+    <div class="row">
+        <div class="col">
+            <h1 class="display-2 white-color-font text-center pt-4">{{ comp_name }}</h1>
+
+            <div class="row p-4">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xm-12 my-auto">
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="white-color-font text-center">Email Form</h1>
+                            <form method="post">
+                                {% csrf_token %}
+                                
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                        {{ form.subject|as_crispy_field }}
+                                    </div>
+                                </div>
+                        
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                        {{ form.body|as_crispy_field }}
+                                    </div>
+                                </div>
+                        
+                        
+                                <div class="row pt-4">
+                                    <div class="col-6">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="submit" value="Send" class="btn btn-primary btn-lg btn-block" id="submitButton">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xm-12">
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="white-color-font text-center">Sent Updates</h1>
+                            <div class="container white-color-font custom-scrollbar-js" style="height: 600px; width:515px; overflow-y: scroll;">
+                                {% if sent_emails %}
+                                    {% for email in sent_emails %}
+                                        <div class="row p-4 border-bottom align-items-center">
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xm-12">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h5>Date: </h5>
+                                                        <p>{{ email.date|date:'Y-m-d H:i' }} EST</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h5>Created:</h5>
+                                                        <p>{{ email.created_by }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-8">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h5>Subject:</h5>
+                                                        <p> {{ email.subject }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h5>Body:</h5>
+                                                        <p>{{ email.body|truncatechars:250 }}</p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                        <h4>There are no old updates</h4>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+</script>
+{% endblock %}

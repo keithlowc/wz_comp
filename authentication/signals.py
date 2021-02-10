@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 # If user logs in - Success message
 @receiver(user_logged_in)
 def post_login(sender, user, request, **kwargs):
-    messages.add_message(request, messages.SUCCESS, 'You have uccesfully logged in!')
+    messages.add_message(request, messages.SUCCESS, 'You have succesfully logged in!')
 
 
 # If user logs out - Success message
@@ -21,9 +21,3 @@ def post_logout(sender, user, request, **kwargs):
 @receiver(user_login_failed, sender = User)
 def failed_login(sender, user, request, **kwargs):
     messages.add_message(request, messages.ERROR, 'Logging in failed!')
-
-
-# If user signs up - Success message
-# @receiver(post_save, sender=User)
-# def created_new_user(sender, request, **kwargs):
-#     messages.add_message(request, messages.SUCCESS, 'You succesfully created a new account!')

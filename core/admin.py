@@ -2,7 +2,12 @@ from django.contrib import admin
 
 import os
 
-from .models import Profile, Teams, StaffCustomTeams, StaffCustomCompetition, ConfigController
+from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
+from .forms import TeamFormAdminPage, TeamFormAdminPageSuperUser, CompetitionAdminPage, CompetitionAdminPageSuperUser
+
+# from background_task.models import Task
+
+from core.bg_tasks import EmailNotificationSystemJob
 
 # Register your models here.
 
@@ -10,11 +15,23 @@ admin.site.site_header = 'Duelout Manager'
 admin.site.site_title = 'Duelout Admin Portal'
 admin.site.index_title = 'Welcome to Duelout Portal'
 
-admin.site.register(Profile)
-admin.site.register(Teams)
 admin.site.register(ConfigController)
 
+# StaffCustomTeam admin
 class StaffCustomTeamAdmin(admin.ModelAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        '''
+        Controls the fields we display 
+        on admin page
+        '''
+
+        if request.user.is_superuser:
+            kwargs['form'] = TeamFormAdminPageSuperUser
+        else:
+            kwargs['form'] = TeamFormAdminPage
+        
+        return super().get_form(request, obj, **kwargs)
+
     def has_view_permission(self, request, obj=None):
         if obj is not None and obj.competition.created_by != request.user:
             if request.user.is_superuser:
@@ -40,53 +57,8 @@ class StaffCustomTeamAdmin(admin.ModelAdmin):
         return True
 
     search_fields = ('team_name',)
-    list_display = ('team_name', 'competition', 'score',)
+    list_display = ('team_name', 'competition', 'score', 'checked_in')
     list_filter = ('competition',)
-
-    if 'SERVER' in os.environ:
-        fields = (
-            'team_name',
-            'team_banner',
-            'team_captain_email',
-
-            'player_1',
-            'player_1_id_type',
-
-            'player_2',
-            'player_2_id_type',
-
-            'player_3',
-            'player_3_id_type',
-
-            'player_4',
-            'player_4_id_type',
-            'competition',
-        )
-    else:
-        fields = (
-            'team_name',
-            'team_banner',
-            'team_captain_email',
-
-            'player_1',
-            'player_1_id_type',
-
-            'player_2',
-            'player_2_id_type',
-
-            'player_3',
-            'player_3_id_type',
-
-            'player_4',
-            'player_4_id_type',
-
-            'competition',
-            'data',
-            'data_stats',
-            'data_to_render',
-            'data_stats_loaded',
-            'score',
-        )
 
 admin.site.register(StaffCustomTeams, StaffCustomTeamAdmin)
 
@@ -100,8 +72,9 @@ class InLineStaffCustomTeam(admin.StackedInline):
     model = StaffCustomTeams
     fields = (
         'team_name',
-        'team_banner',
+        'team_twitch_stream_user',
         'team_captain_email',
+        'team_banner',
 
         'player_1',
         'player_1_id_type',
@@ -115,11 +88,26 @@ class InLineStaffCustomTeam(admin.StackedInline):
         'player_4',
         'player_4_id_type',
 
-        'competition',
+        'checked_in',
     )
     extra = 1
 
+# Competitions admin 
 class StaffCustomCompetitionAdmin(admin.ModelAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        '''
+        Controls the fields we display 
+        on admin page
+        '''
+
+        if request.user.is_superuser:
+            kwargs['form'] = CompetitionAdminPageSuperUser
+        else:
+            kwargs['form'] = CompetitionAdminPage
+        
+        return super().get_form(request, obj, **kwargs)
+
+
     def save_model(self, request, instance, form, change):
         '''
         This allows us to save the 
@@ -132,6 +120,26 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
         if not change or not instance.created_by:
             instance.created_by = user
         instance.save()
+
+        # Starting email job 
+        # when user save new competition
+        # the bg job will run every 1 hour
+        # The bg job should not duplicate
+        config = ConfigController.objects.get(name = 'main_config_controller')
+
+        if config.competition_email_active:
+            competition = StaffCustomCompetition.objects.get(id = instance.id)
+
+            if competition.email_job_created == False:
+                email_job = EmailNotificationSystemJob()
+                email_job.send_check_in_notification(competition_name = instance.competition_name,
+                                                    competition_id = instance.id,
+                                                    repeat = 30,
+                                                    repeat_until = instance.start_time, 
+                                                    verbose_name = "Check-in email - for competition with id: {}".format(instance.id), 
+                                                    creator = user)
+            else:
+                print('Did not create a new BG job')
         return instance
     
     def has_view_permission(self, request, obj=None):
@@ -161,67 +169,14 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
     inlines = [InLineStaffCustomTeam]
     search_fields = ('competition_name',)
     list_filter = ('created_by', 'competition_type',)
-    list_display = ('competition_name', 'competition_type', 'created_by')
-
-    if 'SERVER' in os.environ:
-        fields = (
-                'competition_name',
-                'competition_description',
-                'competition_banner',
-                'total_teams_allowed_to_compete',
-
-                # Contact information
-                'discord_link',
-                'instagram_link',
-                'facebook_link',
-                'twitter_link',
-                'twitch_link',
-
-                # Verification values
-                'cod_kd_minimum_per_player_verification',
-                'cod_kd_maximum_per_player_verification',
-                'cod_verification_total_games_played',
-                'cod_verification_total_time_played',
-
-                'competition_type',
-                'number_of_matches_to_count_points',
-                'points_per_kill',
-                'points_per_first_place',
-                'points_per_second_place',
-                'points_per_third_place',
-                'start_time',
-                'end_time',
-                )
-    else:
-        fields = (
-        'competition_name',
-        'competition_description',
-        'competition_banner',
-        'total_teams_allowed_to_compete',
-
-        # Contact information
-        'discord_link',
-        'instagram_link',
-        'facebook_link',
-        'twitter_link',
-        'twitch_link',
-
-        # Verification values
-        'cod_kd_minimum_per_player_verification',
-        'cod_kd_maximum_per_player_verification',
-        'cod_verification_total_games_played',
-        'cod_verification_total_time_played',
-
-        'competition_type',
-        'number_of_matches_to_count_points',
-        'points_per_kill',
-        'points_per_first_place',
-        'points_per_second_place',
-        'points_per_third_place',
-        'start_time',
-        'end_time',
-
-        'competition_started',
-        )
+    list_display = ('competition_name', 'competition_type', 'created_by', 'start_time')
 
 admin.site.register(StaffCustomCompetition, StaffCustomCompetitionAdmin)
+
+
+class CompetitionCommunicationEmailsAdmin(admin.ModelAdmin):
+    search_fields = ('competition',)
+    list_filter = ('competition', 'created_by')
+    list_display = ('competition', 'subject', 'date', 'created_by')
+
+admin.site.register(CompetitionCommunicationEmails, CompetitionCommunicationEmailsAdmin)

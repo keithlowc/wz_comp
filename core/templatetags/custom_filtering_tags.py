@@ -26,3 +26,8 @@ def remove_everything_after_hashtag(user):
 @register.filter
 def convert_days_to_epoch(days):
     return timedelta(days = days).total_seconds()
+
+
+@register.filter
+def convert_plus_to_empty(string):
+    return string.replace('+',' ')

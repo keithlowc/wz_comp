@@ -1,17 +1,11 @@
 from .warzone_api import WarzoneApi
+from .email import EmailNotificationSystem
+
+from core.models import StaffCustomTeams
 
 import datetime, time
 
 from itertools import groupby
-
-
-def calculate_time_delta(start_1, start_2):
-    a = datetime.datetime.fromtimestamp(start_1)
-    b = datetime.datetime.fromtimestamp(start_2)
-
-    total_delta = a - b
-
-    return total_delta
 
 
 def calculate_average(matches, element):
@@ -24,11 +18,14 @@ def calculate_average(matches, element):
 
     return '{:.3f}'.format(avg)
 
+# Matches related
 
 def exclude_matches_of_type(matches_list, competition_type):
     '''
     Exclude matches that contain
     the competition type assigned
+
+    Exclude this one too br_dmz_plunquad
     '''
 
     clean_matches = []
@@ -71,30 +68,32 @@ def filter_matches(matches_list, competition_type):
     
     return new_matches_list
 
-# Matches related
 
 def get_values_from_matches(matches_list, user_tag = None):
     
     all_matches = []
 
+    print('Player name: {}'.format(matches_list[0]['player']['username']))
+
     for index, matches in enumerate(matches_list):
+        # print('Player name: {}'.format(matches['player']['username']))
+
         data = {}
-        data['kd'] = matches['playerStats']['kdRatio']
-        data['kills'] = matches['playerStats']['kills']
         try:
             # Plunder matches do not have positioning 
             # This is important because we are getting 
             # that initial data for our graphs.
+            data['kd'] = matches['playerStats']['kdRatio']
+            data['kills'] = matches['playerStats']['kills']
+            data['damageDone'] = matches['playerStats']['damageDone']
+            data['matchID'] = matches['matchID']
             data['teamPlacement'] = matches['playerStats']['teamPlacement']
         except Exception as e:
             print()
-            print('Error teamplacement not found!')
-            data['teamPlacement'] = 100
-            print(matches['playerStats'])
+            print('There was an error with: {} - Probably a plunder match'.format(e))
+            data['teamPlacement'] = 200
+            print('A Match of {} with stats: {}'.format(matches['mode'], matches['playerStats']))
             print()
-
-        data['damageDone'] = matches['playerStats']['damageDone']
-        data['matchID'] = matches['matchID']
 
         all_matches.append(data)
     
@@ -180,37 +179,37 @@ def filter_for_time(custom_config, matches_list, competition_start_time, competi
         print('** Using Dummy data **')
         print('The start_time: ', start_time)
 
-        threshold_time = datetime.timedelta(seconds = threshold_time_seconds)
+        dummy_matches = []
 
-        end_time = time.time()
+        for match in matches_list:
+            dummy_matches.append(match)
+        
+        return dummy_matches[0:5]
+
     else:
         # Should slice the matches based on the 
         # time range give.
-        start_time = competition_start_time.timestamp()
-        end_time = competition_end_time.timestamp()
-        threshold_time = calculate_time_delta(end_time, start_time)
+        start_time = competition_start_time
+        end_time = competition_end_time
     
         print()
         print('** Using Real Sliced data **')
         print('The start_time: ', start_time)
 
-    top_matches = []
+        top_matches = []
 
-    for match in matches_list:
-        delta = calculate_time_delta(start_time, match['utcStartSeconds'])
-        print('Start Time: {} - Match time {} = delta {} - {}'.format(datetime.datetime.fromtimestamp(start_time),
-                                                               datetime.datetime.fromtimestamp(match['utcStartSeconds']), 
-                                                               delta, 
-                                                               match['matchID']))
+        for match in matches_list:
+            match_time = datetime.datetime.fromtimestamp(match['utcStartSeconds'])
 
-        if delta <= threshold_time and match['utcStartSeconds'] <= end_time:
-            top_matches.append(match)
-            print('--------------> {} - Selected Match: The delta: {} < {} threshold and match time {} <= {} end'.format(len(top_matches), 
-                                                                                                                delta, threshold_time, 
-                                                                                                                datetime.datetime.fromtimestamp(match['utcStartSeconds']), 
-                                                                                                                datetime.datetime.fromtimestamp(end_time)))
-        
-    return top_matches
+            print('Match time: {}'.format(match_time))
+
+            if match_time >= start_time and match_time <= end_time:
+                top_matches.append(match)
+                print('--------------> {} - Selected Match with Start Time: {} - Competition Start Time {} and END TIME: {}'.format(len(top_matches), 
+                                                                        datetime.datetime.fromtimestamp(match['utcStartSeconds']),
+                                                                        start_time, end_time))
+
+        return top_matches
 
 
 def get_custom_data(user_tag, user_id_type, competition_start_time, competition_end_time, competition_type, custom_config):
@@ -253,4 +252,66 @@ def get_custom_data(user_tag, user_id_type, competition_start_time, competition_
 
     return clean_data, matches_without_time_filter
 
+
+# Email notifications related
+
+def check_if_competition_is_one_hour_from_start(competition_config):
+    '''
+    This function is used on the bg taks for
+    email notifications.
+
+    It is running to see if the competition time
+    - 1 hour is = to current time. If equal then we
+    want to send the email or return true
+    '''
+
+    current_time = datetime.datetime.now()
+
+    start_time = competition_config['start_time']
+
+    delta = start_time - current_time
+
+    print()
+    print('--> Current server time {}'.format(current_time))
+    print('--> Competition start time {}'.format(start_time))
+    print('--> Total Delta {}'.format(delta))
+    print('--> Email list: {}'.format(competition_config['team_emails']))
+    print()
+
+    # If competition time is 1 hour before the current time
+    if (delta <= datetime.timedelta(hours = 1)):
+        email_sys = EmailNotificationSystem()
+
+        # Email data
+        subject = 'Check-In to competition: {}'.format(competition_config['competition_name'])
+        competition_name = competition_config['competition_name']
+
+        # Look into the teams that have not been sent email check in
+        if len(competition_config['team_emails']) > 0:
+
+            for email in competition_config['team_emails']:
+                team = StaffCustomTeams.objects.get(team_captain_email = email, competition_id = competition_config['competition_id'])
+                uuid = team.checked_in_uuid
+
+                check_in_url = 'https://www.duelout.com/competition/checkin/{}/{}'.format(competition_name, uuid)
+                check_in_url.replace('+','%20')
+
+                print('--> Checking the following teams: {}'.format(team))
+
+                if team.email_check_in_sent == False:
+                    print('------> The team {} with email {} will be sent out a check-in notification'.format(team, team.team_captain_email))
+                    email_sent = email_sys.send_competition_email(check_in_url, subject, competition_name, [team.team_captain_email])
+
+                    if email_sent:
+                        team.email_check_in_sent = True
+                        team.save()
+                else:
+                    print('------> Notification was already sent for team {} with email {}'.format(team, team.team_captain_email))
+                    print()
+        else:
+            print('----> No teams registered')
+    # competition is not close to current time
+    else:
+        print('--> Current delta {} is not <= 1 hour'.format(delta))
+        print('--> Emails will not be sent out!')
 

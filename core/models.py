@@ -4,58 +4,7 @@ from django.contrib import admin
 
 from datetime import datetime
 
-# Create your models here.
-
-class Profile(models.Model):
-    activision_tag = models.CharField(max_length = 100, unique = True, null = True)
-    account = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True)
-    kda = models.FloatField(default = 0)
-    wins = models.IntegerField(default = 0)
-    total_kills = models.IntegerField(default = 0)
-
-    last_ten_matches = models.JSONField(default = dict, blank = True)
-
-    last_calculated_matches = models.JSONField(default = dict, blank = True)
-
-    avg_kills_over_last_ten_matches = models.FloatField(default = 0)
-    avg_kda_over_last_ten_matches = models.FloatField(default = 0)
-    avg_damage_over_last_ten_matches = models.FloatField(default = 0)
-
-    class Meta:
-        verbose_name = 'Profile'
-        verbose_name_plural = 'Profiles'
-    
-    def __str__(self):
-        return f'{self.activision_tag}'
-
-
-class Teams(models.Model):
-    team_types = [
-        ('SQUAD', 'squad'),
-        ('TRIOS', 'trios'),
-        ('DUOS', 'duos'),
-        ('SOLOS', 'solos')
-    ]
-    
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, default = 0)
-    profiles = models.ManyToManyField(Profile)
-    team_name = models.CharField(max_length = 100, null = True, unique = True)
-    team_type = models.CharField(
-        max_length = 5,
-        choices = team_types,
-        default = 'SQUAD'
-    )
-    cummulative_kd = models.FloatField(default = 0)
-    total_wins = models.IntegerField(default = 0)
-    total_kills = models.IntegerField(default = 0)
-
-    class Meta:
-        verbose_name = 'Teams'
-        verbose_name_plural = 'Teams'
-    
-    def __str__(self):
-        return str(self.team_name) + ' - ' + str(self.team_type)
-
+import uuid
 
 # Custom competitions
 class StaffCustomCompetition(models.Model):
@@ -101,12 +50,28 @@ class StaffCustomCompetition(models.Model):
     competition_started = models.BooleanField(default = False)
     competition_status = models.IntegerField(default = 3)   # 'Not started': 3, 'Ended': 2, 'In-Progress': 1
 
+    # bg_job
+    email_job_created = models.BooleanField(default = False)
+
     class Meta:
-        verbose_name = 'CustomCompetition'
-        verbose_name_plural = 'CustomCompetitions'
+        verbose_name = 'Custom Competition'
+        verbose_name_plural = 'Custom Competitions'
     
     def __str__(self):
         return str(self.competition_name)
+
+
+class CompetitionCommunicationEmails(models.Model):
+    subject = models.CharField(max_length = 150)
+    body = models.TextField()
+    date = models.DateTimeField(default = datetime.now)
+
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, related_name = 'emails')
+
+    class Meta:
+        verbose_name = 'Competition Communication'
+        verbose_name_plural = 'Competition Communications'
 
 
 class StaffCustomTeams(models.Model):
@@ -145,9 +110,16 @@ class StaffCustomTeams(models.Model):
 
     score = models.IntegerField(default = 0)
 
+    # email checkin
+    email_check_in_sent = models.BooleanField(default = False)
+
+    # checked in to competition
+    checked_in = models.BooleanField(default = False)
+    checked_in_uuid = models.UUIDField(default = uuid.uuid4)
+
     class Meta:
-        verbose_name = 'CustomTeam'
-        verbose_name_plural = 'CustomTeams'
+        verbose_name = 'Custom Team'
+        verbose_name_plural = 'Custom Teams'
     
     def __str__(self):
         return str(self.team_name)
@@ -169,6 +141,7 @@ class ConfigController(models.Model):
     competitions_page_refresh_time = models.IntegerField(default = 15000)
     competitions_bg_tasks = models.IntegerField(default = 900)
     competitions_dummy_data = models.BooleanField(default = False)
+    competition_email_active = models.BooleanField(default = True)
 
     cod_url_warzone_stats = models.CharField(max_length = 500,  null = True, unique = True)
     cod_url_warzone_matches = models.CharField(max_length = 500,  null = True, unique = True)
@@ -179,8 +152,8 @@ class ConfigController(models.Model):
     twitch_api_verfication_client_secret = models.CharField(max_length = 100,  null = True, unique = True)
 
     class Meta:
-        verbose_name = 'ConfigController'
-        verbose_name_plural = 'ConfigControllers'
+        verbose_name = 'Application Configuration'
+        verbose_name_plural = 'Application Configuration'
     
     def __str__(self):
         return str("Configuration controller - Do not delete - Do not create more objects")
