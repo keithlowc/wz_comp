@@ -87,16 +87,58 @@
 {
   "model": "auth.user",
   "fields": {
-    "password": "pbkdf2_sha256$216000$WSM6PLQP6rNA$UT4KXibPId2GUrootgiqgc3E3Wx9NTS3IOFoFHYIUhU=",
-    "last_login": "2021-02-09T00:14:17.732",
+    "password": "pbkdf2_sha256$216000$u2PM0OENr3HY$yL3Ejb5edP7iOlYpxhI67UYGCOXPQZmGsK58GK0qeVY=",
+    "last_login": null,
     "is_superuser": false,
-    "username": "keithlow",
+    "username": "rtgaming",
     "first_name": "",
     "last_name": "",
     "email": "",
     "is_staff": true,
     "is_active": true,
-    "date_joined": "2021-02-08T13:04:23",
+    "date_joined": "2021-02-10T00:23:52",
+    "groups": [
+      [
+        "Host"
+      ]
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$216000$yesFVoEN4VMN$6XK28xViwaibLm9o4K9DwHYfzyK5+AZRamBuRHPicEM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "jillybean",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2021-02-10T00:24:17",
+    "groups": [
+      [
+        "Host"
+      ]
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$216000$vCURZknwDbAq$AbB8ulEvuvQCO3wXdjWMKFQidjoFnEZISkBa57yIyHI=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "salvamaravilla",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2021-02-10T00:25:00",
     "groups": [
       [
         "Host"
@@ -177,7 +219,7 @@
     "competition_description": "Total Upgrade los invita a participar en el Segundo Torneo de trios Kill Race con un premio de $100 USD. \r\n\r\nPor seguridad los clantag y demás recomendaciones se darán en stream el día del evento a las 17:30.\r\n\r\nRecordar que todos los datos son analizados por la plataforma de duelout - Se revisará y analizará que los usuarios no hayan hecho reverse boosting o utilicen hacks.\r\n\r\nEn los casos en que haya sospecha, se hará una investigación y de ser corroborada con la data se tomara una desicion a lo planteado.\r\nEn caso de que se considere trampa equipo quedarán descalificados y baneados de la plataforma sin derecho a reclamos.\r\nLa data usada para analizar sospechas es privada y la decisión queda a discreción del team Total Upgrade.\r\n\r\nhttps://www.twitch.tv/jillybe4n",
     "competition_type": "TRIOS",
     "created_by": [
-      "admin"
+      "jillybean"
     ],
     "competition_banner": "https://scontent-lga3-1.cdninstagram.com/v/t51.2885-19/s320x320/119326315_724754551410358_2508568494752887828_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&_nc_ohc=HdG-iIZ77oEAX-FdIEJ&tp=1&oh=4f13a9462b49f05ec9e19dde526083d5&oe=602CA60C",
     "total_teams_allowed_to_compete": 30,
@@ -210,7 +252,7 @@
     "competition_description": "Torneo de Salvamaravilla. Trios. Nivel medio (2.5 KD maximo). Inscripcion 10€ + 1€ sistema. puntuacion: 1 kill=10 puntos. Tercer lugar= 30 puntos.Segundo lugar= 50 puntos. Victoria= 100 puntos. 3 horas, partidas publicas, tomamos las 3 mejores partidas (sistema). Horario: 20 a 23h (España). Twitch: Obligatorio (capitan). Comunicados: Correo electronico/ Discord. Premios: Premios acumulativos (dependiendo de la cantidad de equipos se otorgan los premios). El torneo comienza automaticamente a las 20h y termina a las 23h.",
     "competition_type": "TRIOS",
     "created_by": [
-      "admin"
+      "salvamaravilla"
     ],
     "competition_banner": "https://scontent-lga3-1.cdninstagram.com/v/t51.2885-19/s150x150/90235223_230207174762958_203803894776594432_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&_nc_ohc=-qXpVBsJSfUAX-G1s_B&tp=1&oh=6f9f94ccbe0bfc96bf47ffc395678a06&oe=6048F628",
     "total_teams_allowed_to_compete": 30,
@@ -243,7 +285,7 @@
     "competition_description": "Hola muy buenas equipos!!, queremos anunciarles nuestro siguiente torneo de Warzone.\r\nREGLAS.\r\n\r\n•Modalidad: Cuartetos / kill race en partidas públicas\r\n\r\n•El torneo se llevara el día sábado 20 de febrero del 2021.\r\nDe 6:00 pm a 8:00 pm hora Ciudad de México\r\n\r\n•Se manejará por un mínimo y maximo de K/D\r\n\r\nK/D mínimo por jugador: 2.50\r\nK/D máximo por jugador: 4.0\r\n\r\n-Queda prohibido cualquier uso de hack, bug del juego, hacer team con otros equipos, etc\r\n\r\n•Estaremos revisando la partida, cualquier queja que se nos reporte será investigada y aclarada.\r\n\r\n•Si un jugador hace cualquiera acción ilegal en el juego como las que se mencionaron anteriormente tendrá una sanción la cual la llevarán todos los integrantes del equipo.\r\n\r\n•Entrada\r\n$100 mxn\r\n•Premio\r\n1er lugar: $1100mxn\r\n2do lugar: $500mxn\r\n3er lugar: $400mxn\r\n\r\nAl final de las partidas se hablará con el capitán del equipo ganador para proceder la transferencia del premio.",
     "competition_type": "SQUADS",
     "created_by": [
-      "admin"
+      "rtgaming"
     ],
     "competition_banner": "https://scontent-lga3-1.cdninstagram.com/v/t51.2885-19/s320x320/138683501_114105147250556_756789009504834410_n.jpg?_nc_ht=scontent-lga3-1.cdninstagram.com&_nc_ohc=rCXoNn3HuCUAX_BNd2b&tp=1&oh=5357bf3b0ea2e5be214532f794e6cf6a&oe=604D22ED",
     "total_teams_allowed_to_compete": 30,
@@ -796,6 +838,28 @@
     "cod_x_rapidapi_host": "call-of-duty-modern-warfare.p.rapidapi.com",
     "twitch_api_verfication_client_id": "cr3ifw454u32glen4iwbfwo6qh1me4",
     "twitch_api_verfication_client_secret": "ja9ng0rknoniwsvhi3cwfdg4sasyty"
+  }
+},
+{
+  "model": "background_task.task",
+  "pk": 406,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "7684c5de633f56e64b0ee0cd78609f96976283e4",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:26:41.457",
+    "repeat": 900,
+    "repeat_until": "2021-02-10T00:12:53",
+    "queue": null,
+    "attempts": 0,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": null,
+    "locked_at": null,
+    "creator_content_type": null,
+    "creator_object_id": null
   }
 },
 {
@@ -4260,7 +4324,7 @@
     "task_hash": "84ea4c88f9eac686efe421e88e54de651e6281d3",
     "verbose_name": null,
     "priority": 0,
-    "run_at": "2021-02-09T00:29:10.000",
+    "run_at": "2021-02-09T00:29:10",
     "repeat": 0,
     "repeat_until": null,
     "queue": null,
@@ -4599,6 +4663,930 @@
     "last_error": "",
     "locked_by": "6225",
     "locked_at": "2021-02-09T13:18:44.180",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 334,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"Total Upgrade Torneo #2 Kill Race Trios\"], {}]",
+    "task_hash": "996ad6add1632461b9c1470f3d515862bf6300d3",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:28:00.208",
+    "repeat": 900,
+    "repeat_until": "2021-02-14T21:02:00",
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "29207",
+    "locked_at": "2021-02-09T23:28:00.186",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 335,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"Total Upgrade Torneo #2 Kill Race Trios\"], {}]",
+    "task_hash": "46054887d4668ef64b59cb9f9814ff796fded660",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:28:05.250",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "29207",
+    "locked_at": "2021-02-09T23:28:05.241",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 336,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"Total Upgrade Torneo #2 Kill Race Trios\"], {}]",
+    "task_hash": "6a42a4d797d39cea9ebf955b2948cf1147f10225",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:28:05.426",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "29207",
+    "locked_at": "2021-02-09T23:28:05.334",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 337,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"Total Upgrade Torneo #2 Kill Race Trios\"], {}]",
+    "task_hash": "996ad6add1632461b9c1470f3d515862bf6300d3",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:29:20.499",
+    "repeat": 900,
+    "repeat_until": "2021-02-14T21:02:00",
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "29207",
+    "locked_at": "2021-02-09T23:29:20.479",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 338,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"Total Upgrade Torneo #2 Kill Race Trios\"], {}]",
+    "task_hash": "6a42a4d797d39cea9ebf955b2948cf1147f10225",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:30:06.060",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "29207",
+    "locked_at": "2021-02-09T23:30:05.908",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 339,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"Total Upgrade Torneo #2 Kill Race Trios\"], {}]",
+    "task_hash": "46054887d4668ef64b59cb9f9814ff796fded660",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:38:45.373",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 4,
+    "failed_at": "2021-02-09T23:38:45.373",
+    "last_error": "Traceback (most recent call last):\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/background_task/tasks.py\", line 43, in bg_runner\n    func(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/wz_comp/core/bg_tasks.py\", line 55, in recalculate_competition_stats\n    clean_data, matches_without_time_filter = util.get_custom_data(user, user_id_type,\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/wz_comp/core/util.py\", line 248, in get_custom_data\n    matches_without_time_filter = get_values_from_matches(matches_without_time_filter,\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/wz_comp/core/util.py\", line 79, in get_values_from_matches\n    data['kd'] = matches['playerStats']['kdRatio']\nKeyError: 'kdRatio'\n",
+    "locked_by": "30216",
+    "locked_at": "2021-02-09T23:38:08.495",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 340,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"Total Upgrade Torneo #2 Kill Race Trios\"], {}]",
+    "task_hash": "996ad6add1632461b9c1470f3d515862bf6300d3",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:43:08.794",
+    "repeat": 900,
+    "repeat_until": "2021-02-14T21:02:00",
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "30699",
+    "locked_at": "2021-02-09T23:43:08.774",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 341,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "7684c5de633f56e64b0ee0cd78609f96976283e4",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:43:31.616",
+    "repeat": 900,
+    "repeat_until": "2021-02-09T23:42:05",
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "30721",
+    "locked_at": "2021-02-09T23:43:31.595",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 342,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"test\"], {}]",
+    "task_hash": "2a3d06bdb6ba5c0b4ec51944a104a872a01381da",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:43:43.340",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "30721",
+    "locked_at": "2021-02-09T23:43:43.327",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 343,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "7684c5de633f56e64b0ee0cd78609f96976283e4",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:45:13.879",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "30900",
+    "locked_at": "2021-02-09T23:45:13.858",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 344,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "9451b92c4febf5ba40b97e8eb19fcf5f91168b41",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:45:25.975",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "30900",
+    "locked_at": "2021-02-09T23:45:18.968",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 345,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"test\"], {}]",
+    "task_hash": "2a3d06bdb6ba5c0b4ec51944a104a872a01381da",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:45:26.050",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "30900",
+    "locked_at": "2021-02-09T23:45:26.031",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 346,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "7684c5de633f56e64b0ee0cd78609f96976283e4",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:46:29.088",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "31061",
+    "locked_at": "2021-02-09T23:46:29.068",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 347,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "9451b92c4febf5ba40b97e8eb19fcf5f91168b41",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:46:40.791",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "31061",
+    "locked_at": "2021-02-09T23:46:34.192",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 348,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "7684c5de633f56e64b0ee0cd78609f96976283e4",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:48:14.185",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "31264",
+    "locked_at": "2021-02-09T23:48:14.163",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 349,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "9451b92c4febf5ba40b97e8eb19fcf5f91168b41",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:48:26.351",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "31264",
+    "locked_at": "2021-02-09T23:48:19.277",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 350,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"test\"], {}]",
+    "task_hash": "2a3d06bdb6ba5c0b4ec51944a104a872a01381da",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:48:26.448",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "31264",
+    "locked_at": "2021-02-09T23:48:26.428",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 351,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"Total Upgrade Torneo #2 Kill Race Trios\"], {}]",
+    "task_hash": "996ad6add1632461b9c1470f3d515862bf6300d3",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:49:35.751",
+    "repeat": 900,
+    "repeat_until": "2021-02-14T21:02:00",
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "31395",
+    "locked_at": "2021-02-09T23:49:35.729",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 352,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"Total Upgrade Torneo #2 Kill Race Trios\"], {}]",
+    "task_hash": "46054887d4668ef64b59cb9f9814ff796fded660",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:49:40.881",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "31395",
+    "locked_at": "2021-02-09T23:49:40.871",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 353,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"Total Upgrade Torneo #2 Kill Race Trios\"], {}]",
+    "task_hash": "6a42a4d797d39cea9ebf955b2948cf1147f10225",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:49:41.113",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "31395",
+    "locked_at": "2021-02-09T23:49:40.990",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 354,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"Total Upgrade Torneo #2 Kill Race Trios\"], {}]",
+    "task_hash": "996ad6add1632461b9c1470f3d515862bf6300d3",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:51:37.876",
+    "repeat": 900,
+    "repeat_until": "2021-02-14T21:02:00",
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "31593",
+    "locked_at": "2021-02-09T23:51:37.855",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 355,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"Total Upgrade Torneo #2 Kill Race Trios\"], {}]",
+    "task_hash": "996ad6add1632461b9c1470f3d515862bf6300d3",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:52:22.136",
+    "repeat": 900,
+    "repeat_until": "2021-02-14T21:02:00",
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "31649",
+    "locked_at": "2021-02-09T23:52:22.114",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 356,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"Total Upgrade Torneo #2 Kill Race Trios\"], {}]",
+    "task_hash": "46054887d4668ef64b59cb9f9814ff796fded660",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:54:59.973",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "31649",
+    "locked_at": "2021-02-09T23:52:27.213",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 357,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"Total Upgrade Torneo #2 Kill Race Trios\"], {}]",
+    "task_hash": "6a42a4d797d39cea9ebf955b2948cf1147f10225",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:55:01.134",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "31649",
+    "locked_at": "2021-02-09T23:54:59.992",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 358,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"TEST\"], {}]",
+    "task_hash": "cdf44fae8cb84387dd2ff46384d770ec5626f9a6",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:59:01.158",
+    "repeat": 900,
+    "repeat_until": "2021-02-09T23:58:45",
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "32288",
+    "locked_at": "2021-02-09T23:59:01.138",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 359,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"TEST\"], {}]",
+    "task_hash": "fa98dfe5ee7361e673d88143164c261adb451dad",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:59:13.925",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "32288",
+    "locked_at": "2021-02-09T23:59:06.177",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 360,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"TEST\"], {}]",
+    "task_hash": "c16d85df93d9933bdc2e336790ea5b4aec18bb72",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-09T23:59:14.046",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "32288",
+    "locked_at": "2021-02-09T23:59:14.026",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 361,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"TEST\"], {}]",
+    "task_hash": "cdf44fae8cb84387dd2ff46384d770ec5626f9a6",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:03:30.654",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "32754",
+    "locked_at": "2021-02-10T00:03:30.631",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 362,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"TEST\"], {}]",
+    "task_hash": "fa98dfe5ee7361e673d88143164c261adb451dad",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:03:42.529",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "32754",
+    "locked_at": "2021-02-10T00:03:35.710",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 363,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"TEST\"], {}]",
+    "task_hash": "c16d85df93d9933bdc2e336790ea5b4aec18bb72",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:03:42.566",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "32754",
+    "locked_at": "2021-02-10T00:03:42.544",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 364,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "7684c5de633f56e64b0ee0cd78609f96976283e4",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:11:41.756",
+    "repeat": 900,
+    "repeat_until": "2021-02-10T00:12:53",
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "876",
+    "locked_at": "2021-02-10T00:11:41.735",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 365,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "9451b92c4febf5ba40b97e8eb19fcf5f91168b41",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:11:53.799",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "876",
+    "locked_at": "2021-02-10T00:11:46.779",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 366,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"test\"], {}]",
+    "task_hash": "2a3d06bdb6ba5c0b4ec51944a104a872a01381da",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:11:53.866",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "876",
+    "locked_at": "2021-02-10T00:11:53.847",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 367,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "7684c5de633f56e64b0ee0cd78609f96976283e4",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:14:54.279",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "1248",
+    "locked_at": "2021-02-10T00:14:54.257",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 368,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "9451b92c4febf5ba40b97e8eb19fcf5f91168b41",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:15:06.463",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "1248",
+    "locked_at": "2021-02-10T00:14:59.367",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 369,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"test\"], {}]",
+    "task_hash": "2a3d06bdb6ba5c0b4ec51944a104a872a01381da",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:15:06.562",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "1248",
+    "locked_at": "2021-02-10T00:15:06.543",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 370,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "7684c5de633f56e64b0ee0cd78609f96976283e4",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:18:22.597",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "1623",
+    "locked_at": "2021-02-10T00:18:22.576",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 371,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "9451b92c4febf5ba40b97e8eb19fcf5f91168b41",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:18:34.798",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "1623",
+    "locked_at": "2021-02-10T00:18:27.667",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 372,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"test\"], {}]",
+    "task_hash": "2a3d06bdb6ba5c0b4ec51944a104a872a01381da",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:18:34.832",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "1623",
+    "locked_at": "2021-02-10T00:18:34.808",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 373,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "7684c5de633f56e64b0ee0cd78609f96976283e4",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:19:53.047",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "1836",
+    "locked_at": "2021-02-10T00:19:53.028",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 374,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "9451b92c4febf5ba40b97e8eb19fcf5f91168b41",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:20:05.103",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "1836",
+    "locked_at": "2021-02-10T00:19:58.066",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 375,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"test\"], {}]",
+    "task_hash": "2a3d06bdb6ba5c0b4ec51944a104a872a01381da",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:20:05.189",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 1,
+    "failed_at": null,
+    "last_error": "",
+    "locked_by": "1836",
+    "locked_at": "2021-02-10T00:20:05.170",
     "creator_content_type": null,
     "creator_object_id": null
   }
@@ -8117,7 +9105,7 @@
   "model": "admin.logentry",
   "pk": 196,
   "fields": {
-    "action_time": "2021-02-04T20:03:18.000",
+    "action_time": "2021-02-04T20:03:18",
     "user": [
       "admin"
     ],
@@ -10473,42 +11461,6 @@
 },
 {
   "model": "admin.logentry",
-  "pk": 327,
-  "fields": {
-    "action_time": "2021-02-08T13:07:05.332",
-    "user": [
-      "keithlow"
-    ],
-    "content_type": [
-      "core",
-      "staffcustomcompetition"
-    ],
-    "object_id": "23",
-    "object_repr": "my competition",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 328,
-  "fields": {
-    "action_time": "2021-02-08T13:12:52.784",
-    "user": [
-      "keithlow"
-    ],
-    "content_type": [
-      "core",
-      "staffcustomteams"
-    ],
-    "object_id": "34",
-    "object_repr": "Enigma Gaming #1",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Player 2\", \"Player 2 id type\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
   "pk": 329,
   "fields": {
     "action_time": "2021-02-08T13:39:50.760",
@@ -10577,42 +11529,6 @@
     "object_repr": "test",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 333,
-  "fields": {
-    "action_time": "2021-02-08T13:42:27.336",
-    "user": [
-      "keithlow"
-    ],
-    "content_type": [
-      "core",
-      "staffcustomcompetition"
-    ],
-    "object_id": "25",
-    "object_repr": "Torneo Enigma Gaming Navideno",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 334,
-  "fields": {
-    "action_time": "2021-02-08T13:56:21.694",
-    "user": [
-      "keithlow"
-    ],
-    "content_type": [
-      "core",
-      "staffcustomcompetition"
-    ],
-    "object_id": "25",
-    "object_repr": "Torneo Enigma Gaming Navideno",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"name\": \"Custom Team\", \"object\": \"test\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"123123\", \"fields\": [\"Checked in\"]}}]"
   }
 },
 {
@@ -11333,6 +12249,816 @@
     "object_repr": "3er Torneo Rtgaming Kill race",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 375,
+  "fields": {
+    "action_time": "2021-02-09T23:27:25.289",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "configcontroller"
+    ],
+    "object_id": "1",
+    "object_repr": "Configuration controller - Do not delete - Do not create more objects",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 376,
+  "fields": {
+    "action_time": "2021-02-09T23:29:06.690",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "28",
+    "object_repr": "Total Upgrade Torneo #2 Kill Race Trios",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Competition started\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"KVC Gaming\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"SickGaming\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Ace1\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"USMC\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Ace2\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Dark Legion\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Los pollos camperos\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"PTY VIKINGZ\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Kulos\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Bravo Six\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"LOS MELOSCARA\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"TTK Squad\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Pudgy woke\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"ENIGMA GAMING 1\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"DOMINIUM\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"ENIGMA GAMING 2\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"EASY WIN\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"OGT97WZ\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Tempus Gaming\", \"fields\": [\"Checked in\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 377,
+  "fields": {
+    "action_time": "2021-02-09T23:40:13.715",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "31",
+    "object_repr": "test",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 378,
+  "fields": {
+    "action_time": "2021-02-09T23:40:27.224",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomteams"
+    ],
+    "object_id": "50",
+    "object_repr": "Ace2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Competition (ADMIN)\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 379,
+  "fields": {
+    "action_time": "2021-02-09T23:43:16.617",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "background_task",
+      "task"
+    ],
+    "object_id": "370",
+    "object_repr": "core.bg_tasks.calculate_status_of_competition",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 380,
+  "fields": {
+    "action_time": "2021-02-09T23:43:16.620",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "background_task",
+      "task"
+    ],
+    "object_id": "369",
+    "object_repr": "core.bg_tasks.calculate_competition_scores",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 381,
+  "fields": {
+    "action_time": "2021-02-09T23:43:16.623",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "background_task",
+      "task"
+    ],
+    "object_id": "368",
+    "object_repr": "core.bg_tasks.recalculate_competition_stats",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 382,
+  "fields": {
+    "action_time": "2021-02-09T23:43:16.626",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "background_task",
+      "task"
+    ],
+    "object_id": "367",
+    "object_repr": "core.bg_tasks.calculate_status_of_competition",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 383,
+  "fields": {
+    "action_time": "2021-02-09T23:45:01.161",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "background_task",
+      "task"
+    ],
+    "object_id": "372",
+    "object_repr": "core.bg_tasks.recalculate_competition_stats",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 384,
+  "fields": {
+    "action_time": "2021-02-09T23:48:06.371",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "background_task",
+      "task"
+    ],
+    "object_id": "379",
+    "object_repr": "core.bg_tasks.calculate_competition_scores",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 385,
+  "fields": {
+    "action_time": "2021-02-09T23:49:10.766",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "31",
+    "object_repr": "test",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 386,
+  "fields": {
+    "action_time": "2021-02-09T23:50:34.961",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "28",
+    "object_repr": "Total Upgrade Torneo #2 Kill Race Trios",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"name\": \"Custom Team\", \"object\": \"KVC Gaming\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"SickGaming\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Ace1\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"USMC\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Ace2\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Dark Legion\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Los pollos camperos\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"PTY VIKINGZ\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Kulos\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Bravo Six\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"LOS MELOSCARA\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"TTK Squad\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Pudgy woke\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"ENIGMA GAMING 1\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"DOMINIUM\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"ENIGMA GAMING 2\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"EASY WIN\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"OGT97WZ\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Tempus Gaming\", \"fields\": [\"Checked in\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 387,
+  "fields": {
+    "action_time": "2021-02-09T23:51:29.962",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "28",
+    "object_repr": "Total Upgrade Torneo #2 Kill Race Trios",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"name\": \"Custom Team\", \"object\": \"KVC Gaming\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"SickGaming\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Ace1\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"USMC\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Ace2\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Dark Legion\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Los pollos camperos\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"PTY VIKINGZ\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Kulos\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Bravo Six\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"LOS MELOSCARA\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"TTK Squad\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Pudgy woke\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"ENIGMA GAMING 1\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"DOMINIUM\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"ENIGMA GAMING 2\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"EASY WIN\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"OGT97WZ\", \"fields\": [\"Checked in\"]}}, {\"changed\": {\"name\": \"Custom Team\", \"object\": \"Tempus Gaming\", \"fields\": [\"Checked in\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 388,
+  "fields": {
+    "action_time": "2021-02-09T23:51:46.398",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "background_task",
+      "task"
+    ],
+    "object_id": "391",
+    "object_repr": "core.bg_tasks.calculate_status_of_competition",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 389,
+  "fields": {
+    "action_time": "2021-02-09T23:51:46.401",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "background_task",
+      "task"
+    ],
+    "object_id": "390",
+    "object_repr": "core.bg_tasks.calculate_status_of_competition",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 390,
+  "fields": {
+    "action_time": "2021-02-09T23:51:46.404",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "background_task",
+      "task"
+    ],
+    "object_id": "389",
+    "object_repr": "core.bg_tasks.calculate_competition_scores",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 391,
+  "fields": {
+    "action_time": "2021-02-09T23:51:46.407",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "background_task",
+      "task"
+    ],
+    "object_id": "388",
+    "object_repr": "core.bg_tasks.recalculate_competition_stats",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 392,
+  "fields": {
+    "action_time": "2021-02-09T23:51:46.410",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "background_task",
+      "task"
+    ],
+    "object_id": "386",
+    "object_repr": "core.bg_tasks.calculate_status_of_competition",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 393,
+  "fields": {
+    "action_time": "2021-02-09T23:52:08.647",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "28",
+    "object_repr": "Total Upgrade Torneo #2 Kill Race Trios",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Competition started\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 394,
+  "fields": {
+    "action_time": "2021-02-09T23:56:53.049",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "32",
+    "object_repr": "TEST",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 395,
+  "fields": {
+    "action_time": "2021-02-09T23:57:04.758",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomteams"
+    ],
+    "object_id": "50",
+    "object_repr": "Ace2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Competition (ADMIN)\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 396,
+  "fields": {
+    "action_time": "2021-02-09T23:58:21.448",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomteams"
+    ],
+    "object_id": "50",
+    "object_repr": "Ace2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Data (ADMIN)\", \"Data stats (ADMIN)\", \"Data to render (ADMIN)\", \"Team Score (ADMIN)\", \"Data stats loaded (ADMIN)\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 397,
+  "fields": {
+    "action_time": "2021-02-09T23:58:35.864",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "background_task",
+      "task"
+    ],
+    "object_id": "396",
+    "object_repr": "core.bg_tasks.calculate_status_of_competition",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 398,
+  "fields": {
+    "action_time": "2021-02-09T23:58:35.867",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "background_task",
+      "task"
+    ],
+    "object_id": "395",
+    "object_repr": "core.bg_tasks.calculate_status_of_competition",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 399,
+  "fields": {
+    "action_time": "2021-02-09T23:58:54.752",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "32",
+    "object_repr": "TEST",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Competition started\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 400,
+  "fields": {
+    "action_time": "2021-02-10T00:03:21.954",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomteams"
+    ],
+    "object_id": "50",
+    "object_repr": "Ace2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Data (ADMIN)\", \"Data stats (ADMIN)\", \"Data to render (ADMIN)\", \"Team Score (ADMIN)\", \"Data stats loaded (ADMIN)\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 401,
+  "fields": {
+    "action_time": "2021-02-10T00:04:56.538",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "32",
+    "object_repr": "TEST",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 402,
+  "fields": {
+    "action_time": "2021-02-10T00:11:05.485",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "33",
+    "object_repr": "test",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 403,
+  "fields": {
+    "action_time": "2021-02-10T00:11:29.630",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomteams"
+    ],
+    "object_id": "50",
+    "object_repr": "Ace2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Competition (ADMIN)\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 404,
+  "fields": {
+    "action_time": "2021-02-10T00:11:35.289",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomteams"
+    ],
+    "object_id": "50",
+    "object_repr": "Ace2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Check in team?\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 405,
+  "fields": {
+    "action_time": "2021-02-10T00:14:41.866",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomteams"
+    ],
+    "object_id": "50",
+    "object_repr": "Ace2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Data (ADMIN)\", \"Data stats (ADMIN)\", \"Data to render (ADMIN)\", \"Data stats loaded (ADMIN)\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 406,
+  "fields": {
+    "action_time": "2021-02-10T00:18:15.494",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomteams"
+    ],
+    "object_id": "50",
+    "object_repr": "Ace2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Data (ADMIN)\", \"Data stats (ADMIN)\", \"Data to render (ADMIN)\", \"Team Score (ADMIN)\", \"Data stats loaded (ADMIN)\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 407,
+  "fields": {
+    "action_time": "2021-02-10T00:19:36.154",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomteams"
+    ],
+    "object_id": "50",
+    "object_repr": "Ace2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Data (ADMIN)\", \"Data stats (ADMIN)\", \"Data to render (ADMIN)\", \"Team Score (ADMIN)\", \"Data stats loaded (ADMIN)\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 408,
+  "fields": {
+    "action_time": "2021-02-10T00:22:52.219",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "33",
+    "object_repr": "test",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 409,
+  "fields": {
+    "action_time": "2021-02-10T00:23:25.078",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "object_id": "2",
+    "object_repr": "keithlow",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 410,
+  "fields": {
+    "action_time": "2021-02-10T00:23:52.544",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "rtgaming",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 411,
+  "fields": {
+    "action_time": "2021-02-10T00:23:58.691",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "rtgaming",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Staff status\", \"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 412,
+  "fields": {
+    "action_time": "2021-02-10T00:24:17.089",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "object_id": "4",
+    "object_repr": "jillybean",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 413,
+  "fields": {
+    "action_time": "2021-02-10T00:24:21.176",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "object_id": "4",
+    "object_repr": "jillybean",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 414,
+  "fields": {
+    "action_time": "2021-02-10T00:25:00.602",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "object_id": "5",
+    "object_repr": "salvamaravilla",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 415,
+  "fields": {
+    "action_time": "2021-02-10T00:25:06.233",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "object_id": "5",
+    "object_repr": "salvamaravilla",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Staff status\", \"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 416,
+  "fields": {
+    "action_time": "2021-02-10T00:25:10.752",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "object_id": "4",
+    "object_repr": "jillybean",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Staff status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 417,
+  "fields": {
+    "action_time": "2021-02-10T00:25:20.413",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "30",
+    "object_repr": "3er Torneo Rtgaming Kill race",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Competition created by (ADMIN)\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 418,
+  "fields": {
+    "action_time": "2021-02-10T00:25:25.940",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "29",
+    "object_repr": "Torneo Salvamaravilla 2.0 KD",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Competition created by (ADMIN)\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 419,
+  "fields": {
+    "action_time": "2021-02-10T00:25:34.083",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "28",
+    "object_repr": "Total Upgrade Torneo #2 Kill Race Trios",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Competition created by (ADMIN)\"]}}]"
   }
 }
 ]
