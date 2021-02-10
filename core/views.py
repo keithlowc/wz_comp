@@ -183,19 +183,30 @@ def chart_stats_key(request, team_name, user, key):
     size = 0
     data = []
 
-    for val in data_stats:
-        try:
-            for key in val[user]:
-                size = len(val[user])
-                data.append(key[user_key])
-        except Exception as e:
-            print(e)
+    if len(data_stats) > 0:
 
-    matches = [i for i in range(1, size)]
+        for val in data_stats:
+            try:
+                for key in val[user]:
+                    size = len(val[user])
+                    data.append(key[user_key])
+            except Exception as e:
+                print(e)
+
+        matches = [i for i in range(1, size)]
+
+        average_data = sum(data) / len(data)
+        avg = [average_data for i in range(1, size)]
+    
+    else:
+        matches = 0
+        data = 0
+        avg = 0
 
     return JsonResponse(data = {
         'matches': matches,
         'key': data,
+        'avg': avg,
     })
 
 

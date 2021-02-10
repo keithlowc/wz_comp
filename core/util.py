@@ -24,6 +24,8 @@ def exclude_matches_of_type(matches_list, competition_type):
     '''
     Exclude matches that contain
     the competition type assigned
+
+    Exclude this one too br_dmz_plunquad
     '''
 
     clean_matches = []
@@ -71,24 +73,27 @@ def get_values_from_matches(matches_list, user_tag = None):
     
     all_matches = []
 
+    print('Player name: {}'.format(matches_list[0]['player']['username']))
+
     for index, matches in enumerate(matches_list):
+        # print('Player name: {}'.format(matches['player']['username']))
+
         data = {}
-        data['kd'] = matches['playerStats']['kdRatio']
-        data['kills'] = matches['playerStats']['kills']
         try:
             # Plunder matches do not have positioning 
             # This is important because we are getting 
             # that initial data for our graphs.
+            data['kd'] = matches['playerStats']['kdRatio']
+            data['kills'] = matches['playerStats']['kills']
+            data['damageDone'] = matches['playerStats']['damageDone']
+            data['matchID'] = matches['matchID']
             data['teamPlacement'] = matches['playerStats']['teamPlacement']
         except Exception as e:
             print()
-            print('Error teamplacement not found!')
-            data['teamPlacement'] = 100
-            print(matches['playerStats'])
+            print('There was an error with: {} - Probably a plunder match'.format(e))
+            data['teamPlacement'] = 200
+            print('A Match of {} with stats: {}'.format(matches['mode'], matches['playerStats']))
             print()
-
-        data['damageDone'] = matches['playerStats']['damageDone']
-        data['matchID'] = matches['matchID']
 
         all_matches.append(data)
     
@@ -283,6 +288,7 @@ def check_if_competition_is_one_hour_from_start(competition_config):
 
         # Look into the teams that have not been sent email check in
         if len(competition_config['team_emails']) > 0:
+
             for email in competition_config['team_emails']:
                 team = StaffCustomTeams.objects.get(team_captain_email = email, competition_id = competition_config['competition_id'])
                 uuid = team.checked_in_uuid
