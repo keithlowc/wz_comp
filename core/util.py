@@ -72,23 +72,24 @@ def get_values_from_matches(matches_list, user_tag = None):
     all_matches = []
 
     for index, matches in enumerate(matches_list):
+        print('Player name: {}'.format(matches['player']['username']))
+
         data = {}
-        data['kd'] = matches['playerStats']['kdRatio']
-        data['kills'] = matches['playerStats']['kills']
         try:
             # Plunder matches do not have positioning 
             # This is important because we are getting 
             # that initial data for our graphs.
+            data['kd'] = matches['playerStats']['kdRatio']
+            data['kills'] = matches['playerStats']['kills']
+            data['damageDone'] = matches['playerStats']['damageDone']
+            data['matchID'] = matches['matchID']
             data['teamPlacement'] = matches['playerStats']['teamPlacement']
         except Exception as e:
             print()
-            print('Error teamplacement not found!')
-            data['teamPlacement'] = 100
+            print('There was an error with: {} - That match will not be recorded!'.format(e))
+            data['teamPlacement'] = 45
             print(matches['playerStats'])
             print()
-
-        data['damageDone'] = matches['playerStats']['damageDone']
-        data['matchID'] = matches['matchID']
 
         all_matches.append(data)
     
@@ -283,6 +284,7 @@ def check_if_competition_is_one_hour_from_start(competition_config):
 
         # Look into the teams that have not been sent email check in
         if len(competition_config['team_emails']) > 0:
+
             for email in competition_config['team_emails']:
                 team = StaffCustomTeams.objects.get(team_captain_email = email, competition_id = competition_config['competition_id'])
                 uuid = team.checked_in_uuid

@@ -236,6 +236,7 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
                 'competition_description',
                 'competition_banner',
                 'total_teams_allowed_to_compete',
+                'created_by',
 
                 # Contact information
                 'discord_link',
@@ -265,6 +266,7 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
                 'email_job_created')
         
         labels = {
+            'created_by': 'Competition created by (ADMIN)',
             'competition_banner': 'Competition banner (URL only)',
             'start_time': 'Competition Start time',
             'end_time': 'Competition End time',
