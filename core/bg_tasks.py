@@ -239,9 +239,11 @@ def calculate_status_of_competition(custom_config, comp_name):
 # Notification bg jobs
 
 class EmailNotificationSystemJob:
-    @background(schedule = 1)
+    @background(schedule = 120)
     def send_check_in_notification(competition_name, competition_id):
         '''
+        This job will run 120 seconds from now.
+
         Background job that sends email notification
         if the competition time - 1 hour is >= to 
         the current time
@@ -287,6 +289,12 @@ class EmailNotificationSystemJob:
 
     @background(schedule = 1)
     def send_email_update(competiton_name, subject, body, recipients_list):
+        '''
+        Email updates for mass updates to
+        the competition or tournament
+        to all participant teams.
+        '''
+
         email_sys = EmailNotificationSystem()
 
         data_email = ('Duelout Tournament Update: ' + subject,
