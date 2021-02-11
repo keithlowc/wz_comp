@@ -28,6 +28,12 @@ def join_request_competition(request, comp_name):
     config = ConfigController.objects.get(name = 'main_config_controller')
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
+    if competition.competition_is_closed:
+        context = {
+            'competition': competition,
+        }
+        return render(request, 'competitions/competition_sign_up_is_closed.html', context)
+
     if request.method == 'POST':
         form = JoinCompetitionRequestForm(request.POST)
         if form.is_valid():
@@ -43,7 +49,13 @@ def join_request_competition(request, comp_name):
             return redirect('get_competition', comp_name = comp_name)
     else:
         form = JoinCompetitionRequestForm()
-    return render(request, 'forms/join_competition_form.html', {'form': form, 'comp_name': comp_name, 'config': config, 'competition': competition})
+        context = {
+            'form': form,
+            'comp_name': comp_name,
+            'config': config,
+            'competition': competition
+        }
+    return render(request, 'forms/join_competition_form.html', context)
 
 
 def recalculate_scores(request, comp_name):
@@ -154,7 +166,7 @@ def get_competition(request, comp_name):
 
     config = ConfigController.objects.get(name = 'main_config_controller')
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
-    teams = StaffCustomTeams.objects.filter(competition = competition.id).order_by('-score','-checked_in')
+    teams = StaffCustomTeams.objects.filter(competition = competition.id).order_by('-score', '-checked_in')
     
     context = { 
         'teams': teams,
