@@ -37,3 +37,7 @@ def convert_days_to_epoch(days):
 @register.filter
 def convert_plus_to_empty(string):
     return string.replace('+',' ')
+
+@register.filter
+def convert_hash_to_web_friendly(string):
+    return string.replace('#','%23')
