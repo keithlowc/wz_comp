@@ -208,6 +208,7 @@ class CompetitionAdminPage(forms.ModelForm):
                 'points_per_third_place',
                 'start_time',
                 'end_time',
+                'competition_is_closed',
                 )
         
         labels = {
@@ -259,6 +260,7 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
                 'points_per_third_place',
                 'start_time',
                 'end_time',
+                'competition_is_closed',
 
                 'competition_started',
                 

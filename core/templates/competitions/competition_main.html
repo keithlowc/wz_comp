@@ -25,23 +25,30 @@
                             <img src="{{ competition.competition_banner }}" class="circular border-image">
                           </div>
                           <div class="col-xl-5 col-lg-5 col-md-4 col-sm-12 col-xm-12 my-auto">
-                            <h2 class="align-middle"> {{ competition.competition_name }} </h2>
+                            <h2 class="display-5 align-middle"> {{ competition.competition_name }} </h2>
                           </div>
 
                           <div class="col-xl-2 col-lg-2 col-md-2 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
                               {% if competition.competition_status == 1 %}
-                                      <span class="badge badge-success"> In-Progress </span>
+                                      <span class="badge badge-primary"> In-Progress </span>
                               {% elif competition.competition_status == 2 %}
                                       <span class="badge badge-warning"> Ended </span>
                               {% elif competition.competition_status == 3 %}
-                                      <span class="badge badge-primary"> Not-Started </span>
+                                      <span class="badge badge-secondary"> Not-Started </span>
                               {% endif %}
                               <span class="badge badge-info">{{ competition.competition_type }}</span>
                               <span class="badge badge-light">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
+
+                              {% if competition.competition_is_closed == False %}
+                                <span class="badge badge-success">Inscriptions: Open</span>
+                              {% elif competition.competition_is_closed == True %}
+                                <span class="badge badge-danger">Inscriptions: Closed</span>
+                              {% endif %}
+
                           </div>
 
-                          <div class="col-lg-2 col-md-2 text-right my-auto d-none d-sm-block d-sm-none d-md-block .d-md-none .d-lg-block">
-                            <p>Created by: {{ competition.created_by }}</p>
+                          <div class="col-lg-2 col-md-2 text-right my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                            <p class="lead">Created by: {{ competition.created_by }}</p>
                           </div>
 
                           <div class="col-1 text-right my-auto">

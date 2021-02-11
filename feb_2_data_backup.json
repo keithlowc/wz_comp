@@ -241,6 +241,7 @@
     "end_time": "2021-02-14T21:00:00",
     "competition_started": false,
     "competition_status": 3,
+    "competition_is_closed": false,
     "email_job_created": false
   }
 },
@@ -274,6 +275,7 @@
     "end_time": "2021-02-20T17:00:00",
     "competition_started": false,
     "competition_status": 3,
+    "competition_is_closed": false,
     "email_job_created": false
   }
 },
@@ -307,6 +309,7 @@
     "end_time": "2021-02-20T19:00:00",
     "competition_started": false,
     "competition_status": 3,
+    "competition_is_closed": false,
     "email_job_created": false
   }
 },
@@ -821,6 +824,60 @@
     "email_check_in_sent": false,
     "checked_in": false,
     "checked_in_uuid": "712f3f27-b622-4f7b-a1c5-b73d6a0c49a6"
+  }
+},
+{
+  "model": "core.staffcustomteams",
+  "pk": 65,
+  "fields": {
+    "team_name": "ENIGMA GAMING 3",
+    "team_captain_email": "plazasonoa16@gmail.com",
+    "team_banner": "https://cdn.discordapp.com/attachments/753718248612036608/784161137318952960/EG-GIF-CIRCULO-STREAM.gif",
+    "team_twitch_stream_user": "plazitas221",
+    "player_1": "jordy#12658",
+    "player_1_id_type": "battle",
+    "player_2": "plazitas221",
+    "player_2_id_type": "psn",
+    "player_3": "Roburi#1512",
+    "player_3_id_type": "battle",
+    "player_4": null,
+    "player_4_id_type": "battle",
+    "competition": 28,
+    "data": {},
+    "data_stats": {},
+    "data_stats_loaded": false,
+    "data_to_render": {},
+    "score": 0,
+    "email_check_in_sent": false,
+    "checked_in": false,
+    "checked_in_uuid": "be65f46a-eee5-4250-9e39-a71a04ea4cc5"
+  }
+},
+{
+  "model": "core.staffcustomteams",
+  "pk": 66,
+  "fields": {
+    "team_name": "Gamers Forever",
+    "team_captain_email": "nothing@gmail.com",
+    "team_banner": "https://cdn.discordapp.com/attachments/808874046514659338/808913614919827476/image0.png",
+    "team_twitch_stream_user": "Cheenova",
+    "player_1": "Estebanquito#11948",
+    "player_1_id_type": "battle",
+    "player_2": "deadlys#11312",
+    "player_2_id_type": "battle",
+    "player_3": "Cheenova",
+    "player_3_id_type": "xbl",
+    "player_4": null,
+    "player_4_id_type": "battle",
+    "competition": 28,
+    "data": {},
+    "data_stats": {},
+    "data_stats_loaded": false,
+    "data_to_render": {},
+    "score": 0,
+    "email_check_in_sent": false,
+    "checked_in": false,
+    "checked_in_uuid": "7b624519-dee6-426a-91fb-80d52aedfa25"
   }
 },
 {
@@ -5587,6 +5644,204 @@
     "last_error": "",
     "locked_by": "1836",
     "locked_at": "2021-02-10T00:20:05.170",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 376,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_status_of_competition",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "7684c5de633f56e64b0ee0cd78609f96976283e4",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:28:51.793",
+    "repeat": 900,
+    "repeat_until": "2021-02-10T00:12:53",
+    "queue": null,
+    "attempts": 4,
+    "failed_at": "2021-02-10T00:28:51.793",
+    "last_error": "Traceback (most recent call last):\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/background_task/tasks.py\", line 43, in bg_runner\n    func(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/wz_comp/core/bg_tasks.py\", line 202, in calculate_status_of_competition\n    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/manager.py\", line 85, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/query.py\", line 429, in get\n    raise self.model.DoesNotExist(\ncore.models.StaffCustomCompetition.DoesNotExist: StaffCustomCompetition matching query does not exist.\n",
+    "locked_by": "1836",
+    "locked_at": "2021-02-10T00:28:51.775",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 377,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "9451b92c4febf5ba40b97e8eb19fcf5f91168b41",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:28:56.889",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 4,
+    "failed_at": "2021-02-10T00:28:56.889",
+    "last_error": "Traceback (most recent call last):\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/background_task/tasks.py\", line 43, in bg_runner\n    func(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/wz_comp/core/bg_tasks.py\", line 24, in recalculate_competition_stats\n    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/manager.py\", line 85, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/query.py\", line 429, in get\n    raise self.model.DoesNotExist(\ncore.models.StaffCustomCompetition.DoesNotExist: StaffCustomCompetition matching query does not exist.\n",
+    "locked_by": "1836",
+    "locked_at": "2021-02-10T00:28:56.878",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 378,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"test\"], {}]",
+    "task_hash": "2a3d06bdb6ba5c0b4ec51944a104a872a01381da",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:28:56.993",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 4,
+    "failed_at": "2021-02-10T00:28:56.993",
+    "last_error": "Traceback (most recent call last):\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/background_task/tasks.py\", line 43, in bg_runner\n    func(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/wz_comp/core/bg_tasks.py\", line 109, in calculate_competition_scores\n    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/manager.py\", line 85, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/query.py\", line 429, in get\n    raise self.model.DoesNotExist(\ncore.models.StaffCustomCompetition.DoesNotExist: StaffCustomCompetition matching query does not exist.\n",
+    "locked_by": "1836",
+    "locked_at": "2021-02-10T00:28:56.982",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 379,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "9451b92c4febf5ba40b97e8eb19fcf5f91168b41",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:29:07.213",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 4,
+    "failed_at": "2021-02-10T00:29:07.213",
+    "last_error": "Traceback (most recent call last):\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/background_task/tasks.py\", line 43, in bg_runner\n    func(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/wz_comp/core/bg_tasks.py\", line 24, in recalculate_competition_stats\n    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/manager.py\", line 85, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/query.py\", line 429, in get\n    raise self.model.DoesNotExist(\ncore.models.StaffCustomCompetition.DoesNotExist: StaffCustomCompetition matching query does not exist.\n",
+    "locked_by": "1836",
+    "locked_at": "2021-02-10T00:29:07.202",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 380,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"test\"], {}]",
+    "task_hash": "2a3d06bdb6ba5c0b4ec51944a104a872a01381da",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:29:07.285",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 4,
+    "failed_at": "2021-02-10T00:29:07.285",
+    "last_error": "Traceback (most recent call last):\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/background_task/tasks.py\", line 43, in bg_runner\n    func(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/wz_comp/core/bg_tasks.py\", line 109, in calculate_competition_scores\n    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/manager.py\", line 85, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/query.py\", line 429, in get\n    raise self.model.DoesNotExist(\ncore.models.StaffCustomCompetition.DoesNotExist: StaffCustomCompetition matching query does not exist.\n",
+    "locked_by": "1836",
+    "locked_at": "2021-02-10T00:29:07.274",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 381,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "9451b92c4febf5ba40b97e8eb19fcf5f91168b41",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:29:32.396",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 4,
+    "failed_at": "2021-02-10T00:29:32.396",
+    "last_error": "Traceback (most recent call last):\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/background_task/tasks.py\", line 43, in bg_runner\n    func(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/wz_comp/core/bg_tasks.py\", line 24, in recalculate_competition_stats\n    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/manager.py\", line 85, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/query.py\", line 429, in get\n    raise self.model.DoesNotExist(\ncore.models.StaffCustomCompetition.DoesNotExist: StaffCustomCompetition matching query does not exist.\n",
+    "locked_by": "1836",
+    "locked_at": "2021-02-10T00:29:32.385",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 382,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"test\"], {}]",
+    "task_hash": "2a3d06bdb6ba5c0b4ec51944a104a872a01381da",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:29:32.512",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 4,
+    "failed_at": "2021-02-10T00:29:32.512",
+    "last_error": "Traceback (most recent call last):\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/background_task/tasks.py\", line 43, in bg_runner\n    func(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/wz_comp/core/bg_tasks.py\", line 109, in calculate_competition_scores\n    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/manager.py\", line 85, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/query.py\", line 429, in get\n    raise self.model.DoesNotExist(\ncore.models.StaffCustomCompetition.DoesNotExist: StaffCustomCompetition matching query does not exist.\n",
+    "locked_by": "1836",
+    "locked_at": "2021-02-10T00:29:32.502",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 383,
+  "fields": {
+    "task_name": "core.bg_tasks.recalculate_competition_stats",
+    "task_params": "[[{\"cod_x_rapidapi_host\": \"call-of-duty-modern-warfare.p.rapidapi.com\", \"cod_x_rapidapi_key\": \"55679672b4mshbf3109427324bd7p198995jsn45d4cdeed29f\", \"competitions_dummy_data\": true}, \"test\"], {}]",
+    "task_hash": "9451b92c4febf5ba40b97e8eb19fcf5f91168b41",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:31:02.703",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 4,
+    "failed_at": "2021-02-10T00:31:02.703",
+    "last_error": "Traceback (most recent call last):\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/background_task/tasks.py\", line 43, in bg_runner\n    func(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/wz_comp/core/bg_tasks.py\", line 24, in recalculate_competition_stats\n    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/manager.py\", line 85, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/query.py\", line 429, in get\n    raise self.model.DoesNotExist(\ncore.models.StaffCustomCompetition.DoesNotExist: StaffCustomCompetition matching query does not exist.\n",
+    "locked_by": "1836",
+    "locked_at": "2021-02-10T00:31:02.692",
+    "creator_content_type": null,
+    "creator_object_id": null
+  }
+},
+{
+  "model": "background_task.completedtask",
+  "pk": 384,
+  "fields": {
+    "task_name": "core.bg_tasks.calculate_competition_scores",
+    "task_params": "[[\"test\"], {}]",
+    "task_hash": "2a3d06bdb6ba5c0b4ec51944a104a872a01381da",
+    "verbose_name": null,
+    "priority": 0,
+    "run_at": "2021-02-10T00:31:02.755",
+    "repeat": 0,
+    "repeat_until": null,
+    "queue": null,
+    "attempts": 4,
+    "failed_at": "2021-02-10T00:31:02.754",
+    "last_error": "Traceback (most recent call last):\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/background_task/tasks.py\", line 43, in bg_runner\n    func(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/wz_comp/core/bg_tasks.py\", line 109, in calculate_competition_scores\n    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/manager.py\", line 85, in manager_method\n    return getattr(self.get_queryset(), name)(*args, **kwargs)\n  File \"/mnt/c/Users/Optimum/Desktop/duelout/env/lib/python3.8/site-packages/django/db/models/query.py\", line 429, in get\n    raise self.model.DoesNotExist(\ncore.models.StaffCustomCompetition.DoesNotExist: StaffCustomCompetition matching query does not exist.\n",
+    "locked_by": "1836",
+    "locked_at": "2021-02-10T00:31:02.742",
     "creator_content_type": null,
     "creator_object_id": null
   }
@@ -13059,6 +13314,78 @@
     "object_repr": "Total Upgrade Torneo #2 Kill Race Trios",
     "action_flag": 2,
     "change_message": "[{\"changed\": {\"fields\": [\"Competition created by (ADMIN)\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 420,
+  "fields": {
+    "action_time": "2021-02-10T22:15:23.043",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "30",
+    "object_repr": "3er Torneo Rtgaming Kill race",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Competition is closed\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 421,
+  "fields": {
+    "action_time": "2021-02-10T23:05:00.334",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "31",
+    "object_repr": "test",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 422,
+  "fields": {
+    "action_time": "2021-02-10T23:21:38.873",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomcompetition"
+    ],
+    "object_id": "31",
+    "object_repr": "test",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 423,
+  "fields": {
+    "action_time": "2021-02-10T23:24:24.609",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "core",
+      "staffcustomteams"
+    ],
+    "object_id": "66",
+    "object_repr": "Gamers Forever",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
   }
 }
 ]

@@ -50,6 +50,9 @@ class StaffCustomCompetition(models.Model):
     competition_started = models.BooleanField(default = False)
     competition_status = models.IntegerField(default = 3)   # 'Not started': 3, 'Ended': 2, 'In-Progress': 1
 
+    # Competition closure
+    competition_is_closed = models.BooleanField(default = False)
+
     # bg_job
     email_job_created = models.BooleanField(default = False)
 

@@ -16,6 +16,12 @@ def get_item(dictionary, key):
 @register.filter
 def add(index):
     return index + 1
+
+
+@register.filter
+def format_kd(kd):
+    kd = str(kd).replace(',','.')
+    return '{:.2f}'.format(float(kd))
             
 
 @register.filter
