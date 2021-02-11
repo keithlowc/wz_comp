@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+{% load custom_filtering_tags %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="border rounded competition-sign-up-closed">
+    <div class="row">
+        <div class="col">
+            <div class="row pt-4">
+                <div class="col">
+                    <img src="{{ competition.competition_banner }}" class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block circular-competition-signup-closed border-image">
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col text-center">
+                    <h1 class="display-3 white-color-font p-4 text-center notranslate">{{ competition.competition_name }}</h1>
+                    <h4 class="display-5 white-color-font p-2 pt-4 text-center">The inscriptions to this tournament are closed! but feel free to participate in any other tournament within the Duelout platform with the links below!</h4>
+                    <p class="lead white-color-font p-2 pt-4">To check for other competitions <a href="/competitions/all" class="badge badge-info">View other competitions</a></p>
+                    <p class="lead white-color-font p-2">Interested in hosting your own competition? <a href="https://discord.gg/RkThGa9qgw" class="badge badge-info">Contact us!</a></p>
+                    <p class="lead white-color-font p-2">To check <b>{{ competition.competition_name }}</b> leaderboard! <a href="/competition/{{competition.competition_name|convert_hash_to_web_friendly}}" class="badge badge-info">Tournament Leaderboard</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+</script>
+{% endblock %}

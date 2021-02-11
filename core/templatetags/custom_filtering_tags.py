@@ -16,6 +16,12 @@ def get_item(dictionary, key):
 @register.filter
 def add(index):
     return index + 1
+
+
+@register.filter
+def format_kd(kd):
+    kd = str(kd).replace(',','.')
+    return '{:.2f}'.format(float(kd))
             
 
 @register.filter
@@ -31,3 +37,7 @@ def convert_days_to_epoch(days):
 @register.filter
 def convert_plus_to_empty(string):
     return string.replace('+',' ')
+
+@register.filter
+def convert_hash_to_web_friendly(string):
+    return string.replace('#','%23')

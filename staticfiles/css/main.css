@@ -51,6 +51,18 @@ body {
     overflow: hidden;
 }
 
+/* Competition Image when sign up is closed */
+.circular-competition-signup-closed {
+    width: 50;
+    height: 200px;
+    margin: 0 auto;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+
+
 .circular img {
     min-width: 100%;
     min-height: 100%;
@@ -152,7 +164,15 @@ label {
 /* Form color */
 
 .join-competition-form {
-    background-color: #2D3640;
+    background-color: #212529;
+}
+
+.competition-sign-up-closed {
+    background-color: #212529;
+}
+
+.email-communication-form {
+    background-color: #212529;
 }
 
 

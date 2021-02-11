@@ -68,18 +68,33 @@
                                     <span class="badge badge-success"> In-Progress </span>
                                     <span class="badge badge-info">{{ competition.competition_type }}</span>
                                     <span class="badge badge-light">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
+                                    {% if competition.competition_is_closed == False %}
+                                      <span class="badge badge-success">Inscriptions: Open</span>
+                                    {% elif competition.competition_is_closed == True %}
+                                      <span class="badge badge-danger">Inscriptions: Closed</span>
+                                    {% endif %}
                                   </td>
                               {% elif competition.competition_status == 2 %}
                                   <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
                                     <span class="badge badge-warning"> Ended </span>
                                     <span class="badge badge-info">{{ competition.competition_type }}</span>
                                     <span class="badge badge-light">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
+                                    {% if competition.competition_is_closed == False %}
+                                      <span class="badge badge-success">Inscriptions: Open</span>
+                                    {% elif competition.competition_is_closed == True %}
+                                      <span class="badge badge-danger">Inscriptions: Closed</span>
+                                    {% endif %}
                                   </td>
                               {% elif competition.competition_status == 3 %}
                                   <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
                                     <span class="badge badge-primary"> Not-Started </span>
                                     <span class="badge badge-info">{{ competition.competition_type }}</span>
                                     <span class="badge badge-light">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
+                                    {% if competition.competition_is_closed == False %}
+                                      <span class="badge badge-success">Inscriptions: Open</span>
+                                    {% elif competition.competition_is_closed == True %}
+                                      <span class="badge badge-danger">Inscriptions: Closed</span>
+                                    {% endif %}
                                   </td>
                               {% endif %}
                             </div>
@@ -107,7 +122,7 @@
               </div>
               <div class="row">
                 <div class="col-12 pt-4 pb-4">
-                  <h1 class="display-3 text-center white-color-font">Leaderboard!</h1>
+                  <h1 class="display-4 text-center white-color-font">Leaderboard!</h1>
                 </div>
 
               </div>
@@ -269,7 +284,7 @@
                                                       
                                                         {% for key, value in val.0.items %}
                                                           {% if key == 'kd' %}
-                                                            <td>{{ value }}</td>
+                                                            <td>{{ value|format_kd }}</td>
                                                           {% elif  key == 'kills' %}
                                                             <td>{{ value }}</td>
                                                           {% elif  key == 'damageDone' %}
