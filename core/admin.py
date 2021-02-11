@@ -3,7 +3,7 @@ from django.contrib import admin
 import os
 
 from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
-from .forms import TeamFormAdminPage, TeamFormAdminPageSuperUser, CompetitionAdminPage, CompetitionAdminPageSuperUser
+from .forms import TeamFormAdminPage, TeamFormAdminPageSuperUser, CompetitionAdminPage, CompetitionAdminPageSuperUser, ConfigControllerAdminPage
 
 # from background_task.models import Task
 
@@ -14,8 +14,6 @@ from core.bg_tasks import EmailNotificationSystemJob
 admin.site.site_header = 'Duelout Manager'
 admin.site.site_title = 'Duelout Admin Portal'
 admin.site.index_title = 'Welcome to Duelout Portal'
-
-admin.site.register(ConfigController)
 
 # StaffCustomTeam admin
 class StaffCustomTeamAdmin(admin.ModelAdmin):
@@ -134,7 +132,7 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
                 email_job = EmailNotificationSystemJob()
                 email_job.send_check_in_notification(competition_name = instance.competition_name,
                                                     competition_id = instance.id,
-                                                    repeat = 30,
+                                                    repeat = config.competition_email_time_to_repeat,
                                                     repeat_until = instance.start_time, 
                                                     verbose_name = "Check-in email - for competition with id: {}".format(instance.id), 
                                                     creator = user)
@@ -173,10 +171,25 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
 
 admin.site.register(StaffCustomCompetition, StaffCustomCompetitionAdmin)
 
-
+# Competition communications
 class CompetitionCommunicationEmailsAdmin(admin.ModelAdmin):
     search_fields = ('competition',)
     list_filter = ('competition', 'created_by')
     list_display = ('competition', 'subject', 'date', 'created_by')
 
 admin.site.register(CompetitionCommunicationEmails, CompetitionCommunicationEmailsAdmin)
+
+# Application configuration
+class ConfigControllerAdmin(admin.ModelAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        '''
+        Controls the fields we display 
+        on admin page
+        '''
+
+        kwargs['form'] = ConfigControllerAdminPage
+        
+        return super().get_form(request, obj, **kwargs)
+
+admin.site.register(ConfigController, ConfigControllerAdmin)
+

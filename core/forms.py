@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails
+from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
 
 from django.core.exceptions import ValidationError
 
@@ -277,4 +277,34 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
             'facebook_link': 'Facebook link (OPTIONAL)',
             'twitter_link': 'Twitter link (OPTIONAL)',
             'twitch_link': 'Twitch link (OPTIONAL)',
+        }
+
+
+class ConfigControllerAdminPage(forms.ModelForm):
+    '''
+    This form controls how we view the 
+    application configuration settings.
+    '''
+
+    class Meta:
+        model = ConfigController
+
+        fields = (
+            'name',
+            'competitions_page_refresh_time',
+            'competitions_bg_tasks',
+            'competitions_dummy_data',
+            'competition_email_active',
+            'competition_email_time_to_repeat',
+            'cod_url_warzone_stats',
+            'cod_url_warzone_matches',
+            'cod_x_rapidapi_key',
+            'cod_x_rapidapi_host',
+            'twitch_api_verfication_client_id',
+            'twitch_api_verfication_client_secret',
+        )
+        
+        labels = {
+            'competitions_page_refresh_time': 'Competition Page refresh time (Miliseconds)',
+            'competition_email_time_to_repeat': 'Competition time to repeat email job (Seconds)',
         }
