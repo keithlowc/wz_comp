@@ -2,7 +2,7 @@ from django.contrib import admin
 
 import os
 
-from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
+from .models import StaffCustomTeams, Match, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
 from .forms import TeamFormAdminPage, TeamFormAdminPageSuperUser, CompetitionAdminPage, CompetitionAdminPageSuperUser, ConfigControllerAdminPage
 
 # from background_task.models import Task
@@ -89,6 +89,14 @@ class InLineStaffCustomTeam(admin.StackedInline):
         'checked_in',
     )
     extra = 1
+
+
+class MatchAdmin(admin.ModelAdmin):
+    search_fields = ('team',)
+    list_display = ('competition', 'team', 'user_id', 'user_id_type', 'match_id')
+    list_filter = ('team',)
+
+admin.site.register(Match, MatchAdmin)
 
 # Competitions admin 
 class StaffCustomCompetitionAdmin(admin.ModelAdmin):
