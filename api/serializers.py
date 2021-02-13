@@ -4,9 +4,10 @@ from core.models import Match
 
 
 class MatchSerializer(serializers.ModelSerializer):
+    '''
+    Serializer for matches
+    '''
+
     class Meta:
         model = Match
-        fields = ['competition', 'team', 'match_id', 
-                'user_id', 'user_id_type', 'kills',
-                'kd', 'damage_done', 'damage_taken',
-                'placement']
+        fields = '__all__'

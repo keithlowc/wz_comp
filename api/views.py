@@ -1,29 +1,48 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework.response import Response
-from rest_framework.parsers import JSONParser
-
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 
 from .serializers import MatchSerializer
 from core.models import Match
 
 
-class AllMatchesViewSet(viewsets.ModelViewSet):
+@api_view(['GET'])
+def api_matches_overview(request):
     '''
-    Gets all current matches
+    Provides overview of what
+    the user can do with the rest
+    api
     '''
 
-    queryset = Match.objects.all()
-    serializer_class = MatchSerializer
+    api_urls = {
+        '[GET] get_all_matches': '/api/match/all',
+        '[GET] get_matches_with_id': 'api/match/<int:match_id>/',
+    }
+
+    return Response(api_urls)
 
 
-@csrf_exempt
-def get_match(request, match_id):
-    if request.method == 'GET':
-        match = Match.objects.get(match_id = match_id)
-        serialized_match = MatchSerializer(match)
-        
-        return JsonResponse(serialized_match.data)
+@api_view(['GET'])
+def get_all_matches(request):
+    '''
+    Gets all the matches in
+    '''
+
+    matches = Match.objects.all()
+    serialized_matches = MatchSerializer(matches, many = True)
+    return Response(serialized_matches.data)
+
+
+@api_view(['GET'])
+def get_matches_with_id(request, match_id):
+    '''
+    Gets all matches with the id 
+    priovided
+    '''
+
+    matches = Match.objects.filter(match_id = match_id)
+    serialized_matches = MatchSerializer(matches, many = True)
+    return Response(serialized_matches.data)
