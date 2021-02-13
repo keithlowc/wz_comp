@@ -4,8 +4,13 @@ from . import views
 
 
 urlpatterns = [
+    
+    # Match routes
     path('api/match', views.api_matches_overview, name = 'api_matches_overview'),
     path('api/match/all', views.get_all_matches, name = 'get_all_matches'),
     path('api/match/<int:match_id>/', views.get_matches_with_id, name = 'get_matches_with_id'),
+
+    path('api/match/stats/topkillers/<str:comp_name>', views.get_top_killers, name = 'get_top_killers'),
+
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

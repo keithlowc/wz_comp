@@ -128,9 +128,23 @@ class StaffCustomTeams(models.Model):
         return str(self.team_name)
 
 
+class Player(models.Model):
+    competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, null = True, related_name = 'players')
+    team = models.ForeignKey(StaffCustomTeams, on_delete = models.CASCADE, null = True, related_name = 'players')
+    user_id = models.CharField(max_length = 100, null = True)
+
+    class Meta:
+        verbose_name = 'Player'
+        verbose_name_plural = 'Players'
+    
+    def __str__(self):
+        return str(self.user_id)
+
+
 class Match(models.Model):
     competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, null = True, related_name = 'competition')
-    team = models.ForeignKey(StaffCustomTeams, on_delete = models.CASCADE, null = True, related_name = 'team')
+    team = models.ForeignKey(StaffCustomTeams, on_delete = models.CASCADE, null = True, related_name = 'matches')
+    player = models.ForeignKey(Player, on_delete = models.CASCADE, null = True, related_name = 'matches')
     match_id = models.CharField(max_length = 300, null = True)
     user_id = models.CharField(max_length = 100, null = True)
     user_id_type = models.CharField(max_length = 150, null = True)
