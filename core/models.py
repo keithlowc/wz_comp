@@ -128,6 +128,26 @@ class StaffCustomTeams(models.Model):
         return str(self.team_name)
 
 
+class Match(models.Model):
+    competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, null = True, related_name = 'competition')
+    team = models.ForeignKey(StaffCustomTeams, on_delete = models.CASCADE, null = True, related_name = 'team')
+    match_id = models.CharField(max_length = 300, null = True)
+    user_id = models.CharField(max_length = 100, null = True)
+    user_id_type = models.CharField(max_length = 150, null = True)
+    kills = models.IntegerField(null = True)
+    kd = models.FloatField(null = True)
+    damage_done = models.FloatField(null = True)
+    damage_taken = models.FloatField(null = True)
+    placement = models.IntegerField(null = True)
+
+    class Meta:
+        verbose_name = 'Match'
+        verbose_name_plural = 'Matches'
+    
+    def __str__(self):
+        return str(self.user_id)
+
+
 class ConfigController(models.Model):
     '''
     Based on this config controller

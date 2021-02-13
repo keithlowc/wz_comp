@@ -88,6 +88,7 @@ def get_values_from_matches(matches_list, user_tag = None):
             data['damageDone'] = matches['playerStats']['damageDone']
             data['matchID'] = matches['matchID']
             data['teamPlacement'] = matches['playerStats']['teamPlacement']
+            data['damageTaken'] = matches['playerStats']['damageTaken']
         except Exception as e:
             print()
             print('There was an error with: {} - Probably a plunder match'.format(e))

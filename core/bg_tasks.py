@@ -1,5 +1,5 @@
 from background_task import background
-from core.models import StaffCustomTeams, StaffCustomCompetition
+from core.models import StaffCustomTeams, StaffCustomCompetition, Match
 
 from .email import EmailNotificationSystem
 
@@ -43,7 +43,7 @@ def recalculate_competition_stats(custom_config, comp_name):
         team_users.clear()
         team_users.update(filtered)
 
-        print('******* Team Users ********')
+        print('******* Team Users for team {} ********'.format(team.team_name))
         print(team_users)
         print('***************************')
 
@@ -58,8 +58,37 @@ def recalculate_competition_stats(custom_config, comp_name):
                                                                         competition_type,
                                                                         custom_config)
 
+            # Display data
             data_list.append(clean_data)
             old_matches_list.append(matches_without_time_filter)
+
+            # Saving data into matches model object
+            user_matches_list = clean_data[user]
+            
+            for index, match in enumerate(user_matches_list):
+                match_id = match['matchID']
+                kills = match['kills']
+                kd = match['kd']
+                damage = match['damageDone']
+                damage_taken = match['damageTaken']
+                team_placement = match['teamPlacement']
+
+                # Search if the match already exists if not then add it.
+                found_match = True
+                try:
+                    Match.objects.get(competition = competition, team = team, match_id = match_id, user_id = user)
+                except Exception as e:
+                    found_match = False
+
+                if not found_match:
+                    Match.objects.create(competition = competition, team = team, match_id = match_id,
+                                        user_id = user, user_id_type = team_users[user],
+                                        kills = kills, kd = kd, damage_done = damage,
+                                        damage_taken = damage_taken, placement = team_placement)
+                    print('Match #{} saved!'.format(index))
+                else:
+                    print('Match #{} already exist in db!'.format(index))
+
 
         # match matches per team with match id
         organized_data = util.match_matches_with_matches_id(data_list, team_users)
