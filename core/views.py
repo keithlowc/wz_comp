@@ -263,6 +263,16 @@ def check_in(request, comp_name, team_name, checked_in_uuid):
 
     return redirect('get_competition', comp_name = comp_name)
 
+
+# Competition statistic dashboard
+
+def show_competition_dashboard(request, comp_name):
+    context = {
+        'comp_name': comp_name,
+    }
+    return render(request, 'competitions/dashboard/dashboard.html', context)
+
+
 # Competition Communication
 
 def send_competition_email(request, comp_name):
