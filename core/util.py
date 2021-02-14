@@ -254,7 +254,10 @@ def get_custom_data(user_tag, user_id_type, competition_start_time, competition_
 
     matches_without_time_filter = exclude_matches_of_type(matches_list = matches_without_time_filter, 
                                                         competition_type_list = ['br_dmz_plnbld',
-                                                                                 'br_dmz_plndval1'])
+                                                                                'br_dmz_plndtrios',
+                                                                                'br_dmz_plndval1',
+                                                                                'brtdm_rmbl',
+                                                                                'brtdm_wzrumval2'])
 
     matches_without_time_filter = get_values_from_matches(matches_list = matches_without_time_filter,
                                                          message = 'Matches without time filter',
@@ -320,7 +323,6 @@ def add_to_match_model(competition, team, player, match_id, kills, kd, deaths, h
         print('Match #{} saved!'.format(index))
     else:
         print('Match #{} already exist in db!'.format(index))
-
 
 
 # Email notifications related
