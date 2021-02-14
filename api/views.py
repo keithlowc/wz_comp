@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
 from rest_framework import viewsets, generics
 from rest_framework.response import Response
@@ -21,6 +22,10 @@ def api_matches_overview(request):
         '[GET] get_all_matches': '/api/match/all',
         '[GET] get_matches_with_id': 'api/match/<int:match_id>/',
         '[GET] get_top_killers': 'api/match/stats/topkillers/<str:comp_name>',
+        '[GET] get_top_headshots': 'api/match/stats/topheadshots/<str:comp_name>',
+        '[GET] get_top_deaths': 'api/match/stats/topdeaths/<str:comp_name>',
+        '[GET] get_top_damage_by_team': 'api/match/stats/topdamageperteam/<str:comp_name>',
+        '[GET] get_top_damage_taken_by_team': 'api/match/stats/topdamagetakenperteam/<str:comp_name>',
     }
 
     return Response(api_urls)
@@ -57,37 +62,120 @@ def get_top_killers(request, comp_name):
     Get the top killers of the competition
     '''
 
-    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+    competition = get_object_or_404(StaffCustomCompetition, competition_name = comp_name)
 
     players = Player.objects.filter(competition = competition)
 
-    print(players)
+    players_dict = {}
+    for index, player in enumerate(players):
+        matches = Match.objects.filter(player = player)
 
-    # users = []
-    # for team in competition.teams.all():
-    #     users.append(team.player_1)
-    #     users.append(team.player_2)
-    #     users.append(team.player_3)
-    #     users.append(team.player_4)
-    
-    # Pops none values out of list
-    # cleaned_user_list = [i for i in users if i]
-
-    player_list = [player.user_id for player in players]
-
-    # Creates the dictionary of users
-    users_dict = {}
-    for index, user in enumerate(player_list):
-        users_dict[user] = index
-    
-    # Calculates the total kills per player
-    for user, kills in users_dict.items():
-        user_matches = Match.objects.filter(user_id = user)
-        kills = []
-        for match in user_matches:
-            user_kills_per_match = match.kills
-            kills.append(user_kills_per_match)
+        kill = []
+        for match in matches:
+            kill.append(match.kills)
         
-        users_dict[user] = sum(kills)
+        players_dict[player.user_id] = sum(kill)
 
-    return Response(users_dict)
+    return Response(players_dict)
+
+
+@api_view(['GET'])
+def get_top_headshots(request, comp_name):
+    '''
+    Competition STATS:
+
+    Get the top headshots of the competition
+    '''
+
+    competition = get_object_or_404(StaffCustomCompetition, competition_name = comp_name)
+
+    players = Player.objects.filter(competition = competition)
+
+    players_dict = {}
+    for index, player in enumerate(players):
+        matches = Match.objects.filter(player = player)
+
+        kill = []
+        for match in matches:
+            kill.append(match.headshots)
+        
+        players_dict[player.user_id] = sum(kill)
+
+    return Response(players_dict)
+
+
+@api_view(['GET'])
+def get_top_deaths(request, comp_name):
+    '''
+    Competition STATS:
+
+    Get the top deaths of the competition
+    '''
+
+    competition = get_object_or_404(StaffCustomCompetition, competition_name = comp_name)
+
+    players = Player.objects.filter(competition = competition)
+
+    players_dict = {}
+    for index, player in enumerate(players):
+        matches = Match.objects.filter(player = player)
+
+        kill = []
+        for match in matches:
+            kill.append(match.deaths)
+        
+        players_dict[player.user_id] = sum(kill)
+
+    return Response(players_dict)
+
+
+@api_view(['GET'])
+def get_top_damage_by_team(request, comp_name):
+    '''
+    Competition STATS:
+
+    Get the top damage made by team
+    '''
+
+    competition = get_object_or_404(StaffCustomCompetition, competition_name = comp_name)
+
+    teams = competition.teams.all()
+
+    damage_per_team = {}
+
+    for team in teams:
+        damage_list = []
+        matches_per_team = Match.objects.filter(competition = competition, team = team)
+
+        for match in matches_per_team:
+            damage_list.append(match.damage_done)
+        
+        damage_per_team[team.team_name] = sum(damage_list)
+
+    return Response(damage_per_team)
+
+
+@api_view(['GET'])
+def get_top_damage_taken_by_team(request, comp_name):
+    '''
+    Competition STATS:
+
+    Get the top damage made by team
+    '''
+
+    competition = get_object_or_404(StaffCustomCompetition, competition_name = comp_name)
+
+    teams = competition.teams.all()
+
+    damage_taken_per_team = {}
+
+    for team in teams:
+        damage_taken_list = []
+        matches_per_team = Match.objects.filter(competition = competition, team = team)
+
+        for match in matches_per_team:
+            damage_taken_list.append(match.damage_taken)
+        
+        damage_taken_per_team[team.team_name] = sum(damage_taken_list)
+
+    return Response(damage_taken_per_team)

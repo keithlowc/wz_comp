@@ -47,7 +47,8 @@ def recalculate_competition_stats(custom_config, comp_name):
             if user_id is not None:
                 util.add_to_player_model(competition = competition,
                                         team = team,
-                                        user_id = user_id)
+                                        user_id = user_id,
+                                        user_id_type = user_id_type)
 
         util.pprintstart('Ending Players to Player model')
 
@@ -76,6 +77,11 @@ def recalculate_competition_stats(custom_config, comp_name):
             data_list.append(clean_data)
             old_matches_list.append(matches_without_time_filter)
 
+            # Get the player object
+            player = Player.objects.get(competition = competition,
+                                        team = team,
+                                        user_id = user)
+
             # Saving data into matches model object
             util.pprintstart('Adding Matches to Match model')
 
@@ -88,15 +94,18 @@ def recalculate_competition_stats(custom_config, comp_name):
                 damage_done = match['damageDone']
                 damage_taken = match['damageTaken']
                 placement = match['teamPlacement']
+                deaths = match['deaths']
+                headshots = match['headshots']
 
                 # Search if the match already exists if not then add it.
                 util.add_to_match_model(competition = competition, 
                                         team = team,
-                                        match_id = match_id, 
-                                        user_id = user,
-                                        team_users = team_users,
+                                        player = player,
+                                        match_id = match_id,
                                         kills = kills,
                                         kd = kd,
+                                        deaths = deaths,
+                                        headshots = headshots,
                                         damage_done = damage_done,
                                         damage_taken = damage_taken,
                                         placement = placement,

@@ -88,10 +88,12 @@ def get_values_from_matches(matches_list, message, user_tag = None):
             # Plunder matches do not have positioning 
             # This is important because we are getting 
             # that initial data for our graphs.
+            data['matchID'] = matches['matchID']
             data['kd'] = matches['playerStats']['kdRatio']
             data['kills'] = matches['playerStats']['kills']
+            data['deaths'] = matches['playerStats']['deaths']
+            data['headshots'] = matches['playerStats']['deaths']
             data['damageDone'] = matches['playerStats']['damageDone']
-            data['matchID'] = matches['matchID']
             data['damageTaken'] = matches['playerStats']['damageTaken']
             data['teamPlacement'] = matches['playerStats']['teamPlacement']
         except Exception as e:
@@ -261,7 +263,7 @@ def get_custom_data(user_tag, user_id_type, competition_start_time, competition_
     return clean_data, matches_without_time_filter
 
 
-def add_to_player_model(competition, team, user_id):
+def add_to_player_model(competition, team, user_id, user_id_type):
     '''
     Adds to the player model
     if the player does not 
@@ -270,18 +272,24 @@ def add_to_player_model(competition, team, user_id):
 
     player_found = True
     try:
-        Player.objects.get(competition = competition, team = team, user_id = user_id)
+        Player.objects.get(competition = competition, 
+                            team = team, 
+                            user_id = user_id, 
+                            user_id_type = user_id_type)
     except Exception as e:
         player_found = False
     
     if not player_found:
         print('Saving Player {} to model'.format(user_id))
-        Player.objects.create(competition = competition, team = team, user_id = user_id)
+        Player.objects.create(competition = competition, 
+                                team = team, 
+                                user_id = user_id,
+                                user_id_type = user_id_type)
     else:
         print('Not saving Player {} since it already exists in db!'.format(user_id))
 
 
-def add_to_match_model(competition, team, match_id, user_id, team_users, kills, kd, damage_done, damage_taken, placement, index):
+def add_to_match_model(competition, team, player, match_id, kills, kd, deaths, headshots, damage_done, damage_taken, placement, index):
     '''
     Adds the match to the MATCH model
     if this match with
@@ -289,15 +297,25 @@ def add_to_match_model(competition, team, match_id, user_id, team_users, kills, 
 
     found_match = True
     try:
-        Match.objects.get(competition = competition, team = team, match_id = match_id, user_id = user_id)
+        Match.objects.get(competition = competition, 
+                            team = team, 
+                            player = player, 
+                            match_id = match_id)
     except Exception as e:
         found_match = False
 
     if not found_match:
-        Match.objects.create(competition = competition, team = team, match_id = match_id,
-                            user_id = user_id, user_id_type = team_users[user_id],
-                            kills = kills, kd = kd, damage_done = damage_done,
-                            damage_taken = damage_taken, placement = placement)
+        Match.objects.create(competition = competition, 
+                                team = team,
+                                player = player,
+                                match_id = match_id,
+                                kills = kills, 
+                                kd = kd,
+                                deaths = deaths,
+                                headshots = headshots, 
+                                damage_done = damage_done,
+                                damage_taken = damage_taken, 
+                                placement = placement)
 
         print('Match #{} saved!'.format(index))
     else:

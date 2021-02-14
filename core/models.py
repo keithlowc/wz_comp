@@ -132,6 +132,7 @@ class Player(models.Model):
     competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, null = True, related_name = 'players')
     team = models.ForeignKey(StaffCustomTeams, on_delete = models.CASCADE, null = True, related_name = 'players')
     user_id = models.CharField(max_length = 100, null = True)
+    user_id_type = models.CharField(max_length = 150, null = True)
 
     class Meta:
         verbose_name = 'Player'
@@ -146,10 +147,10 @@ class Match(models.Model):
     team = models.ForeignKey(StaffCustomTeams, on_delete = models.CASCADE, null = True, related_name = 'matches')
     player = models.ForeignKey(Player, on_delete = models.CASCADE, null = True, related_name = 'matches')
     match_id = models.CharField(max_length = 300, null = True)
-    user_id = models.CharField(max_length = 100, null = True)
-    user_id_type = models.CharField(max_length = 150, null = True)
     kills = models.IntegerField(null = True)
     kd = models.FloatField(null = True)
+    deaths = models.IntegerField(null = True)
+    headshots = models.IntegerField(null = True)
     damage_done = models.FloatField(null = True)
     damage_taken = models.FloatField(null = True)
     placement = models.IntegerField(null = True)
@@ -159,7 +160,7 @@ class Match(models.Model):
         verbose_name_plural = 'Matches'
     
     def __str__(self):
-        return str(self.user_id)
+        return str(self.match_id)
 
 
 class ConfigController(models.Model):

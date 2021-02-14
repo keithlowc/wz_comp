@@ -95,7 +95,7 @@ class InLineStaffCustomTeam(admin.StackedInline):
 
 class MatchAdmin(admin.ModelAdmin):
     search_fields = ('team',)
-    list_display = ('competition', 'team', 'user_id', 'user_id_type', 'match_id', 'kills')
+    list_display = ('competition', 'team', 'player', 'match_id', 'kills')
     list_filter = ('team',)
 
 admin.site.register(Match, MatchAdmin)
