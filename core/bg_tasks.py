@@ -1,5 +1,5 @@
 from background_task import background
-from core.models import StaffCustomTeams, StaffCustomCompetition
+from core.models import StaffCustomTeams, StaffCustomCompetition, Player, Match
 
 from .email import EmailNotificationSystem
 
@@ -29,7 +29,8 @@ def recalculate_competition_stats(custom_config, comp_name):
 
     team_users = {}
 
-    teams = StaffCustomTeams.objects.filter(competition = competition.id, checked_in = True)
+    teams = StaffCustomTeams.objects.filter(competition = competition.id, 
+                                            checked_in = True)
 
     for team in teams:
         team_users = {
@@ -39,11 +40,24 @@ def recalculate_competition_stats(custom_config, comp_name):
             team.player_4: team.player_4_id_type,
         }
 
+        # Saves user to Player Model
+        util.pprintstart('Adding Players to Player model')
+
+        for user_id, user_id_type in team_users.items():
+            if user_id is not None:
+                util.add_to_player_model(competition = competition,
+                                        team = team,
+                                        user_id = user_id,
+                                        user_id_type = user_id_type)
+
+        util.pprintstart('Ending Players to Player model')
+
+        # Cleaning none values
         filtered = {k: v for k, v in team_users.items() if k is not None}
         team_users.clear()
         team_users.update(filtered)
 
-        print('******* Team Users ********')
+        print('******* Team Users for team {} ********'.format(team.team_name))
         print(team_users)
         print('***************************')
 
@@ -52,39 +66,84 @@ def recalculate_competition_stats(custom_config, comp_name):
 
         for user, user_id_type in team_users.items():
             time.sleep(1)
-            clean_data, matches_without_time_filter = util.get_custom_data(user, user_id_type,
-                                                                        competition_start_time,
-                                                                        competition_end_time,
-                                                                        competition_type,
-                                                                        custom_config)
+            error_with_user = False
+            
+            try:
+                clean_data, matches_without_time_filter = util.get_custom_data(user_tag = user, 
+                                                                            user_id_type = user_id_type,
+                                                                            competition_start_time = competition_start_time,
+                                                                            competition_end_time = competition_end_time,
+                                                                            competition_type = competition_type,
+                                                                            custom_config = custom_config)
 
-            data_list.append(clean_data)
-            old_matches_list.append(matches_without_time_filter)
+                # Display data
+                data_list.append(clean_data)
+                old_matches_list.append(matches_without_time_filter)
 
-        # match matches per team with match id
-        organized_data = util.match_matches_with_matches_id(data_list, team_users)
+                # Get the player object
+                player = Player.objects.get(competition = competition,
+                                            team = team,
+                                            user_id = user)
 
-        team_users = {}
+                # Saving data into matches model object
+                util.pprintstart('Adding Matches to Match model')
 
-        team = StaffCustomTeams.objects.get(team_name = team.team_name)
-        team.data = data_list
-        
-        print()
-        print('-- Loading team data_stats --')
-        print('-- Team {} --'.format(team))
-        # If the stats were loaded once, do not load again.
-        if team.data_stats_loaded == False:
-            print('-- data_stats_loaded == False --')
-            print('-- data_stats_loaded will be loaded--')
-            team.data_stats = old_matches_list
-            team.data_stats_loaded = True
+                user_matches_list = clean_data[user]
+                
+                for index, match in enumerate(user_matches_list):
+                    match_id = match['matchID']
+                    kills = match['kills']
+                    kd = match['kd']
+                    damage_done = match['damageDone']
+                    damage_taken = match['damageTaken']
+                    placement = match['teamPlacement']
+                    deaths = match['deaths']
+                    headshots = match['headshots']
 
-        print('-- data_stats_loaded == True --')
-        print('-- data_stats_loaded will NOT be loaded--')
-        print()
+                    # Search if the match already exists if not then add it.
+                    util.add_to_match_model(competition = competition, 
+                                            team = team,
+                                            player = player,
+                                            match_id = match_id,
+                                            kills = kills,
+                                            kd = kd,
+                                            deaths = deaths,
+                                            headshots = headshots,
+                                            damage_done = damage_done,
+                                            damage_taken = damage_taken,
+                                            placement = placement,
+                                            index = index)
+                
+                util.pprintstart('Ending Matches to Match model')
+            except Exception as e:
+                print('THERE WAS AN ISSUE WITH THE PLAYERS DATA - SO I WILL NOT LOAD THE {} DATA'.format(user))
+                error_with_user = True
 
-        team.data_to_render = organized_data
-        team.save()
+        if not error_with_user:
+            # match matches per team with match id
+            organized_data = util.match_matches_with_matches_id(data_list, team_users)
+
+            team_users = {}
+
+            team = StaffCustomTeams.objects.get(team_name = team.team_name)
+            team.data = data_list
+            
+            print()
+            print('-- Loading team data_stats --')
+            print('-- Team {} --'.format(team))
+            # If the stats were loaded once, do not load again.
+            if team.data_stats_loaded == False:
+                print('-- data_stats_loaded == False --')
+                print('-- data_stats_loaded will be loaded--')
+                team.data_stats = old_matches_list
+                team.data_stats_loaded = True
+
+            print('-- data_stats_loaded == True --')
+            print('-- data_stats_loaded will NOT be loaded--')
+            print()
+
+            team.data_to_render = organized_data
+            team.save()
 
 
 @background(schedule = 1)
@@ -130,7 +189,8 @@ def calculate_competition_scores(comp_name):
                         kills.append(val[user][0]['kills'])
                         placements.append(val[user][0]['teamPlacement'])
                     except Exception as e:
-                        print(e)
+                        # print(e)
+                        pass
 
             data[key]['points'] = {
                 'kills': kills,
@@ -176,6 +236,8 @@ def calculate_competition_scores(comp_name):
             for key in key_list[0 : competition.number_of_matches_to_count_points]:
                 print('-----------> Match selected for scoring with id {} and total points of {}'.format(key['key'], data[key['key']]['points']['total_points']))
                 total_points.append(data[key['key']]['points']['total_points'])
+        
+        print('Total points calculated {}'.format(sum(total_points)))
 
         team = StaffCustomTeams.objects.get(team_name = team)
         team.data_to_render = data

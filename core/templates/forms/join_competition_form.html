@@ -3,126 +3,128 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="border rounded join-competition-form">
-    <div class="row p-4">
-        <div class="col-12">
-            <div class="row">
-                <div class="col pb-2">
-                    <h2 class="notranslate display-3 text-center">{{ comp_name }}</h2>
-                    <h2 class="notranslate display-4 text-center">({{ competition.competition_type }})</h2>
-                    <h3 class="text-center pt-2"><u>Inscription Form:</u></h3>
-                    <h5 class="pt-4"><i class="fas fa-sticky-note note-icon"></i> To work your account needs to be public! Tutorial Here: <a class="badge badge-primary" href="https://www.youtube.com/watch?v=k_IMsQ3crME&feature=emb_title">Make Account Public</a></h5>
-                    <h5 class="pt-2">Do Not Use ACTIVISION ID's! <i class="fas fa-ban red-icon"></i></h5>
-                </div>
-            </div>
-
-            <form method="post">
-                {% csrf_token %}
-                
+<div class="container">
+    <div class="border rounded join-competition-form">
+        <div class="row p-4">
+            <div class="col-12">
                 <div class="row">
-                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
-                        {{ form.team_name|as_crispy_field }}
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                        {{ form.team_twitch_stream_user|as_crispy_field }}
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
-                        {{ form.team_captain_email|as_crispy_field }}
+                    <div class="col pb-2">
+                        <h2 class="notranslate display-3 text-center">{{ comp_name }}</h2>
+                        <h2 class="notranslate display-4 text-center">({{ competition.competition_type }})</h2>
+                        <h3 class="text-center pt-2"><u>Inscription Form:</u></h3>
+                        <h5 class="pt-4"><i class="fas fa-sticky-note note-icon"></i> To work your account needs to be public! Tutorial Here: <a class="badge badge-primary" href="https://www.youtube.com/watch?v=k_IMsQ3crME&feature=emb_title">Make Account Public</a></h5>
+                        <h5 class="pt-2">Do Not Use ACTIVISION ID's! <i class="fas fa-ban red-icon"></i></h5>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col">
-                        {{ form.team_banner|as_crispy_field }}
-                    </div>
-                </div>
-
-                <div class="row pt-4" id="player_1">
-                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
-                        {{ form.player_1|as_crispy_field }}
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                        {{ form.player_1_id_type|as_crispy_field }}
-                    </div>
-                </div>
-
-                <div class="row" id="player_2">
-                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
-                        {{ form.player_2|as_crispy_field }}
-                    </div>
+                <form method="post">
+                    {% csrf_token %}
                     
-                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                        {{ form.player_2_id_type|as_crispy_field }}
-                    </div>
-                </div>
-
-                <div class="row" id="player_3">
-                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
-                        {{ form.player_3|as_crispy_field }}
-                    </div>
-                    
-                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                        {{ form.player_3_id_type|as_crispy_field }}
-                    </div>
-                </div>
-
-                <div class="row" id="player_4">
-                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
-                        {{ form.player_4|as_crispy_field }}
-                    </div>
-                    
-                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                        {{ form.player_4_id_type|as_crispy_field }} 
-                    </div>
-                </div>
-
-                <div class="row pt-2">
-                    <div class="col">
-                        <h4>This form will verify that your account meets the following:</h4>
-                        <ul>
-                            <li class="white-color-font"><p class="lead">You have provided the username without typos <i class="fas fa-check check-mark-icon"></i></p></li>
-                            <li class="white-color-font"><p class="lead">You have provided an username that exists <i class="fas fa-check check-mark-icon"></i></p></li>
-                            <li class="white-color-font"><p class="lead">You have provided the proper id type <i class="fas fa-check check-mark-icon"></i></p></li>
-                            <li class="white-color-font"><p class="lead">You meet the KD criteria of <b>{{ competition.cod_kd_minimum_per_player_verification|stringformat:".2f" }} <= KD <= {{ competition.cod_kd_maximum_per_player_verification|stringformat:".2f" }}</b> <i class="fas fa-check check-mark-icon"></i></p></li>
-                            <li class="white-color-font"><p class="lead">Your account is older than <b>{{ competition.cod_verification_total_time_played }}</b> days of total played time <i class="fas fa-check check-mark-icon"></i></p></li>
-                            <li class="white-color-font"><p class="lead">You have played more than <b>{{ competition.cod_verification_total_games_played }}</b> matches in your entire account life <i class="fas fa-check check-mark-icon"></i></p></li>
-                            <li class="white-color-font"><p class="lead">Twitch Live Stream during competition is required <i class="fab fa-twitch twitch-icon-color"></i> </p></li>
-                            <li class="white-color-font"><p class="lead"><span class="notranslate">Reverse Boosting</span> is prohibited. <i class="fas fa-ban red-icon"></i> </p></li>
-                            <li class="white-color-font"><p class="lead">Any sort of <span class="notranslate">Hack</span> is prohibited. <i class="fas fa-ban red-icon"></i> </p></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="row pt-2">
-                    <div class="col">
-                        <h5>Note: Validate your data before submitting!</h5>
-                    </div>
-                </div>
-
-                <div class="row" id="progressBar">
-                    <div class="col">
-                        <div class="progress" style="height:35px">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%">Validating.. 0</div>
+                    <div class="row">
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                            {{ form.team_name|as_crispy_field }}
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                            {{ form.team_twitch_stream_user|as_crispy_field }}
                         </div>
                     </div>
-                </div>
 
-                <div class="row" id="notValidUsers">
-                </div>
-
-                <div class="row pt-4">
-                    <div class="col-6">
-                        <a class="btn btn-success" href="javascript:void();" onclick="validate_users();">Validate</a>
+                    <div class="row">
+                        <div class="col">
+                            {{ form.team_captain_email|as_crispy_field }}
+                        </div>
                     </div>
-                    <div class="col-6">
-                        <input type="submit" value="Submit" class="btn btn-primary" id="submitButton">
-                    </div>
-                </div>
 
-            </form>
+                    <div class="row">
+                        <div class="col">
+                            {{ form.team_banner|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <div class="row pt-4" id="player_1">
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                            {{ form.player_1|as_crispy_field }}
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                            {{ form.player_1_id_type|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <div class="row" id="player_2">
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                            {{ form.player_2|as_crispy_field }}
+                        </div>
+                        
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                            {{ form.player_2_id_type|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <div class="row" id="player_3">
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                            {{ form.player_3|as_crispy_field }}
+                        </div>
+                        
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                            {{ form.player_3_id_type|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <div class="row" id="player_4">
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                            {{ form.player_4|as_crispy_field }}
+                        </div>
+                        
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                            {{ form.player_4_id_type|as_crispy_field }} 
+                        </div>
+                    </div>
+
+                    <div class="row pt-2">
+                        <div class="col">
+                            <h4>This form will verify that your account meets the following:</h4>
+                            <ul>
+                                <li class="white-color-font"><p class="lead">You have provided the username without typos <i class="fas fa-check check-mark-icon"></i></p></li>
+                                <li class="white-color-font"><p class="lead">You have provided an username that exists <i class="fas fa-check check-mark-icon"></i></p></li>
+                                <li class="white-color-font"><p class="lead">You have provided the proper id type <i class="fas fa-check check-mark-icon"></i></p></li>
+                                <li class="white-color-font"><p class="lead">You meet the KD criteria of <b>{{ competition.cod_kd_minimum_per_player_verification|stringformat:".2f" }} <= KD <= {{ competition.cod_kd_maximum_per_player_verification|stringformat:".2f" }}</b> <i class="fas fa-check check-mark-icon"></i></p></li>
+                                <li class="white-color-font"><p class="lead">Your account is older than <b>{{ competition.cod_verification_total_time_played }}</b> days of total played time <i class="fas fa-check check-mark-icon"></i></p></li>
+                                <li class="white-color-font"><p class="lead">You have played more than <b>{{ competition.cod_verification_total_games_played }}</b> matches in your entire account life <i class="fas fa-check check-mark-icon"></i></p></li>
+                                <li class="white-color-font"><p class="lead">Twitch Live Stream during competition is required <i class="fab fa-twitch twitch-icon-color"></i> </p></li>
+                                <li class="white-color-font"><p class="lead"><span class="notranslate">Reverse Boosting</span> is prohibited. <i class="fas fa-ban red-icon"></i> </p></li>
+                                <li class="white-color-font"><p class="lead">Any sort of <span class="notranslate">Hack</span> is prohibited. <i class="fas fa-ban red-icon"></i> </p></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row pt-2">
+                        <div class="col">
+                            <h5>Note: Validate your data before submitting!</h5>
+                        </div>
+                    </div>
+
+                    <div class="row" id="progressBar">
+                        <div class="col">
+                            <div class="progress" style="height:35px">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%">Validating.. 0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" id="notValidUsers">
+                    </div>
+
+                    <div class="row pt-4">
+                        <div class="col-6">
+                            <a class="btn btn-success" href="javascript:void();" onclick="validate_users();">Validate</a>
+                        </div>
+                        <div class="col-6">
+                            <input type="submit" value="Submit" class="btn btn-primary" id="submitButton">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
 </div>

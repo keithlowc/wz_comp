@@ -3,84 +3,86 @@
 
 {% block content %}
 
-<div class="row"> 
-  <div class="col">
-    <h1 class="white-color-font">All competitions:</h1>
+<div class="container">
+  <div class="row"> 
+    <div class="col">
+      <h1 class="white-color-font">All competitions:</h1>
+    </div>
   </div>
-</div>
 
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xm-12">
-      
-      {% if competitions %}
-        {% for competition in competitions %}
-          <div class="row pt-4">
-            
-              <div class="col">
-                <div class="card">
-                  <div class="card-header" role="tab" id="headingInside">
-                      <a class="collapsed" data-toggle="collapse" href="#{{ forloop.counter0|add }}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }}">
+  <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xm-12">
+        
+        {% if competitions %}
+          {% for competition in competitions %}
+            <div class="row pt-4">
+              
+                <div class="col">
+                  <div class="card">
+                    <div class="card-header" role="tab" id="headingInside">
+                        <a class="collapsed" data-toggle="collapse" href="#{{ forloop.counter0|add }}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }}">
+                          <div class="row">
+                            <div class="col-xl-2 col-lg-2 col-md-4 d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                              <img src="{{ competition.competition_banner }}" class="circular border-image">
+                            </div>
+                            <div class="col-xl-5 col-lg-5 col-md-4 col-sm-12 col-xm-12 my-auto">
+                              <h2 class="display-5 align-middle"> {{ competition.competition_name }} </h2>
+                            </div>
+
+                            <div class="col-xl-2 col-lg-2 col-md-2 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                                {% if competition.competition_status == 1 %}
+                                        <span class="badge badge-primary"> In-Progress </span>
+                                {% elif competition.competition_status == 2 %}
+                                        <span class="badge badge-warning"> Ended </span>
+                                {% elif competition.competition_status == 3 %}
+                                        <span class="badge badge-secondary"> Not-Started </span>
+                                {% endif %}
+                                <span class="badge badge-info">{{ competition.competition_type }}</span>
+                                <span class="badge badge-light">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
+
+                                {% if competition.competition_is_closed == False %}
+                                  <span class="badge badge-success">Inscriptions: Open</span>
+                                {% elif competition.competition_is_closed == True %}
+                                  <span class="badge badge-danger">Inscriptions: Closed</span>
+                                {% endif %}
+
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 text-right my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                              <p class="lead">Created by: {{ competition.created_by }}</p>
+                            </div>
+
+                            <div class="col-1 text-right my-auto">
+                              <i class="fas fa-chevron-down"></i>
+                            </div>
+                          </div>
+                        </a>
+
+                    </div>
+                    <div id="{{ forloop.counter0|add }}" class="collapse" role="tabpanel" aria-labelledby="headingInside" data-parent="#accordionInside">
+                      <div class="card-body">
+
+                        {% include 'competitions/competition_description/competition_description.html' %}
+                        
                         <div class="row">
-                          <div class="col-xl-2 col-lg-2 col-md-4 d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
-                            <img src="{{ competition.competition_banner }}" class="circular border-image">
+                          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xm-6 pt-1">
+                            <a class="btn btn-info" href="{% url 'get_competition' comp_name=competition.competition_name %}">View Competition</a>
                           </div>
-                          <div class="col-xl-5 col-lg-5 col-md-4 col-sm-12 col-xm-12 my-auto">
-                            <h2 class="display-5 align-middle"> {{ competition.competition_name }} </h2>
-                          </div>
-
-                          <div class="col-xl-2 col-lg-2 col-md-2 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
-                              {% if competition.competition_status == 1 %}
-                                      <span class="badge badge-primary"> In-Progress </span>
-                              {% elif competition.competition_status == 2 %}
-                                      <span class="badge badge-warning"> Ended </span>
-                              {% elif competition.competition_status == 3 %}
-                                      <span class="badge badge-secondary"> Not-Started </span>
-                              {% endif %}
-                              <span class="badge badge-info">{{ competition.competition_type }}</span>
-                              <span class="badge badge-light">Teams: {{ competition.teams.all|length }}/{{ competition.total_teams_allowed_to_compete }}</span>
-
-                              {% if competition.competition_is_closed == False %}
-                                <span class="badge badge-success">Inscriptions: Open</span>
-                              {% elif competition.competition_is_closed == True %}
-                                <span class="badge badge-danger">Inscriptions: Closed</span>
-                              {% endif %}
-
-                          </div>
-
-                          <div class="col-lg-2 col-md-2 text-right my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
-                            <p class="lead">Created by: {{ competition.created_by }}</p>
-                          </div>
-
-                          <div class="col-1 text-right my-auto">
-                            <i class="fas fa-chevron-down"></i>
+                          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xm-6 pt-1">
+                            <a class="btn btn-success" href="{% url 'join_request_competition' comp_name=competition.competition_name %}">Sign Up Competition</a>
                           </div>
                         </div>
-                      </a>
-
-                  </div>
-                  <div id="{{ forloop.counter0|add }}" class="collapse" role="tabpanel" aria-labelledby="headingInside" data-parent="#accordionInside">
-                    <div class="card-body">
-
-                      {% include 'competitions/competition_description/competition_description.html' %}
-                      
-                      <div class="row">
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xm-6 pt-1">
-                          <a class="btn btn-info" href="{% url 'get_competition' comp_name=competition.competition_name %}">View Competition</a>
-                        </div>
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xm-6 pt-1">
-                          <a class="btn btn-success" href="{% url 'join_request_competition' comp_name=competition.competition_name %}">Sign Up Competition</a>
-                        </div>
+                        
                       </div>
-                      
                     </div>
                   </div>
                 </div>
-              </div>
-          </div>
-        {% endfor %}
-      {% else %}
-          <p>There are no competitions available!</p>
-      {% endif %}
+            </div>
+          {% endfor %}
+        {% else %}
+            <p>There are no competitions available!</p>
+        {% endif %}
+    </div>
   </div>
 </div>
 

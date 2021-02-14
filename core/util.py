@@ -1,11 +1,16 @@
 from .warzone_api import WarzoneApi
 from .email import EmailNotificationSystem
 
-from core.models import StaffCustomTeams
+from core.models import StaffCustomTeams, Player, Match
 
 import datetime, time
 
 from itertools import groupby
+
+
+def pprintstart(message):
+    print()
+    print(message)
 
 
 def calculate_average(matches, element):
@@ -20,7 +25,7 @@ def calculate_average(matches, element):
 
 # Matches related
 
-def exclude_matches_of_type(matches_list, competition_type):
+def exclude_matches_of_type(matches_list, competition_type_list):
     '''
     Exclude matches that contain
     the competition type assigned
@@ -31,7 +36,7 @@ def exclude_matches_of_type(matches_list, competition_type):
     clean_matches = []
 
     for match in matches_list:
-        if match["mode"] != competition_type:
+        if match["mode"] not in competition_type_list:
             clean_matches.append(match)
         else:
             print("Skipped this match")
@@ -69,11 +74,11 @@ def filter_matches(matches_list, competition_type):
     return new_matches_list
 
 
-def get_values_from_matches(matches_list, user_tag = None):
+def get_values_from_matches(matches_list, message, user_tag = None):
     
     all_matches = []
 
-    print('Player name: {}'.format(matches_list[0]['player']['username']))
+    print('Player name: {} for {}'.format(matches_list[0]['player']['username'], message))
 
     for index, matches in enumerate(matches_list):
         # print('Player name: {}'.format(matches['player']['username']))
@@ -83,19 +88,18 @@ def get_values_from_matches(matches_list, user_tag = None):
             # Plunder matches do not have positioning 
             # This is important because we are getting 
             # that initial data for our graphs.
+            data['matchID'] = matches['matchID']
             data['kd'] = matches['playerStats']['kdRatio']
             data['kills'] = matches['playerStats']['kills']
+            data['deaths'] = matches['playerStats']['deaths']
+            data['headshots'] = matches['playerStats']['deaths']
             data['damageDone'] = matches['playerStats']['damageDone']
-            data['matchID'] = matches['matchID']
+            data['damageTaken'] = matches['playerStats']['damageTaken']
             data['teamPlacement'] = matches['playerStats']['teamPlacement']
-        except Exception as e:
-            print()
-            print('There was an error with: {} - Probably a plunder match'.format(e))
-            data['teamPlacement'] = 200
-            print('A Match of {} with stats: {}'.format(matches['mode'], matches['playerStats']))
-            print()
 
-        all_matches.append(data)
+            all_matches.append(data)
+        except Exception as e:
+            print('SKIPPING this match since there was an error with: {} - Match type {}'.format(e, matches['mode']))
     
     if user_tag is not None:
 
@@ -238,19 +242,86 @@ def get_custom_data(user_tag, user_id_type, competition_start_time, competition_
 
     matches_without_time_filter = matches['matches'][0:total_matches_len - 1] # All matches
 
-    data = filter_for_time(custom_config,
-                          filtered_matches, 
-                          competition_start_time,
-                          competition_end_time)
+    data = filter_for_time(custom_config = custom_config,
+                          matches_list = filtered_matches, 
+                          competition_start_time = competition_start_time,
+                          competition_end_time = competition_end_time)
 
-    clean_data = get_values_from_matches(data, user_tag)
+    clean_data = get_values_from_matches(matches_list = data, 
+                                        message = 'Clean data',
+                                        user_tag = user_tag)
 
-    matches_without_time_filter = exclude_matches_of_type(matches_without_time_filter, "br_dmz_plnbld") #Exclude plunder matches
+    matches_without_time_filter = exclude_matches_of_type(matches_list = matches_without_time_filter, 
+                                                        competition_type_list = ['br_dmz_plnbld',
+                                                                                'br_dmz_plndtrios',
+                                                                                'br_dmz_plndval1',
+                                                                                'brtdm_rmbl',
+                                                                                'brtdm_wzrumval2'])
 
-    matches_without_time_filter = get_values_from_matches(matches_without_time_filter,
-                                                         user_tag)
+    matches_without_time_filter = get_values_from_matches(matches_list = matches_without_time_filter,
+                                                         message = 'Matches without time filter',
+                                                         user_tag = user_tag)
 
     return clean_data, matches_without_time_filter
+
+
+def add_to_player_model(competition, team, user_id, user_id_type):
+    '''
+    Adds to the player model
+    if the player does not 
+    already exist in the model
+    '''
+
+    player_found = True
+    try:
+        Player.objects.get(competition = competition, 
+                            team = team, 
+                            user_id = user_id, 
+                            user_id_type = user_id_type)
+    except Exception as e:
+        player_found = False
+    
+    if not player_found:
+        print('Saving Player {} to model'.format(user_id))
+        Player.objects.create(competition = competition, 
+                                team = team, 
+                                user_id = user_id,
+                                user_id_type = user_id_type)
+    else:
+        print('Not saving Player {} since it already exists in db!'.format(user_id))
+
+
+def add_to_match_model(competition, team, player, match_id, kills, kd, deaths, headshots, damage_done, damage_taken, placement, index):
+    '''
+    Adds the match to the MATCH model
+    if this match with
+    '''
+
+    found_match = True
+    try:
+        Match.objects.get(competition = competition, 
+                            team = team, 
+                            player = player, 
+                            match_id = match_id)
+    except Exception as e:
+        found_match = False
+
+    if not found_match:
+        Match.objects.create(competition = competition, 
+                                team = team,
+                                player = player,
+                                match_id = match_id,
+                                kills = kills, 
+                                kd = kd,
+                                deaths = deaths,
+                                headshots = headshots, 
+                                damage_done = damage_done,
+                                damage_taken = damage_taken, 
+                                placement = placement)
+
+        print('Match #{} saved!'.format(index))
+    else:
+        print('Match #{} already exist in db!'.format(index))
 
 
 # Email notifications related

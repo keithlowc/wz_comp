@@ -2,7 +2,7 @@ from django.contrib import admin
 
 import os
 
-from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
+from .models import StaffCustomTeams, Match, Player, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
 from .forms import TeamFormAdminPage, TeamFormAdminPageSuperUser, CompetitionAdminPage, CompetitionAdminPageSuperUser, ConfigControllerAdminPage
 
 # from background_task.models import Task
@@ -14,6 +14,8 @@ from core.bg_tasks import EmailNotificationSystemJob
 admin.site.site_header = 'Duelout Manager'
 admin.site.site_title = 'Duelout Admin Portal'
 admin.site.index_title = 'Welcome to Duelout Portal'
+
+admin.site.register(Player)
 
 # StaffCustomTeam admin
 class StaffCustomTeamAdmin(admin.ModelAdmin):
@@ -89,6 +91,14 @@ class InLineStaffCustomTeam(admin.StackedInline):
         'checked_in',
     )
     extra = 1
+
+
+class MatchAdmin(admin.ModelAdmin):
+    search_fields = ('team',)
+    list_display = ('competition', 'team', 'player', 'match_id', 'kills')
+    list_filter = ('team',)
+
+admin.site.register(Match, MatchAdmin)
 
 # Competitions admin 
 class StaffCustomCompetitionAdmin(admin.ModelAdmin):

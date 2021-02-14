@@ -1,0 +1,277 @@
+{% extends 'main/base.html' %}
+{% load custom_filtering_tags %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container border rounded dashboard">
+    <div class="row">
+        <div class="col">
+            <h1 class="display-4 white-color-font text-center pt-4">{{ comp_name}} Dashboard</h1>
+
+            <div class="row white-color-font text-center p-4">
+                <div class="col">
+                    <div class="container" style="width: 100%;">
+                        <canvas id="top-killers" data-url="{% url 'get_top_killers' comp_name=comp_name%}"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row white-color-font text-center p-4">
+                <div class="col">
+                    <div class="container" style="width: 100%;">
+                        <canvas id="top-damage-team" data-url="{% url 'get_top_damage_by_team' comp_name=comp_name%}"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row white-color-font text-center p-4">
+                <div class="col">
+                    <div class="container" style="width: 100%;">
+                        <canvas id="top-deaths" data-url="{% url 'get_top_deaths' comp_name=comp_name%}"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row white-color-font text-center p-4">
+                <div class="col">
+                    <div class="container" style="width: 100%;">
+                        <canvas id="top-damage-taken-team" data-url="{% url 'get_top_damage_taken_by_team' comp_name=comp_name%}"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row white-color-font text-center p-4">
+                <div class="col">
+                    <div class="container" style="width: 100%;">
+                        <canvas id="top-headshots" data-url="{% url 'get_top_headshots' comp_name=comp_name%}"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    createChart(typechart = "bar", chartId = "#top-killers", label = "Kills", title = "Top Killers", xAxisLabel = "Players", yAxisLabel = "Kills")
+    createChart(typechart = "doughnut", chartId = "#top-damage-team", label = "Damage", title = "Most Damage per Team", xAxisLabel = "Players", yAxisLabel = "Damage")
+    createChart(typechart = "doughnut", chartId = "#top-damage-taken-team", label = "Damage taken", title = "Most Damage Taken per Team", xAxisLabel = "Players", yAxisLabel = "Damge taken")
+    createChart(typechart = "bar", chartId = "#top-deaths", label = "Deaths", title = "Top Deaths by Player", xAxisLabel = "Players", yAxisLabel = "Deaths")
+    createChart(typechart = "bar", chartId = "#top-headshots", label = "Headshots", title = "Top Headshots by Player", xAxisLabel = "Players", yAxisLabel = "Headshots")
+
+
+    function createChart(typechart, chartId, label, title, xAxisLabel, yAxisLabel) {
+        var $chart = $(chartId);
+
+        let backgroundColorList = [
+                '#6290c3',
+                '#c2e7da',
+                '#d4df9e',
+                '#d7fcd4',
+                '#f15025',
+                '#aa6373',
+                '#f0f2a6',
+                '#efbdeb',
+                '#b68cb8',
+                '#f5853f',
+                '#ffcdbc',
+                '#beb8eb',
+                '#5299d3',
+                '#6290c3',
+                '#c2e7da',
+                '#d4df9e',
+                '#d7fcd4',
+                '#f15025',
+                '#aa6373',
+                '#f0f2a6',
+                '#efbdeb',
+                '#b68cb8',
+                '#f5853f',
+                '#ffcdbc',
+                '#beb8eb',
+                '#6290c3',
+                '#c2e7da',
+                '#d4df9e',
+                '#d7fcd4',
+                '#f15025',
+                '#aa6373',
+                '#f0f2a6',
+                '#efbdeb',
+                '#b68cb8',
+                '#f5853f',
+                '#ffcdbc',
+                '#beb8eb',
+                '#5299d3',
+                '#6290c3',
+                '#c2e7da',
+                '#d4df9e',
+                '#d7fcd4',
+                '#f15025',
+                '#aa6373',
+                '#f0f2a6',
+                '#efbdeb',
+                '#b68cb8',
+                '#f5853f',
+                '#ffcdbc',
+                '#6290c3',
+                '#c2e7da',
+                '#d4df9e',
+                '#d7fcd4',
+                '#f15025',
+                '#aa6373',
+                '#f0f2a6',
+                '#efbdeb',
+                '#b68cb8',
+                '#f5853f',
+                '#ffcdbc',
+                '#beb8eb',
+                '#5299d3',
+                '#6290c3',
+                '#c2e7da',
+                '#d4df9e',
+                '#d7fcd4',
+                '#f15025',
+                '#aa6373',
+                '#f0f2a6',
+                '#efbdeb',
+                '#b68cb8',
+                '#f5853f',
+                '#ffcdbc',
+                '#beb8eb',
+                '#6290c3',
+                '#c2e7da',
+                '#d4df9e',
+                '#d7fcd4',
+                '#f15025',
+                '#aa6373',
+                '#f0f2a6',
+                '#efbdeb',
+                '#b68cb8',
+                '#f5853f',
+                '#ffcdbc',
+                '#beb8eb',
+                '#5299d3',
+                '#6290c3',
+                '#c2e7da',
+                '#d4df9e',
+                '#d7fcd4',
+                '#f15025',
+                '#aa6373',
+                '#f0f2a6',
+                '#efbdeb',
+                '#b68cb8',
+                '#f5853f',
+            ]
+        
+        let borderColor = [
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+                'rgb(255,255,255)',
+            ]
+  
+        $.ajax({
+                url: $chart.data("url"),
+                success: function (data) {
+                    var ctx = $chart[0].getContext("2d");
+
+                    let keys = Object.keys(data);
+                    let values = Object.values(data);
+
+                    Chart.defaults.global.defaultFontColor = 'white';
+                    Chart.defaults.global.title.fontSize = 24;
+
+                    chart = new Chart(ctx, {
+                        type: typechart,
+                        data: {
+                            labels: keys,
+                            datasets: [{
+                                label: label,
+                                data: values,
+                                backgroundColor: backgroundColorList,
+                                borderColor: borderColor,
+                            }],
+                        },
+                        options: {
+                            // events: [],
+                            maintainAspectRatio: true,
+                            responsive: true,
+                            legend: {
+                                position: 'top',
+                                // fontColor: 'white',
+                            },
+                            title: {
+                                display: true,
+                                text: title
+                            },
+                            scales: {
+                                    yAxes: [{
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: yAxisLabel
+                                        }
+                                    }],
+                                    xAxes: [{
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: xAxisLabel
+                                        }
+                                    }]
+                            },
+                        },
+                    });
+  
+                }
+            });
+  
+        };
+</script>
+{% endblock %}
