@@ -96,11 +96,10 @@ def get_values_from_matches(matches_list, message, user_tag = None):
             data['damageDone'] = matches['playerStats']['damageDone']
             data['damageTaken'] = matches['playerStats']['damageTaken']
             data['teamPlacement'] = matches['playerStats']['teamPlacement']
+
+            all_matches.append(data)
         except Exception as e:
             print('SKIPPING this match since there was an error with: {} - Match type {}'.format(e, matches['mode']))
-            data['teamPlacement'] = 200
-
-        all_matches.append(data)
     
     if user_tag is not None:
 

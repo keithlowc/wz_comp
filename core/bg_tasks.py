@@ -66,78 +66,84 @@ def recalculate_competition_stats(custom_config, comp_name):
 
         for user, user_id_type in team_users.items():
             time.sleep(1)
-            clean_data, matches_without_time_filter = util.get_custom_data(user_tag = user, 
-                                                                        user_id_type = user_id_type,
-                                                                        competition_start_time = competition_start_time,
-                                                                        competition_end_time = competition_end_time,
-                                                                        competition_type = competition_type,
-                                                                        custom_config = custom_config)
-
-            # Display data
-            data_list.append(clean_data)
-            old_matches_list.append(matches_without_time_filter)
-
-            # Get the player object
-            player = Player.objects.get(competition = competition,
-                                        team = team,
-                                        user_id = user)
-
-            # Saving data into matches model object
-            util.pprintstart('Adding Matches to Match model')
-
-            user_matches_list = clean_data[user]
+            error_with_user = False
             
-            for index, match in enumerate(user_matches_list):
-                match_id = match['matchID']
-                kills = match['kills']
-                kd = match['kd']
-                damage_done = match['damageDone']
-                damage_taken = match['damageTaken']
-                placement = match['teamPlacement']
-                deaths = match['deaths']
-                headshots = match['headshots']
+            try:
+                clean_data, matches_without_time_filter = util.get_custom_data(user_tag = user, 
+                                                                            user_id_type = user_id_type,
+                                                                            competition_start_time = competition_start_time,
+                                                                            competition_end_time = competition_end_time,
+                                                                            competition_type = competition_type,
+                                                                            custom_config = custom_config)
 
-                # Search if the match already exists if not then add it.
-                util.add_to_match_model(competition = competition, 
-                                        team = team,
-                                        player = player,
-                                        match_id = match_id,
-                                        kills = kills,
-                                        kd = kd,
-                                        deaths = deaths,
-                                        headshots = headshots,
-                                        damage_done = damage_done,
-                                        damage_taken = damage_taken,
-                                        placement = placement,
-                                        index = index)
+                # Display data
+                data_list.append(clean_data)
+                old_matches_list.append(matches_without_time_filter)
+
+                # Get the player object
+                player = Player.objects.get(competition = competition,
+                                            team = team,
+                                            user_id = user)
+
+                # Saving data into matches model object
+                util.pprintstart('Adding Matches to Match model')
+
+                user_matches_list = clean_data[user]
+                
+                for index, match in enumerate(user_matches_list):
+                    match_id = match['matchID']
+                    kills = match['kills']
+                    kd = match['kd']
+                    damage_done = match['damageDone']
+                    damage_taken = match['damageTaken']
+                    placement = match['teamPlacement']
+                    deaths = match['deaths']
+                    headshots = match['headshots']
+
+                    # Search if the match already exists if not then add it.
+                    util.add_to_match_model(competition = competition, 
+                                            team = team,
+                                            player = player,
+                                            match_id = match_id,
+                                            kills = kills,
+                                            kd = kd,
+                                            deaths = deaths,
+                                            headshots = headshots,
+                                            damage_done = damage_done,
+                                            damage_taken = damage_taken,
+                                            placement = placement,
+                                            index = index)
+                
+                util.pprintstart('Ending Matches to Match model')
+            except Exception as e:
+                print('THERE WAS AN ISSUE WITH THE PLAYERS DATA - SO I WILL NOT LOAD THE {} DATA'.format(user))
+                error_with_user = True
+
+        if not error_with_user:
+            # match matches per team with match id
+            organized_data = util.match_matches_with_matches_id(data_list, team_users)
+
+            team_users = {}
+
+            team = StaffCustomTeams.objects.get(team_name = team.team_name)
+            team.data = data_list
             
-            util.pprintstart('Ending Matches to Match model')
+            print()
+            print('-- Loading team data_stats --')
+            print('-- Team {} --'.format(team))
+            # If the stats were loaded once, do not load again.
+            if team.data_stats_loaded == False:
+                print('-- data_stats_loaded == False --')
+                print('-- data_stats_loaded will be loaded--')
+                team.data_stats = old_matches_list
+                team.data_stats_loaded = True
 
+            print('-- data_stats_loaded == True --')
+            print('-- data_stats_loaded will NOT be loaded--')
+            print()
 
-        # match matches per team with match id
-        organized_data = util.match_matches_with_matches_id(data_list, team_users)
-
-        team_users = {}
-
-        team = StaffCustomTeams.objects.get(team_name = team.team_name)
-        team.data = data_list
-        
-        print()
-        print('-- Loading team data_stats --')
-        print('-- Team {} --'.format(team))
-        # If the stats were loaded once, do not load again.
-        if team.data_stats_loaded == False:
-            print('-- data_stats_loaded == False --')
-            print('-- data_stats_loaded will be loaded--')
-            team.data_stats = old_matches_list
-            team.data_stats_loaded = True
-
-        print('-- data_stats_loaded == True --')
-        print('-- data_stats_loaded will NOT be loaded--')
-        print()
-
-        team.data_to_render = organized_data
-        team.save()
+            team.data_to_render = organized_data
+            team.save()
 
 
 @background(schedule = 1)
