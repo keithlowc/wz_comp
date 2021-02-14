@@ -5,22 +5,15 @@
 {% endblock %}
 
 {% block content %}
-<div>
-<!-- Button trigger modal -->
-
-<div class="row pt-2 pb-2">
-  <div class="col-2">
-
+  <div class="row pt-2 pb-2">
+    <div class="col-2"></div>
+      <div class="col-8">
+        <a type="button" class="btn btn-info btn-block" onclick="runCharts('{{ user|remove_everything_after_hashtag }}')" data-toggle="modal" data-target="#damageModal-{{user|remove_everything_after_hashtag}}">
+          {{user}}
+        </a>
+      </div>
+    <div class="col-2"></div>
   </div>
-  <div class="col-8">
-    <a type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#damageModal-{{user|remove_everything_after_hashtag}}">
-      {{user}}
-    </a>
-  </div>
-  <div class="col-2">
-
-  </div>
-</div>
 
   <div class="modal fade" id="damageModal-{{user|remove_everything_after_hashtag}}" tabindex="-1" role="dialog" aria-labelledby="damageModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -62,11 +55,6 @@
 
 {% block javascript %}
 <script>
-
-    var chart;
-    var activision_tag = "{{ user|remove_everything_after_hashtag }}";
-
-    runCharts(activision_tag);
 
     function runCharts (user) {
       initializeCharts(user).then(() => {
