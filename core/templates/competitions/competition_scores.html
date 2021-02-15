@@ -11,7 +11,7 @@
         <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
           {% if user == competition.created_by and competition.competition_started == False %}
             <a class="notranslate btn btn-success" href="{% url 'recalculate_scores' comp_name=competition.competition_name %}">Start Competition</a>
-          {% elif competition.competition_started == True %}
+          {% elif competition.competition_started == True and user == competition.created_by %}
             <h5>Competition has been started!</h5>
             <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
           {% else %}
