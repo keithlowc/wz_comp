@@ -9,11 +9,13 @@
       <div class="row">
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
-          {% if user == competition.created_by and competition.competition_started == False %}
+          {% if user == competition.created_by and competition.competition_started == False or user.is_superuser and competition.competition_started == False %}
             <a class="notranslate btn btn-success" href="{% url 'recalculate_scores' comp_name=competition.competition_name %}">Start Competition</a>
-          {% elif competition.competition_started == True and user == competition.created_by %}
+
+            {% elif user == competition.created_by and competition.competition_started == True or user.is_superuser and competition.competition_started == True %}
             <h5>Competition has been started!</h5>
             <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
+            
           {% else %}
             <h5>Competition has not been started!</h5>
           {% endif %}
@@ -21,13 +23,13 @@
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12">
           <div class = "row">
-            {% if competition.competition_started == True %}
+            {% if user == competition.created_by and competition.competition_started == True or user.is_superuser and competition.competition_started == True %}
               <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12 pt-2">
                 <a class="btn btn-primary " href="{% url 'show_competition_dashboard' comp_name=competition.competition_name %}">Dashboard</a>
               </div>
             {% endif %}
 
-            {% if user == competition.created_by %}
+            {% if user == competition.created_by or user.is_superuser %}
               <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12 pt-2">
                 <a class="btn btn-secondary " href="{% url 'send_competition_email' comp_name=competition.competition_name %}">Tournament Communication</a>
               </div>
