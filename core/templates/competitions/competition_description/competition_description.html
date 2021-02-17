@@ -118,6 +118,21 @@
               <td><p class="lead"><i class="fas fa-crown third-place"></i> Third place</p></td>
               <td>{{ competition.points_per_third_place }}</td>
             </tr>
+
+          {% if competition.points_per_fourth_place != 0 %}
+            <tr>
+              <td><p class="lead"><i class="fas fa-crown fourth-place"></i> Fourth place</p></td>
+              <td>{{ competition.points_per_fourth_place }}</td>
+            </tr>
+          {% endif %}
+
+          {% if competition.points_per_fifth_place != 0 %}
+            <tr>
+              <td><p class="lead"><i class="fas fa-crown fifth-place"></i> Fifth place</p></td>
+              <td>{{ competition.points_per_fifth_place }}</td>
+            </tr>
+          {% endif %}
+
           </tbody>
         </table>
       </div>

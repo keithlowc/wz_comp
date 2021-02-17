@@ -206,6 +206,8 @@ class CompetitionAdminPage(forms.ModelForm):
                 'points_per_first_place',
                 'points_per_second_place',
                 'points_per_third_place',
+                'points_per_fourth_place',
+                'points_per_fifth_place',
                 'start_time',
                 'end_time',
                 'competition_is_closed',
@@ -221,6 +223,7 @@ class CompetitionAdminPage(forms.ModelForm):
             'twitter_link': 'Twitter link (OPTIONAL)',
             'twitch_link': 'Twitch link (OPTIONAL)',
         }
+
 
 class CompetitionAdminPageSuperUser(forms.ModelForm):
     '''
@@ -258,6 +261,8 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
                 'points_per_first_place',
                 'points_per_second_place',
                 'points_per_third_place',
+                'points_per_fourth_place',
+                'points_per_fifth_place',
                 'start_time',
                 'end_time',
                 'competition_is_closed',

@@ -2,7 +2,7 @@ from django.contrib import admin
 
 import os
 
-from .models import StaffCustomTeams, Match, Player, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
+from .models import StaffCustomTeams, Match, Player, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, Analytics
 from .forms import TeamFormAdminPage, TeamFormAdminPageSuperUser, CompetitionAdminPage, CompetitionAdminPageSuperUser, ConfigControllerAdminPage
 
 # from background_task.models import Task
@@ -16,6 +16,7 @@ admin.site.site_title = 'Duelout Admin Portal'
 admin.site.index_title = 'Welcome to Duelout Portal'
 
 admin.site.register(Player)
+admin.site.register(Analytics)
 
 # StaffCustomTeam admin
 class StaffCustomTeamAdmin(admin.ModelAdmin):

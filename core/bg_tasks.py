@@ -205,6 +205,10 @@ def calculate_competition_scores(comp_name):
                 placement = competition.points_per_second_place
             elif data[key]['points']['placement'] == 3:
                 placement = competition.points_per_third_place
+            elif data[key]['points']['placement'] == 4:
+                placement = competition.points_per_fourth_place
+            elif data[key]['points']['placement'] == 5:
+                placement = competition.points_per_fifth_place
             else:
                 placement = 0
 
