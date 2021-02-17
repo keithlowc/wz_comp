@@ -20,7 +20,7 @@ class StaffCustomCompetition(models.Model):
     competition_type = models.CharField(max_length = 6, choices = competition_type)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, default = 0)
     competition_banner = models.URLField(max_length = 1000, default = 'https://cdn1.dotesports.com/wp-content/uploads/2019/12/16125403/cod38.jpg')
-    total_teams_allowed_to_compete = models.IntegerField(default = 30, null = True)
+    total_teams_allowed_to_compete = models.IntegerField(default = 20, null = True)
 
     # Contact Information
     discord_link = models.URLField(max_length = 1000, null = True, blank = True)

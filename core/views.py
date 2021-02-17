@@ -41,6 +41,11 @@ def join_request_competition(request, comp_name):
             team.competition = competition
             team.save()
 
+            # Check if this team will make the competition full
+            if competition.teams.all().count() == competition.total_teams_allowed_to_compete:
+                competition.competition_is_closed = True
+                competition.save()
+
             signals.send_message.send(sender = None,
                                       request = request,
                                       message = 'Succesfully requested entry to tournament: {}'.format(comp_name),

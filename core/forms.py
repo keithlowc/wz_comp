@@ -185,7 +185,7 @@ class CompetitionAdminPage(forms.ModelForm):
                 'competition_name',
                 'competition_description',
                 'competition_banner',
-                'total_teams_allowed_to_compete',
+                # 'total_teams_allowed_to_compete',
 
                 # Contact information
                 'discord_link',
