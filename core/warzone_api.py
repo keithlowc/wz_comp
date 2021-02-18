@@ -1,4 +1,5 @@
-import requests
+from core.models import Analytics
+import requests, datetime
 
 '''
 https://rapidapi.com/elreco/api/call-of-duty-modern-warfare?endpoint=apiendpoint_c8a294f3-e186-4365-a85c-5ef29d0fe735
@@ -23,6 +24,18 @@ class WarzoneApi:
         response = requests.request("GET", url, headers = self.headers)
 
         battle_royale_data = response.json()
+
+        # Lets measure how many calls are we doing per day
+        todays_date = datetime.datetime.now().date()
+
+        try:
+            todays_analytic = Analytics.objects.get(date = todays_date)
+            todays_analytic.amount_of_warzone_api_requests_calls += 1
+            todays_analytic.save()
+            print('Analytics already exists so updating')
+        except Exception as e:
+            Analytics.objects.create(date = todays_date, amount_of_warzone_api_requests_calls = 1)
+            print('Analytics does not exist so creating new!')
 
         return battle_royale_data
 

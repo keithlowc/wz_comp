@@ -20,7 +20,7 @@ class StaffCustomCompetition(models.Model):
     competition_type = models.CharField(max_length = 6, choices = competition_type)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, default = 0)
     competition_banner = models.URLField(max_length = 1000, default = 'https://cdn1.dotesports.com/wp-content/uploads/2019/12/16125403/cod38.jpg')
-    total_teams_allowed_to_compete = models.IntegerField(default = 30, null = True)
+    total_teams_allowed_to_compete = models.IntegerField(default = 20, null = True)
 
     # Contact Information
     discord_link = models.URLField(max_length = 1000, null = True, blank = True)
@@ -42,6 +42,8 @@ class StaffCustomCompetition(models.Model):
     points_per_first_place = models.IntegerField(default = 10, verbose_name = "Points for placing - 1st Place")
     points_per_second_place = models.IntegerField(default = 5, verbose_name = "Points for placing - 2nd Place")
     points_per_third_place = models.IntegerField(default = 3, verbose_name = "Points for placing - 3rd Place")
+    points_per_fourth_place = models.IntegerField(default = 0, verbose_name = "Points for placing - 4th Place")
+    points_per_fifth_place = models.IntegerField(default = 0, verbose_name = "Points for placing - 5th Place")
 
     start_time = models.DateTimeField(default = datetime.now, blank = True)
     end_time = models.DateTimeField(default = datetime.now, blank = True)
@@ -175,6 +177,7 @@ class ConfigController(models.Model):
     competitions_page_refresh_time = 5000 mili seconds
     competitions_bg_tasks = 100 seconds
     '''
+
     name = models.CharField(max_length = 100, null = True, unique = True, default = 'main_config_controller')
     competitions_page_refresh_time = models.IntegerField(default = 15000)
     competitions_bg_tasks = models.IntegerField(default = 900)
@@ -195,5 +198,28 @@ class ConfigController(models.Model):
         verbose_name_plural = 'Application Configuration'
     
     def __str__(self):
-        return str("Configuration controller - Do not delete - Do not create more objects")
+        return str('Configuration controller - Do not delete - Do not create more objects')
+
+
+class Analytics(models.Model):
+    '''
+    Save any sort of data
+    that I would like to take a 
+    look after. IE: how many requests
+    to the api we have done.
+
+    Analytics of the day
+    '''
+    
+    date = models.DateTimeField(default = datetime.now, blank = True)
+    amount_of_warzone_api_requests_calls = models.IntegerField(default = 0)
+
+    class Meta:
+        verbose_name = 'Application Analytics'
+        verbose_name_plural = 'Application Analytics'
+    
+    def __str__(self):
+        return str(self.date)
+
+
 

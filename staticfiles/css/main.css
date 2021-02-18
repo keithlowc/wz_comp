@@ -102,11 +102,19 @@ body {
 }
 
 .second-place {
-    color: #c0c0c0!important;
+    color: #808080!important;
 }
 
 .third-place {
     color: #cd7f32!important;
+}
+
+.fourth-place {
+    color: #c0c0c0!important;
+}
+
+.fifth-place {
+    color: #353636!important;
 }
 
 /* Banned or prohibited icon */
