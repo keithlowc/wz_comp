@@ -18,7 +18,8 @@ class JoinCompetitionRequestForm(forms.ModelForm):
         fields = ('team_name', 
                 'team_banner',
                 'team_captain_email',
-                'team_twitch_stream_user',
+                'team_stream_user',
+                'team_stream_user_type',
 
                 'player_1', 
                 'player_1_id_type', 
@@ -32,7 +33,7 @@ class JoinCompetitionRequestForm(forms.ModelForm):
         labels = {
             'team_banner': 'Team logo (URL only - Do not change if you do not have logo)',
             'team_captain_email': 'Team Captain Email (Contact Information - Any updates will be via email)',
-            'team_twitch_stream_user': 'Team Twitch User (User only - Not URL)',
+            'team_stream_user': 'Team stream user (Do not put URL except if youtube stream)',
 
             'player_1': 'Player 1 Id - (Battlenet, Psnet or Xbox Id)',
             'player_2': 'Player 2 Id - (Battlenet, Psnet or Xbox Id)',
@@ -79,7 +80,8 @@ class TeamFormAdminPage(forms.ModelForm):
         fields = ('team_name', 
                 'team_banner',
                 'team_captain_email',
-                'team_twitch_stream_user',
+                'team_stream_user',
+                'team_stream_user_type',
 
                 'player_1', 
                 'player_1_id_type', 
@@ -94,7 +96,7 @@ class TeamFormAdminPage(forms.ModelForm):
         labels = {
             'team_banner': 'Team logo (URL only - Do not change if you do not have logo)',
             'team_captain_email': 'Team Captain Email (Contact Information - Any updates will be via email)',
-            'team_twitch_stream_user': 'Team Twitch User (User only - Not URL)',
+            'team_stream_user': 'Team stream user (Do not put URL except if youtube stream)',
 
             'player_1': 'Player 1 Id - (Battlenet, Psnet or Xbox Id)',
             'player_2': 'Player 2 Id - (Battlenet, Psnet or Xbox Id)',
@@ -122,7 +124,8 @@ class TeamFormAdminPageSuperUser(forms.ModelForm):
         fields = ('team_name', 
                 'team_banner',
                 'team_captain_email',
-                'team_twitch_stream_user',
+                'team_stream_user',
+                'team_stream_user_type',
 
                 'player_1', 
                 'player_1_id_type', 
@@ -146,7 +149,7 @@ class TeamFormAdminPageSuperUser(forms.ModelForm):
         labels = {
             'team_banner': 'Team logo (URL only - Do not change if you do not have logo)',
             'team_captain_email': 'Team Captain Email (Contact Information - Any updates will be via email)',
-            'team_twitch_stream_user': 'Team Twitch User (User only - Not URL)',
+            'team_stream_user': 'Team stream user (Do not put URL except if youtube stream)',
 
             'player_1': 'Player 1 Id - (Battlenet, Psnet or Xbox Id)',
             'player_2': 'Player 2 Id - (Battlenet, Psnet or Xbox Id)',

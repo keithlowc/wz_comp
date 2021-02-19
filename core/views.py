@@ -52,14 +52,14 @@ def join_request_competition(request, comp_name):
                                       type = 'SUCCESS')
 
             return redirect('get_competition', comp_name = comp_name)
-    else:
-        form = JoinCompetitionRequestForm()
-        context = {
-            'form': form,
-            'comp_name': comp_name,
-            'config': config,
-            'competition': competition
-        }
+
+    form = JoinCompetitionRequestForm()
+    context = {
+        'form': form,
+        'comp_name': comp_name,
+        'config': config,
+        'competition': competition
+    }
     return render(request, 'forms/join_competition_form.html', context)
 
 
