@@ -177,7 +177,7 @@
                           <div class="row">
                             <div class="col">
                               {% if team.team_stream_user_type == "twitch" %}
-                                <h1 id="{{team.team_stream_user}}-header-twitch" data-url="https://embed.twitch.tv?channel={{team.team_stream_user}}&amp;height=480&amp;migration=true&amp;parent=127.0.0.1&amp;width=100%25">{{team.team_stream_user}} Twitch Live!</h1>
+                                <h1 id="{{team.team_stream_user}}-header-twitch" data-url="https://embed.twitch.tv?channel={{team.team_stream_user}}&amp;height=480&amp;migration=true&amp;parent=www.duelout.com&amp;width=100%25">{{team.team_stream_user}} Twitch Live!</h1>
                               {% elif team.team_stream_user_type == "facebook" %}
                                 <h1 id="{{team.team_stream_user}}-header-twitch" data-url="https://www.facebook.com/plugins/video.php?href=https://www.facebook.com/{{team.team_stream_user}}/live">{{team.team_stream_user}} Facebook Gaming Live!</h1>
                               {% elif team.team_stream_user_type == "youtube" %}
