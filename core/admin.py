@@ -73,7 +73,8 @@ class InLineStaffCustomTeam(admin.StackedInline):
     model = StaffCustomTeams
     fields = (
         'team_name',
-        'team_twitch_stream_user',
+        'team_stream_user',
+        'team_stream_user_type',
         'team_captain_email',
         'team_banner',
 
