@@ -41,3 +41,7 @@ def convert_plus_to_empty(string):
 @register.filter
 def convert_hash_to_web_friendly(string):
     return string.replace('#','%23')
+
+@register.filter
+def youtube_embed_url_fixer(string):
+    return string.replace('watch?v=','embed/')

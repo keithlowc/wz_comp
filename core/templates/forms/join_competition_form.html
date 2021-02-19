@@ -21,11 +21,8 @@
                     {% csrf_token %}
                     
                     <div class="row">
-                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                        <div class="col">
                             {{ form.team_name|as_crispy_field }}
-                        </div>
-                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                            {{ form.team_twitch_stream_user|as_crispy_field }}
                         </div>
                     </div>
 
@@ -38,6 +35,15 @@
                     <div class="row">
                         <div class="col">
                             {{ form.team_banner|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                            {{ form.team_stream_user|as_crispy_field }}
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                            {{ form.team_stream_user_type|as_crispy_field }}
                         </div>
                     </div>
 
@@ -191,7 +197,9 @@
 
         if (user_4 != "") {player_4_has_text = true;}
 
-        let twitch_user = document.getElementById("id_team_twitch_stream_user").value;
+        let stream_user = document.getElementById("id_team_stream_user").value;
+
+        let stream_type = document.getElementById("id_team_stream_user_type").value;
 
         let not_valid_users = [];
         let total_users = [];
@@ -224,31 +232,40 @@
         progress_bar[0].style.width = "25%";
         progress_bar[0].textContent = "Validating.. 25%";
 
-        // Verifying that twitch user exists
 
-        if (twitch_user != "") {
+        // If stream type is twitch
+        // verify account other wise don't
+        if (!stream_user.includes("youtube.com")  && stream_type == "twitch") {
 
-            let twitch_token_promise = await ajax_request_get_twitch_token(twitch_api_verfication_client_id, twitch_api_verfication_client_secret);
-            
-            token = twitch_token_promise['access_token'];
-            token_type = twitch_token_promise['token_type'][0].toUpperCase() + twitch_token_promise['token_type'].slice(1);
+            if (stream_user != "") {
 
-            let twitch_account = await ajax_request_check_twitch_acc_exists(twitch_user, token, token_type)
+                let twitch_token_promise = await ajax_request_get_twitch_token(twitch_api_verfication_client_id, twitch_api_verfication_client_secret);
+                token = twitch_token_promise['access_token'];
+                token_type = twitch_token_promise['token_type'][0].toUpperCase() + twitch_token_promise['token_type'].slice(1);
+                let twitch_account = await ajax_request_check_twitch_acc_exists(stream_user, token, token_type)
 
-
-            if (twitch_account['data'].length == 0) {
-                messages.push("Unable to find your twitch user");
-                twitch_account_exists = false;
-                progress_bar[0].textContent = "Twitch account does not exist.. 35%";
+                if (twitch_account['data'].length == 0) {
+                    messages.push("Unable to find your twitch user");
+                    twitch_account_exists = false;
+                    progress_bar[0].textContent = "Twitch account does not exist.. 35%";
+                } else {
+                    progress_bar[0].style.width = "35%";
+                    progress_bar[0].textContent = "Validating twitch account.. 35%";
+                }
             } else {
-                progress_bar[0].style.width = "35%";
-                progress_bar[0].textContent = "Validating twitch account.. 35%";
+                // Will make the twitch account validation to fail
+                messages.push("You did not input a twitch account");
+                twitch_account_exists = false;
             }
-        } else {
-            // Will make the twitch account validation to fail
-            messages.push("You did not input a twitch account");
+        // Check if stream user includes youtube in it and 
+        // Not checked the stream type
+        } else if (stream_user.includes('youtube.com') && stream_type != "youtube") {
             twitch_account_exists = false;
+            messages.push("You input a youtube url and set stream type to " + stream_type);
         }
+
+        progress_bar[0].style.width = "45%";
+        progress_bar[0].textContent = "Validating user accounts.. 45%";
 
         // Need to fix this to make the code smaller
         // Could use dictionaries but running them 
@@ -373,7 +390,7 @@
         if (accounts_validated == true && twitch_account_exists == true && form_completed == true) {
             // Progress bar at 100%
             progress_bar[0].style.width = "100%";
-            progress_bar[0].textContent = "Users and twitch account were validated.. 100%";
+            progress_bar[0].textContent = "Users and streaming account were validated.. 100%";
             enable_submit_button();
 
         } else {
@@ -431,14 +448,14 @@
         })
     }
 
-    async function ajax_request_check_twitch_acc_exists(twitch_user, token, token_type) {
+    async function ajax_request_check_twitch_acc_exists(stream_user, token, token_type) {
         return $.ajax({
             type: "GET",
             beforeSend: function(request) {
                 request.setRequestHeader("Authorization", token_type + " " + token);
                 request.setRequestHeader("Client-Id", twitch_api_verfication_client_id)
             },
-            url: "https://api.twitch.tv/helix/users?login=" + twitch_user,
+            url: "https://api.twitch.tv/helix/users?login=" + stream_user,
             success: function(data) {
                 // console.log(data);
             }
