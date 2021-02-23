@@ -42,7 +42,7 @@
                         <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
                             {{ form.team_stream_user|as_crispy_field }}
                         </div>
-                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 notranslate">
                             {{ form.team_stream_user_type|as_crispy_field }}
                         </div>
                     </div>
@@ -94,9 +94,9 @@
                                 <li class="white-color-font"><p class="lead">You have provided an username that exists <i class="fas fa-check check-mark-icon"></i></p></li>
                                 <li class="white-color-font"><p class="lead">You have provided the proper id type <i class="fas fa-check check-mark-icon"></i></p></li>
                                 <li class="white-color-font"><p class="lead">You meet the KD criteria of <b>{{ competition.cod_kd_minimum_per_player_verification|stringformat:".2f" }} <= KD <= {{ competition.cod_kd_maximum_per_player_verification|stringformat:".2f" }}</b> <i class="fas fa-check check-mark-icon"></i></p></li>
-                                <li class="white-color-font"><p class="lead">Your account is older than <b>{{ competition.cod_verification_total_time_played }}</b> days of total played time <i class="fas fa-check check-mark-icon"></i></p></li>
-                                <li class="white-color-font"><p class="lead">You have played more than <b>{{ competition.cod_verification_total_games_played }}</b> matches in your entire account life <i class="fas fa-check check-mark-icon"></i></p></li>
-                                <li class="white-color-font"><p class="lead">Twitch Live Stream during competition is required <i class="fab fa-twitch twitch-icon-color"></i> </p></li>
+                                <li class="white-color-font"><p class="lead">Your account is older than <b>{{ competition.cod_verification_total_time_played }}</b> days of total played time  <i class="fas fa-check check-mark-icon"></i></p></li>
+                                <li class="white-color-font"><p class="lead">You have played more than <b>{{ competition.cod_verification_total_games_played }}</b> matches in your entire account life  <i class="fas fa-check check-mark-icon"></i></p></li>
+                                <li class="white-color-font"><p class="lead"><i class="fas fa-video"></i> Live Stream during competition is required with any of the following: <i class="fab fa-facebook-square facebook-icon-color"></i> <i class="fab fa-twitch twitch-icon-color"></i> <i class="fab fa-youtube youtube-icon-color"></i> </p></li>
                                 <li class="white-color-font"><p class="lead"><span class="notranslate">Reverse Boosting</span> is prohibited. <i class="fas fa-ban red-icon"></i> </p></li>
                                 <li class="white-color-font"><p class="lead">Any sort of <span class="notranslate">Hack</span> is prohibited. <i class="fas fa-ban red-icon"></i> </p></li>
                             </ul>
