@@ -4,6 +4,7 @@ from core.models import StaffCustomTeams, StaffCustomCompetition, Player, Match
 from .email import EmailNotificationSystem
 
 from . import util, signals
+from .scoring import ScoringSystem
 from pytz import timezone
 from datetime import datetime
 import time
@@ -168,6 +169,15 @@ def calculate_competition_scores(comp_name):
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
     teams = StaffCustomTeams.objects.filter(competition = competition.id).order_by('-score')
 
+    competition_scoring = {
+        'points_per_kill': competition.points_per_kill,
+        'points_per_first_place': competition.points_per_first_place,
+        'points_per_second_place': competition.points_per_second_place,
+        'points_per_third_place': competition.points_per_third_place,
+        'points_per_fourth_place': competition.points_per_fourth_place,
+        'points_per_fifth_place': competition.points_per_fifth_place,
+    }
+
     for team in teams:
         users.append(team.player_1)
         users.append(team.player_2)
@@ -176,10 +186,10 @@ def calculate_competition_scores(comp_name):
 
         total_points = []
 
-        data = team.data_to_render
+        matches_data = team.data_to_render
 
         match_score = {}
-        for key, val in data.items():
+        for key, val in matches_data.items():
 
             kills = []
             placements = []
@@ -192,37 +202,48 @@ def calculate_competition_scores(comp_name):
                         # print(e)
                         pass
 
-            data[key]['points'] = {
+            matches_data[key]['points'] = {
                 'kills': kills,
                 'placement': placements[0],
             }
 
-            points_for_kills = sum(data[key]['points']['kills']) * competition.points_per_kill
+            # Start scoring system
+            scoring = ScoringSystem(competition_scoring = competition_scoring)
 
-            if data[key]['points']['placement'] == 1:
-                placement = competition.points_per_first_place
-            elif data[key]['points']['placement'] == 2:
-                placement = competition.points_per_second_place
-            elif data[key]['points']['placement'] == 3:
-                placement = competition.points_per_third_place
-            elif data[key]['points']['placement'] == 4:
-                placement = competition.points_per_fourth_place
-            elif data[key]['points']['placement'] == 5:
-                placement = competition.points_per_fifth_place
-            else:
-                placement = 0
+            # team_rank = scoring.check_tier_with_kd(team_kd)
+            # match_rank = scoring.check_tier_with_kd(match_kd)
 
-            data[key]['points'] = {
+            # team_rank_position = scoring.get_position_from_tier(team_rank)
+            # match_rank_position = scoring.get_position_from_tier(match_rank)
+
+            # team_rank_tolerance_high = team_rank_position + 4
+            # team_rank_tolerance_low = team_rank_position - 4
+
+            # rank_movement = team_rank_tolerance_low - match_rank_position
+            # total_ranks_before_team_rank_tolerance_low = team_rank_tolerance_low - 1
+
+            # CALCULATE PERCETAGE
+            # total_pct = 100 / total_ranks_before_team_rank_tolerance_low
+            # total_penalty = rank_movement * total_pct
+
+            # if skbmm_normalizing:
+            # 
+
+
+            points_for_kills = scoring.get_points_per_kill(sum(matches_data[key]['points']['kills']))
+            points_for_placement = scoring.get_points_per_placement(matches_data[key]['points']['placement'])
+
+            matches_data[key]['points'] = {
                 'kills': points_for_kills,
-                'placement': placement,
-                'total_points': int(points_for_kills + placement),
+                'placement': points_for_placement,
+                'total_points': int(points_for_kills + points_for_placement),
             }
 
         print('Sorting and calculating top matches! number_of_matches_to_count_points is {}'.format(competition.number_of_matches_to_count_points))
 
         key_list = []
 
-        for key, val in data.items():
+        for key, val in matches_data.items():
             dict_to_sort = {}
             dict_to_sort['key'] = key
             dict_to_sort['total_points'] = val['points']['total_points']
@@ -231,20 +252,29 @@ def calculate_competition_scores(comp_name):
         key_list = sorted(key_list, key = lambda i: i['total_points'], reverse = True)
 
         if len(key_list) < competition.number_of_matches_to_count_points:
-            print('The total amount of matches {} is smaller than number_of_matches_to_count_points {}'.format(len(key_list), competition.number_of_matches_to_count_points))
+
+            print('The total amount of matches {} is smaller than number_of_matches_to_count_points {}'.format(len(key_list),
+                                                                                                              competition.number_of_matches_to_count_points))
             for key in key_list[0 : len(key_list)]:
-                print('-----------> Match selected for scoring with id {} and total points of {}'.format(key['key'], data[key['key']]['points']['total_points']))
-                total_points.append(data[key['key']]['points']['total_points'])
+
+                print('-----------> Match selected for scoring with id {} and total points of {}'.format(key['key'],
+                                                                                                         matches_data[key['key']]['points']['total_points']))
+
+                total_points.append(matches_data[key['key']]['points']['total_points'])
         else:
-            print('The total amount of matches {} is greater or equal to the number_of_matches_to_count_points {}'.format(len(key_list), competition.number_of_matches_to_count_points))
+            print('The total amount of matches {} is greater or equal to the number_of_matches_to_count_points {}'.format(len(key_list),
+                                                                                                                         competition.number_of_matches_to_count_points))
             for key in key_list[0 : competition.number_of_matches_to_count_points]:
-                print('-----------> Match selected for scoring with id {} and total points of {}'.format(key['key'], data[key['key']]['points']['total_points']))
-                total_points.append(data[key['key']]['points']['total_points'])
+
+                print('-----------> Match selected for scoring with id {} and total points of {}'.format(key['key'], 
+                                                                                                        matches_data[key['key']]['points']['total_points']))
+
+                total_points.append(matches_data[key['key']]['points']['total_points'])
         
         print('Total points calculated {}'.format(sum(total_points)))
 
         team = StaffCustomTeams.objects.get(team_name = team)
-        team.data_to_render = data
+        team.data_to_render = matches_data
         team.score = sum(total_points)
         team.save()
 
