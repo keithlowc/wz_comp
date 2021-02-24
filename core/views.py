@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.db import transaction
+from django.contrib.auth.decorators import login_required
+from django.http import FileResponse
 
 from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
 from .forms import JoinCompetitionRequestForm, EmailCommunicationForm
@@ -10,7 +12,7 @@ from .warzone_api import WarzoneApi
 
 from warzone_general import settings
 
-import requests, datetime, time, ast
+import requests, datetime, time, ast, json
 
 # Create your views here.
 
@@ -155,7 +157,7 @@ def get_competitions_all(request):
     Gets all competitions.
     '''
 
-    competitions = StaffCustomCompetition.objects.all()
+    competitions = StaffCustomCompetition.objects.all().order_by('-start_time')
 
     context = {
         'competitions': competitions
@@ -334,3 +336,43 @@ def send_competition_email(request, comp_name):
                                                                 'comp_name': comp_name, 
                                                                 'team_emails': team_emails, 
                                                                 'sent_emails': sent_emails})
+
+
+# Competition admin file download
+@login_required
+def download_emails(request, comp_name):
+    '''
+    This view allows the user to
+    download all emails from
+    tournament
+    '''
+
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+    teams = competition.teams.all()
+
+    data = []
+
+    for team in teams:
+        data.append(team.team_captain_email)
+    
+    with open('emails.txt', 'w') as outfile:
+        json.dump(data, outfile)
+    
+    response = FileResponse(open('emails.txt', 'rb'), as_attachment = True)
+    return response
+
+
+@login_required
+def download_admin_files(request, file_name):
+    '''
+    Download any sort of files
+    needed by the admin defined
+    as file_name
+    '''
+
+    try:
+        response = FileResponse(open(file_name, 'rb'), as_attachment = True)
+        return response
+    except Exception as e:
+        print('There was an error with {}'.format(e))
+        return HttpResponse('Something went wrong {}'.format(e))
