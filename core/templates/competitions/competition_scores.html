@@ -15,7 +15,7 @@
             {% elif user == competition.created_by and competition.competition_started == True or user.is_superuser and competition.competition_started == True %}
             <h5>Competition has been started!</h5>
             <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
-            
+            <!-- <a class="btn btn-info" href="{% url 'download_emails' comp_name=competition.competition_name %}">Download emails</a> -->
           {% else %}
             <h5>Competition has not been started!</h5>
           {% endif %}
