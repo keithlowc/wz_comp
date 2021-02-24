@@ -271,6 +271,9 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
                 'competition_is_closed',
 
                 'competition_started',
+
+                # Cover results
+                'competition_cover_results',
                 
                 # Jobs
                 'email_job_created')

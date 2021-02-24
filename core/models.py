@@ -54,6 +54,7 @@ class StaffCustomCompetition(models.Model):
 
     # Competition closure
     competition_is_closed = models.BooleanField(default = False)
+    competition_cover_results = models.BooleanField(default = False)
 
     # bg_job
     email_job_created = models.BooleanField(default = False)
