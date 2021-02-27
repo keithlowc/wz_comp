@@ -176,10 +176,9 @@ class TeamFormAdminPageSuperUser(forms.ModelForm):
 
 class CompetitionAdminPage(forms.ModelForm):
     '''
-    This form is used to send mass email
-    updates to players or participants of the 
-    tournament, it also keeps the log of what was 
-    sent before.
+    This form is used to show for
+    regular tournament hosts the 
+    competition admin page
     '''
 
     class Meta:
@@ -230,10 +229,9 @@ class CompetitionAdminPage(forms.ModelForm):
 
 class CompetitionAdminPageSuperUser(forms.ModelForm):
     '''
-    This form is used to send mass email
-    updates to players or participants of the 
-    tournament, it also keeps the log of what was 
-    sent before.
+    This form is used to be displayed
+    on the django admin page for 
+    competitions and only superusers
     '''
 
     class Meta:
@@ -271,6 +269,9 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
                 'competition_is_closed',
 
                 'competition_started',
+
+                # Competition status
+                'competition_status',
 
                 # Cover results
                 'competition_cover_results',
