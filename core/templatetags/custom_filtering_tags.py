@@ -45,3 +45,7 @@ def convert_hash_to_web_friendly(string):
 @register.filter
 def youtube_embed_url_fixer(string):
     return string.replace('watch?v=','embed/')
+
+@register.filter
+def convert_seconds_to_minutes(seconds):
+    return int(seconds / 60)
