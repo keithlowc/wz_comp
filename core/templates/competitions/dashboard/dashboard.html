@@ -52,6 +52,15 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row white-color-font text-center p-4">
+                <div class="col">
+                    <div class="container" style="width: 100%;">
+                        <canvas id="player-distribution" data-url="{% url 'get_type_of_players' comp_name=comp_name%}"></canvas>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -62,9 +71,10 @@
 <script>
     createChart(typechart = "bar", chartId = "#top-killers", label = "Kills", title = "Top Killers", xAxisLabel = "Players", yAxisLabel = "Kills")
     createChart(typechart = "doughnut", chartId = "#top-damage-team", label = "Damage", title = "Most Damage per Team", xAxisLabel = "Players", yAxisLabel = "Damage")
-    createChart(typechart = "doughnut", chartId = "#top-damage-taken-team", label = "Damage taken", title = "Most Damage Taken per Team", xAxisLabel = "Players", yAxisLabel = "Damge taken")
+    createChart(typechart = "doughnut", chartId = "#top-damage-taken-team", label = "Damage taken", title = "Most Damage Taken per Team", xAxisLabel = "Players", yAxisLabel = "Damage taken")
     createChart(typechart = "bar", chartId = "#top-deaths", label = "Deaths", title = "Top Deaths by Player", xAxisLabel = "Players", yAxisLabel = "Deaths")
     createChart(typechart = "bar", chartId = "#top-headshots", label = "Headshots", title = "Top Headshots by Player", xAxisLabel = "Players", yAxisLabel = "Headshots")
+    createChart(typechart = "doughnut", chartId = "#player-distribution", label = "Player type distribution", title = "Player distribution", xAxisLabel = "Player types", yAxisLabel = "Distribution")
 
 
     function createChart(typechart, chartId, label, title, xAxisLabel, yAxisLabel) {
