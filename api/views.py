@@ -179,3 +179,32 @@ def get_top_damage_taken_by_team(request, comp_name):
         damage_taken_per_team[team.team_name] = sum(damage_taken_list)
 
     return Response(damage_taken_per_team)
+
+
+@api_view(['GET'])
+def get_type_of_players(request, comp_name):
+    '''
+    Competition STATS:
+
+    Get the type of players
+    '''
+
+    competition = get_object_or_404(StaffCustomCompetition, competition_name = comp_name)
+
+    players = competition.players.all()
+
+    player_type = {
+        'battle': 0,
+        'psn': 0,
+        'xbl': 0,
+    }
+
+    for player in players:
+        if player.user_id_type == 'battle':
+            player_type['battle'] += 1
+        elif player.user_id_type == 'psn':
+            player_type['psn'] += 1
+        elif player.user_id_type == 'xbl':
+            player_type['xbl'] += 1
+
+    return Response(player_type)
