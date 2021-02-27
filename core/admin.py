@@ -268,6 +268,7 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
     list_filter = ('created_by', 'competition_type',)
     list_display = ('competition_name', 'competition_type', 'created_by', 'start_time')
     actions = ['export_tournament_data', ]
+    save_as = True
 
 admin.site.register(StaffCustomCompetition, StaffCustomCompetitionAdmin)
 
