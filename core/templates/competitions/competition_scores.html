@@ -13,7 +13,8 @@
             <a class="notranslate btn btn-success" href="{% url 'recalculate_scores' comp_name=competition.competition_name %}">Start Competition</a>
 
           {% elif user == competition.created_by and competition.competition_started == True or user.is_superuser and competition.competition_started == True %}
-            <h5>Competition has been started!</h5>
+            <h5>Competition has been started! and </h5>
+            <h5>will gather data every {{ config.competitions_bg_tasks|convert_seconds_to_minutes }} minutes!</h5>
               {% if user == competition.created_by and competition.competition_status == 2 or user.is_superuser %}
                 <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
               {% endif %}
