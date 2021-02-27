@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import FileResponse
 
 from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
-from .forms import JoinCompetitionRequestForm, EmailCommunicationForm
+from .forms import JoinCompetitionRequestForm, EmailCommunicationForm, PlayerVerificationForm
 
 from . import signals, util, bg_tasks
 from .warzone_api import WarzoneApi
@@ -338,41 +338,19 @@ def send_competition_email(request, comp_name):
                                                                 'sent_emails': sent_emails})
 
 
-# Competition admin file download
-@login_required
-def download_emails(request, comp_name):
+# Verify player
+
+def verify_individual_player(request):
     '''
-    This view allows the user to
-    download all emails from
-    tournament
-    '''
-
-    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
-    teams = competition.teams.all()
-
-    data = []
-
-    for team in teams:
-        data.append(team.team_captain_email)
-    
-    with open('emails.txt', 'w') as outfile:
-        json.dump(data, outfile)
-    
-    response = FileResponse(open('emails.txt', 'rb'), as_attachment = True)
-    return response
-
-
-@login_required
-def download_admin_files(request, file_name):
-    '''
-    Download any sort of files
-    needed by the admin defined
-    as file_name
+    Displays form to verify individual player
+    and should not be submitted.
     '''
 
-    try:
-        response = FileResponse(open(file_name, 'rb'), as_attachment = True)
-        return response
-    except Exception as e:
-        print('There was an error with {}'.format(e))
-        return HttpResponse('Something went wrong {}'.format(e))
+    config = ConfigController.objects.get(name = 'main_config_controller')
+
+    form = PlayerVerificationForm()
+    context = {
+        'form': form,
+        'config': config,
+    }
+    return render(request, 'verify/public_or_not.html', context)

@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
+from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, PlayerVerification, ConfigController
 
 from django.core.exceptions import ValidationError
 
@@ -64,6 +64,24 @@ class EmailCommunicationForm(forms.ModelForm):
             'body': 'Body'
         }
 
+class PlayerVerificationForm(forms.ModelForm):
+    '''
+    This form is used for the host
+    to test any user id and see
+    if they are public or not before
+    manually adding them to the 
+    competition
+    '''
+
+    class Meta:
+        model = PlayerVerification
+        fields = ('user_id',
+                  'user_id_type',)
+        
+        labels = {
+            'user_id': 'User ID - (Battlenet, Psnet or Xbox Id)',
+            'user_id_type': 'User ID Type',
+        }
 
 # ADMIN PAGE FORMS
 

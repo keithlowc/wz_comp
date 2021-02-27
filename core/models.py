@@ -173,6 +173,22 @@ class Match(models.Model):
         return str(self.match_id)
 
 
+class PlayerVerification(models.Model):
+    '''
+    Model used to display the 
+    verification form on the 
+    navbar
+    '''
+
+    user_id_type = [
+        ('battle', 'Battlenet ID'),
+        ('psn', 'Psnet ID'),
+        ('xbl', 'XboxLive ID'),
+    ]
+    user_id = models.CharField(max_length = 100, null = True)
+    user_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
+
+
 class ConfigController(models.Model):
     '''
     Based on this config controller

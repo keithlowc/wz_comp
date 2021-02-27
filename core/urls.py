@@ -15,8 +15,6 @@ urlpatterns = [
     path('competitions/all', views.get_competitions_all, name = 'get_competitions_all'),
     path('competition/<str:comp_name>', views.get_competition, name = 'get_competition'),
 
-    path('competition/emails/<str:comp_name>', views.download_emails, name = 'download_emails'),
-
     path('competition/<str:comp_name>/refresh', views.manually_recalculate_score_once, name = 'manually_recalculate_score_once'),
     path('competition/join/<str:comp_name>', views.join_request_competition, name = 'join_request_competition'),
     path('competition/dashboard/<str:comp_name>', views.show_competition_dashboard, name = 'show_competition_dashboard'),
@@ -25,6 +23,6 @@ urlpatterns = [
 
     path('competition/communication/<str:comp_name>', views.send_competition_email, name = 'send_competition_email'),
 
-    # Downloadable
-    path('admin/download_file/<str:file_name>', views.download_admin_files, name = 'download_admin_files'),
+    # Verify specific player
+    path('cod/verify/player', views.verify_individual_player, name = 'verify_individual_player'),
 ]
