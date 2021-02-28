@@ -45,7 +45,8 @@
 
             {% if user.is_authenticated%}
                 {% if user.is_staff or user.is_superuser %}
-                  <a class="nav-item nav-link" href="/admin">Administration</a>
+                  <a class="nav-item nav-link" href="{% url 'verify_individual_player' %}">Verify Player</a>
+                  <a class="nav-item nav-link" href="/admin">{{ user|capfirst }}</a>
                 {% endif %}
                 <a class="nav-item nav-link" href="{% url 'logout' %}">Log out</a>
             {% else %}
