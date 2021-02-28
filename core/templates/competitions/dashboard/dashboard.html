@@ -70,8 +70,8 @@
 {% block javascript %}
 <script>
     createChart(typechart = "bar", chartId = "#top-killers", label = "Kills", title = "Top Killers", xAxisLabel = "Players", yAxisLabel = "Kills")
-    createChart(typechart = "doughnut", chartId = "#top-damage-team", label = "Damage", title = "Most Damage per Team", xAxisLabel = "Players", yAxisLabel = "Damage")
-    createChart(typechart = "doughnut", chartId = "#top-damage-taken-team", label = "Damage taken", title = "Most Damage Taken per Team", xAxisLabel = "Players", yAxisLabel = "Damage taken")
+    createChart(typechart = "horizontalBar", chartId = "#top-damage-team", label = "Damage", title = "Most Damage per Team", xAxisLabel = "Players", yAxisLabel = "Damage")
+    createChart(typechart = "horizontalBar", chartId = "#top-damage-taken-team", label = "Damage taken", title = "Most Damage Taken per Team", xAxisLabel = "Players", yAxisLabel = "Damage taken")
     createChart(typechart = "bar", chartId = "#top-deaths", label = "Deaths", title = "Top Deaths by Player", xAxisLabel = "Players", yAxisLabel = "Deaths")
     createChart(typechart = "bar", chartId = "#top-headshots", label = "Headshots", title = "Top Headshots by Player", xAxisLabel = "Players", yAxisLabel = "Headshots")
     createChart(typechart = "doughnut", chartId = "#player-distribution", label = "Player type distribution", title = "Player distribution", xAxisLabel = "Player types", yAxisLabel = "Distribution")
@@ -80,153 +80,9 @@
     function createChart(typechart, chartId, label, title, xAxisLabel, yAxisLabel) {
         var $chart = $(chartId);
 
-        let backgroundColorList = [
-                '#6290c3',
-                '#c2e7da',
-                '#d4df9e',
-                '#d7fcd4',
-                '#f15025',
-                '#aa6373',
-                '#f0f2a6',
-                '#efbdeb',
-                '#b68cb8',
-                '#f5853f',
-                '#ffcdbc',
-                '#beb8eb',
-                '#5299d3',
-                '#6290c3',
-                '#c2e7da',
-                '#d4df9e',
-                '#d7fcd4',
-                '#f15025',
-                '#aa6373',
-                '#f0f2a6',
-                '#efbdeb',
-                '#b68cb8',
-                '#f5853f',
-                '#ffcdbc',
-                '#beb8eb',
-                '#6290c3',
-                '#c2e7da',
-                '#d4df9e',
-                '#d7fcd4',
-                '#f15025',
-                '#aa6373',
-                '#f0f2a6',
-                '#efbdeb',
-                '#b68cb8',
-                '#f5853f',
-                '#ffcdbc',
-                '#beb8eb',
-                '#5299d3',
-                '#6290c3',
-                '#c2e7da',
-                '#d4df9e',
-                '#d7fcd4',
-                '#f15025',
-                '#aa6373',
-                '#f0f2a6',
-                '#efbdeb',
-                '#b68cb8',
-                '#f5853f',
-                '#ffcdbc',
-                '#6290c3',
-                '#c2e7da',
-                '#d4df9e',
-                '#d7fcd4',
-                '#f15025',
-                '#aa6373',
-                '#f0f2a6',
-                '#efbdeb',
-                '#b68cb8',
-                '#f5853f',
-                '#ffcdbc',
-                '#beb8eb',
-                '#5299d3',
-                '#6290c3',
-                '#c2e7da',
-                '#d4df9e',
-                '#d7fcd4',
-                '#f15025',
-                '#aa6373',
-                '#f0f2a6',
-                '#efbdeb',
-                '#b68cb8',
-                '#f5853f',
-                '#ffcdbc',
-                '#beb8eb',
-                '#6290c3',
-                '#c2e7da',
-                '#d4df9e',
-                '#d7fcd4',
-                '#f15025',
-                '#aa6373',
-                '#f0f2a6',
-                '#efbdeb',
-                '#b68cb8',
-                '#f5853f',
-                '#ffcdbc',
-                '#beb8eb',
-                '#5299d3',
-                '#6290c3',
-                '#c2e7da',
-                '#d4df9e',
-                '#d7fcd4',
-                '#f15025',
-                '#aa6373',
-                '#f0f2a6',
-                '#efbdeb',
-                '#b68cb8',
-                '#f5853f',
-            ]
+        let backgroundColorList = ['#6290c3','#c2e7da','#d4df9e','#d7fcd4','#f0f2a6','#efbdeb','#b68cb8','#f5853f','#ffcdbc','#beb8eb'];
         
-        let borderColor = [
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-                'rgb(255,255,255)',
-            ]
+        let borderColor = ['rgb(255,255,255)','rgb(255,255,255)','rgb(255,255,255)','rgb(255,255,255)'];
   
         $.ajax({
                 url: $chart.data("url"),
@@ -235,6 +91,14 @@
 
                     let keys = Object.keys(data);
                     let values = Object.values(data);
+
+                    let colors = [];
+                    let borderColors = [];
+
+                    for (let i = 0; i < keys.length; i++) {
+                        colors.push.apply(colors, backgroundColorList);
+                        borderColors.push.apply(borderColors, borderColor);
+                    }
 
                     Chart.defaults.global.defaultFontColor = 'white';
                     Chart.defaults.global.title.fontSize = 24;
@@ -246,8 +110,8 @@
                             datasets: [{
                                 label: label,
                                 data: values,
-                                backgroundColor: backgroundColorList,
-                                borderColor: borderColor,
+                                backgroundColor: colors,
+                                borderColor: borderColors,
                             }],
                         },
                         options: {
