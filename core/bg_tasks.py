@@ -1,5 +1,5 @@
 from background_task import background
-from core.models import StaffCustomTeams, StaffCustomCompetition, Player, Match
+from core.models import StaffCustomTeams, StaffCustomCompetition, Player, Match, ConfigController
 
 from .email import EmailNotificationSystem
 
@@ -10,6 +10,8 @@ from datetime import datetime
 import time
 
 # Competition bg jobs
+
+config = ConfigController.objects.get(name = 'main_config_controller')
 
 @background(schedule = 1)
 def recalculate_competition_stats(custom_config, comp_name):
@@ -279,7 +281,7 @@ def calculate_competition_scores(comp_name):
         team.save()
 
 
-@background(schedule = 1)
+@background(schedule = config.competitions_bg_tasks)
 def calculate_status_of_competition(custom_config, comp_name):
     '''
     Calculates the status of the competition
