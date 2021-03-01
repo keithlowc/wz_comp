@@ -334,6 +334,58 @@ def calculate_status_of_competition(custom_config, comp_name):
     
     print('--------')
 
+
+@background(schedule = 1)
+def calculate_status_of_competition_once(custom_config, comp_name):
+    '''
+    Calculates the status of the 
+    competition once.
+    '''
+    print()
+    print('** Starting bg calculations once! **')
+
+    recalculate_competition_stats(custom_config, comp_name)
+    calculate_competition_scores(comp_name)
+
+    ts = time.time()
+    current_time = datetime.fromtimestamp(ts)
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+
+    start = competition.start_time
+    end = competition.end_time
+
+    print('--------')
+    print('competition name: ', competition.competition_name)
+    print('Current time', current_time)
+    print('Start time: ', start)
+    print('End time: ', end)
+
+    # Status
+    # 'In-Progress': 1,
+    # 'Ended': 2,
+    # 'Not started': 3,
+
+    if current_time.timestamp() >= start.timestamp() and not current_time.timestamp() >= end.timestamp():
+        # The competition has In-Progress
+        # And the competition has not ended
+        competition.competition_status = 1
+        competition.save()
+        print('The competition Status is: In-Progress')
+
+    elif current_time.timestamp() >= start.timestamp():
+        # The competition Status is: Ended
+        competition.competition_status = 2
+        competition.save()
+        print('The competition Status is: Ended')
+
+    else:
+        # The competition Status is: not Started
+        competition.competition_status = 3
+        competition.save()
+        print('The competition Status is: not Started')
+    
+    print('--------')
+
 # Notification bg jobs
 
 class EmailNotificationSystemJob:
