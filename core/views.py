@@ -141,7 +141,7 @@ def manually_recalculate_score_once(request, comp_name):
 
         print('Manually calling recalculation once!')
 
-        bg_tasks.calculate_status_of_competition(custom_config, comp_name)
+        bg_tasks.calculate_status_of_competition_once(custom_config, comp_name)
 
         if custom_config['competitions_dummy_data']:
             signals.send_message.send(sender = None,
