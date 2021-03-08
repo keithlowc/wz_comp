@@ -141,13 +141,19 @@ def manually_recalculate_score_once(request, comp_name):
 
         print('Manually calling recalculation once!')
 
-        bg_tasks.calculate_status_of_competition_once(custom_config, comp_name)
+        bg_name = 'manually-calculate-once' + comp_name
+
+        bg_tasks.calculate_status_of_competition_once(verbose_name = bg_name, custom_config = custom_config, comp_name = comp_name)
 
         if custom_config['competitions_dummy_data']:
             signals.send_message.send(sender = None,
                     request = request,
                     message = 'The data being loaded is Dummy Data! For real data message Admin to change settings',
                     type = 'WARNING')
+        
+        # Job starts flag
+        competition.manually_calculate_bg_job_status = 'Started'
+        competition.save()
 
     return redirect('get_competition', comp_name = comp_name)
 

@@ -17,5 +17,8 @@ urlpatterns = [
     path('api/match/stats/topdamagetakenperteam/<str:comp_name>', views.get_top_damage_taken_by_team, name = 'get_top_damage_taken_by_team'),
     path('api/match/stats/playertypedistribution/<str:comp_name>', views.get_type_of_players, name = 'get_type_of_players'),
 
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    # Job statuses
+    path('api/<str:comp_name>/manually_calculate_job/status', views.get_bg_job_status, name = 'get_bg_job_status'),
+
+    path('api-auth/', include('rest_framework.urls', namespace = 'rest_framework'))
 ]

@@ -208,3 +208,20 @@ def get_type_of_players(request, comp_name):
             player_type['xbl'] += 1
 
     return Response(player_type)
+
+
+@api_view(['GET'])
+def get_bg_job_status(request, comp_name):
+    '''
+    Retrieves the bg job status
+    Active or inactive
+    '''
+    
+    competition = get_object_or_404(StaffCustomCompetition, competition_name = comp_name)
+
+    context = {
+        'status': competition.manually_calculate_bg_job_status,
+    }
+
+    return Response(context)
+

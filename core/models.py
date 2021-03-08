@@ -59,6 +59,15 @@ class StaffCustomCompetition(models.Model):
     # bg_job
     email_job_created = models.BooleanField(default = False)
 
+    # When calling calculate once job
+    bg_job_statuses = [
+        ('Started','Started'),
+        ('In-Progress', 'In-Progress'),
+        ('Completed', 'Completed'),
+    ]
+
+    manually_calculate_bg_job_status = models.CharField(max_length = 11, choices = bg_job_statuses, default = 'Completed')
+
     class Meta:
         verbose_name = 'Custom Competition'
         verbose_name_plural = 'Custom Competitions'

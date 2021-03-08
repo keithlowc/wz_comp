@@ -17,9 +17,16 @@
             <h5>will gather data every {{ config.competitions_bg_tasks|convert_seconds_to_minutes }} minutes!</h5>
 
               {% if user == competition.created_by and competition.competition_status == 2 or user.is_superuser %}
-                <a class="btn btn-info" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
+                {% if competition.manually_calculate_bg_job_status == 'Completed' %}
+                  <a class="btn btn-info" id="manuallyRecalculate" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
+                {% else %}
+                  <h4>Calculating scores please wait. Current calculation status: {{competition.manually_calculate_bg_job_status}}</h4>
+                {% endif %}
               {% endif %}
           {% endif %}
+
+          <!-- <a class="btn btn-info" onclick="activateStatusCheck()">Test</a> -->
+          <!-- <a class="btn btn-info" id="manuallyRecalculate" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a> -->
 
         </div>
 
@@ -43,6 +50,20 @@
           </div>
         </div>
 
+      </div>
+      <div class="row pt-4">
+        <div class="col">
+        
+          <!-- Progress bar -->
+          <div class="row" id="progressBar">
+              <div class="col">
+                  <div class="progress" style="height:35px;">
+                      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%">Validating.. 0</div>
+                  </div>
+              </div>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
@@ -350,7 +371,16 @@
 
 {% block javascript %}
     <script>
-        let time_to_refresh = {{ config.competitions_page_refresh_time }}
+        let time_to_refresh = {{ config.competitions_page_refresh_time }};
+        let competition_name = "{{ competition.competition_name }}";
+        let manual_bg_job_status = "{{ competition.manually_calculate_bg_job_status }}";
+
+        let progress_bar_row = document.getElementById('progressBar');
+        let progress_bar = document.getElementsByClassName('progress-bar');
+        
+        let interval;
+
+        progress_bar_row.style.display = "none";
 
         $('#toggle-silent')[0].checked = false;
 
@@ -358,10 +388,8 @@
 
         function checkStates() {
             if (checked == "true") {
-                // console.log('It was checked');
                 $('#toggle-silent')[0].checked = true;
             } else if (checked == "false") {
-                // console.log('It was not checked!');
             }
         }
 
@@ -401,6 +429,46 @@
             let stream_url = "";
             twitch_frame.setAttribute("src", stream_url)
           }
+        }
+
+        function checkJobStatus() {
+          // Call ajax
+          // Check every 15 seconds.
+          $.ajax({
+            url: "/api/" + competition_name + "/manually_calculate_job/status",
+            success: function(data) {
+              progress_bar_row.style.display = "block";
+              console.log(data["status"]);
+              if (data["status"] == "Started") {
+                // if started 25%
+                progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
+                progress_bar[0].style.width = "25%";
+                progress_bar[0].textContent = "Calculating scores.. 25%";
+
+              } else if (data["status"] == "In-Progress") {
+                // if in progress 55%
+                progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
+                progress_bar[0].style.width = "55%";
+                progress_bar[0].textContent = "Calculating scores.. 55%";
+
+              } else if (data["status"] == "Completed") {
+                // if completed 100% and end timer
+                progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
+                progress_bar[0].style.width = "100%";
+                progress_bar[0].textContent = "Scores are 100% calculated, please refresh page!";
+                clearInterval(interval)
+              } else {
+                alert("Something went wrong. BG status " + data["status"]);
+              }
+            }
+          });
+        }
+
+        if (manual_bg_job_status != 'Completed') {
+
+          checkJobStatus();
+
+          interval = setInterval(checkJobStatus, 5000);
         }
 
         checkStates();
