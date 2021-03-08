@@ -295,7 +295,8 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
                 'competition_cover_results',
                 
                 # Jobs
-                'email_job_created')
+                'email_job_created',
+                'manually_calculate_bg_job_status',)
         
         labels = {
             'created_by': 'Competition created by (ADMIN)',
