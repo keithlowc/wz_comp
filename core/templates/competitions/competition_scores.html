@@ -12,14 +12,17 @@
             <a class="notranslate btn btn-success" href="{% url 'recalculate_scores' comp_name=competition.competition_name %}">Start Competition</a>
 
           {% elif competition.competition_started == True %}
-            <h5>Competition has started! and will</h5>
-            <h5>gather data every {{ config.competitions_bg_tasks|convert_seconds_to_minutes }} minutes!</h5>
+            {% if competition.competition_status != "Ended" %}
+              <h5>Competition has started! and will gather data every {{ config.competitions_bg_tasks|convert_seconds_to_minutes }} minutes!</h5>
+            {% else %}
+              <h5>Competition has ended!</h5>
+            {% endif %}
           
               {% if user == competition.created_by and competition.competition_status == "Ended" or user.is_superuser %}
                 {% if competition.manually_calculate_bg_job_status == "Completed" %}
                   <a class="btn btn-info" id="manuallyRecalculate" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
                 {% else %}
-                  <h5>Calculating scores please wait. Current calculation status: {{competition.manually_calculate_bg_job_status}}</h5>
+                  <h5>Calculating scores please wait, this may take a couple of minutes.</h5>
                 {% endif %}
               {% endif %}
 
