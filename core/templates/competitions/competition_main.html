@@ -30,11 +30,11 @@
                             </div>
 
                             <div class="col-xl-2 col-lg-2 col-md-2 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
-                                {% if competition.competition_status == 1 %}
+                                {% if competition.competition_status == "In-Progress" %}
                                         <span class="badge badge-primary"> In-Progress </span>
-                                {% elif competition.competition_status == 2 %}
+                                {% elif competition.competition_status == "Ended" %}
                                         <span class="badge badge-warning"> Ended </span>
-                                {% elif competition.competition_status == 3 %}
+                                {% elif competition.competition_status == "Not-Started" %}
                                         <span class="badge badge-secondary"> Not-Started </span>
                                 {% endif %}
                                 <span class="badge badge-info">{{ competition.competition_type }}</span>

@@ -105,11 +105,6 @@ def recalculate_scores(request, comp_name):
                     message = 'The data being loaded is Dummy Data! For real data message Admin to change settings',
                     type = 'WARNING')
 
-    # When press ready
-    # if competition ready:
-    # the competition will be checking for the time of the comp
-    # and start calculating based on that
-
     return redirect('get_competition', comp_name = comp_name)
 
 
@@ -141,9 +136,11 @@ def manually_recalculate_score_once(request, comp_name):
 
         print('Manually calling recalculation once!')
 
-        bg_name = 'manually-calculate-once' + comp_name
+        bg_verbose_name = 'manually-calculate-once' + comp_name
 
-        bg_tasks.calculate_status_of_competition_once(verbose_name = bg_name, custom_config = custom_config, comp_name = comp_name)
+        bg_tasks.calculate_status_of_competition_once(verbose_name = bg_verbose_name, 
+                                                    custom_config = custom_config, 
+                                                    comp_name = comp_name)
 
         if custom_config['competitions_dummy_data']:
             signals.send_message.send(sender = None,

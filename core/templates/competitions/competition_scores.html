@@ -7,27 +7,24 @@
   <div class="row pt-4">
     <div class="col-12">
       <div class="row">
-
         <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
           {% if user == competition.created_by and competition.competition_started == False or user.is_superuser and competition.competition_started == False %}
             <a class="notranslate btn btn-success" href="{% url 'recalculate_scores' comp_name=competition.competition_name %}">Start Competition</a>
 
           {% elif competition.competition_started == True %}
-            <h5>Competition has started! and </h5>
-            <h5>will gather data every {{ config.competitions_bg_tasks|convert_seconds_to_minutes }} minutes!</h5>
-
-              {% if user == competition.created_by and competition.competition_status == 2 or user.is_superuser %}
-                {% if competition.manually_calculate_bg_job_status == 'Completed' %}
+            <h5>Competition has started! and will</h5>
+            <h5>gather data every {{ config.competitions_bg_tasks|convert_seconds_to_minutes }} minutes!</h5>
+          
+              {% if user == competition.created_by and competition.competition_status == "Ended" or user.is_superuser %}
+                {% if competition.manually_calculate_bg_job_status == "Completed" %}
                   <a class="btn btn-info" id="manuallyRecalculate" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
                 {% else %}
-                  <h4>Calculating scores please wait. Current calculation status: {{competition.manually_calculate_bg_job_status}}</h4>
+                  <h5>Calculating scores please wait. Current calculation status: {{competition.manually_calculate_bg_job_status}}</h5>
                 {% endif %}
               {% endif %}
+
           {% endif %}
-
-          <!-- <a class="btn btn-info" onclick="activateStatusCheck()">Test</a> -->
-          <!-- <a class="btn btn-info" id="manuallyRecalculate" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a> -->
-
+          
         </div>
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12">
@@ -90,7 +87,7 @@
                                   </td>
                               </div>
                               <div class="col-2">
-                                {% if competition.competition_status == 1 %}
+                                {% if competition.competition_status == "In-Progress" %}
                                     <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
                                       <span class="badge badge-success"> In-Progress </span>
                                       <span class="badge badge-info">{{ competition.competition_type }}</span>
@@ -101,7 +98,8 @@
                                         <span class="badge badge-danger">Inscriptions: Closed</span>
                                       {% endif %}
                                     </td>
-                                {% elif competition.competition_status == 2 %}
+
+                                {% elif competition.competition_status == "Ended" %}
                                     <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
                                       <span class="badge badge-warning"> Ended </span>
                                       <span class="badge badge-info">{{ competition.competition_type }}</span>
@@ -112,7 +110,8 @@
                                         <span class="badge badge-danger">Inscriptions: Closed</span>
                                       {% endif %}
                                     </td>
-                                {% elif competition.competition_status == 3 %}
+                                    
+                                {% elif competition.competition_status == "Not-Started" %}
                                     <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
                                       <span class="badge badge-primary"> Not-Started </span>
                                       <span class="badge badge-info">{{ competition.competition_type }}</span>
@@ -123,6 +122,7 @@
                                         <span class="badge badge-danger">Inscriptions: Closed</span>
                                       {% endif %}
                                     </td>
+                                    
                                 {% endif %}
                               </div>
 
@@ -432,31 +432,31 @@
         }
 
         function checkJobStatus() {
-          // Call ajax
-          // Check every 15 seconds.
+          // Makes an api call and 
+          // gets the job status for 
+          // manual job run
+
           $.ajax({
             url: "/api/" + competition_name + "/manually_calculate_job/status",
             success: function(data) {
               progress_bar_row.style.display = "block";
-              console.log(data["status"]);
+
               if (data["status"] == "Started") {
-                // if started 25%
                 progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
                 progress_bar[0].style.width = "25%";
-                progress_bar[0].textContent = "Calculating scores.. 25%";
+                progress_bar[0].textContent = "Started to get data from all players.. 25%";
 
               } else if (data["status"] == "In-Progress") {
-                // if in progress 55%
                 progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
                 progress_bar[0].style.width = "55%";
-                progress_bar[0].textContent = "Calculating scores.. 55%";
+                progress_bar[0].textContent = "Score calculation is in progress. Please give it a couple of more seconds.. 55%";
 
               } else if (data["status"] == "Completed") {
-                // if completed 100% and end timer
                 progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
                 progress_bar[0].style.width = "100%";
                 progress_bar[0].textContent = "Scores are 100% calculated, please refresh page!";
                 clearInterval(interval)
+                
               } else {
                 alert("Something went wrong. BG status " + data["status"]);
               }
@@ -465,9 +465,7 @@
         }
 
         if (manual_bg_job_status != 'Completed') {
-
           checkJobStatus();
-
           interval = setInterval(checkJobStatus, 5000);
         }
 
