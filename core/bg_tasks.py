@@ -277,6 +277,7 @@ def calculate_status_of_competition(custom_config, comp_name):
     and runs background jobs that calculate
     user data and points.
     '''
+    
     print()
     print('** Starting bg calculations! **')
 
@@ -296,27 +297,22 @@ def calculate_status_of_competition(custom_config, comp_name):
     print('Start time: ', start)
     print('End time: ', end)
 
-    # Status
-    # 'In-Progress': 1,
-    # 'Ended': 2,
-    # 'Not started': 3,
-
     if current_time.timestamp() >= start.timestamp() and not current_time.timestamp() >= end.timestamp():
         # The competition has In-Progress
         # And the competition has not ended
-        competition.competition_status = 1
+        competition.competition_status = 'In-Progress'
         competition.save()
         print('The competition Status is: In-Progress')
 
     elif current_time.timestamp() >= start.timestamp():
         # The competition Status is: Ended
-        competition.competition_status = 2
+        competition.competition_status = 'Ended'
         competition.save()
         print('The competition Status is: Ended')
 
     else:
         # The competition Status is: not Started
-        competition.competition_status = 3
+        competition.competition_status = 'Not-Started'
         competition.save()
         print('The competition Status is: not Started')
     
@@ -329,6 +325,7 @@ def calculate_status_of_competition_once(custom_config, comp_name):
     Calculates the status of the 
     competition once.
     '''
+
     print()
     print('** Starting bg calculations once! **')
 
@@ -353,27 +350,22 @@ def calculate_status_of_competition_once(custom_config, comp_name):
     print('Start time: ', start)
     print('End time: ', end)
 
-    # Status
-    # 'In-Progress': 1,
-    # 'Ended': 2,
-    # 'Not started': 3,
-
     if current_time.timestamp() >= start.timestamp() and not current_time.timestamp() >= end.timestamp():
         # The competition has In-Progress
         # And the competition has not ended
-        competition.competition_status = 1
+        competition.competition_status = 'In-Progress'
         competition.save()
         print('The competition Status is: In-Progress')
 
     elif current_time.timestamp() >= start.timestamp():
         # The competition Status is: Ended
-        competition.competition_status = 2
+        competition.competition_status = 'Ended'
         competition.save()
         print('The competition Status is: Ended')
 
     else:
         # The competition Status is: not Started
-        competition.competition_status = 3
+        competition.competition_status = 'Not-Started'
         competition.save()
         print('The competition Status is: not Started')
     

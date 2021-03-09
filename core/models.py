@@ -49,8 +49,14 @@ class StaffCustomCompetition(models.Model):
     end_time = models.DateTimeField(default = datetime.now, blank = True)
 
     # Competition flag should flip based on time started
+    competition_statuses = [
+        ('Not-Started', 'Not-Started'),
+        ('In-Progress', 'In-Progress'),
+        ('Ended', 'Ended'),
+    ]
+
+    competition_status = models.CharField(max_length = 20, choices = competition_statuses, default = 'Not-Started')   # 'Not started': 3, 'Ended': 2, 'In-Progress': 1
     competition_started = models.BooleanField(default = False)
-    competition_status = models.IntegerField(default = 3)   # 'Not started': 3, 'Ended': 2, 'In-Progress': 1
 
     # Competition closure
     competition_is_closed = models.BooleanField(default = False)
@@ -59,7 +65,7 @@ class StaffCustomCompetition(models.Model):
     # bg_job
     email_job_created = models.BooleanField(default = False)
 
-    # When calling calculate once job
+    # Statuses for bg jobs
     bg_job_statuses = [
         ('Started','Started'),
         ('In-Progress', 'In-Progress'),
