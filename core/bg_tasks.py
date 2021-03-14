@@ -148,6 +148,10 @@ def recalculate_competition_stats(custom_config, comp_name):
             team.data_to_render = organized_data
             team.save()
 
+        # Bg job flag
+        competition.manually_calculate_bg_job_status = 'In-Progress'
+        competition.save()
+
 
 @background(schedule = 1)
 def calculate_competition_scores(comp_name):
@@ -212,26 +216,6 @@ def calculate_competition_scores(comp_name):
             # Start scoring system
             scoring = ScoringSystem(competition_scoring = competition_scoring)
 
-            # team_rank = scoring.check_tier_with_kd(team_kd)
-            # match_rank = scoring.check_tier_with_kd(match_kd)
-
-            # team_rank_position = scoring.get_position_from_tier(team_rank)
-            # match_rank_position = scoring.get_position_from_tier(match_rank)
-
-            # team_rank_tolerance_high = team_rank_position + 4
-            # team_rank_tolerance_low = team_rank_position - 4
-
-            # rank_movement = team_rank_tolerance_low - match_rank_position
-            # total_ranks_before_team_rank_tolerance_low = team_rank_tolerance_low - 1
-
-            # CALCULATE PERCETAGE
-            # total_pct = 100 / total_ranks_before_team_rank_tolerance_low
-            # total_penalty = rank_movement * total_pct
-
-            # if skbmm_normalizing:
-            # 
-
-
             points_for_kills = scoring.get_points_per_kill(sum(matches_data[key]['points']['kills']))
             points_for_placement = scoring.get_points_per_placement(matches_data[key]['points']['placement'])
 
@@ -279,6 +263,10 @@ def calculate_competition_scores(comp_name):
         team.data_to_render = matches_data
         team.score = sum(total_points)
         team.save()
+        
+        # Job ends flag
+        competition.manually_calculate_bg_job_status = 'Completed'
+        competition.save()
 
 
 @background(schedule = config.competitions_bg_tasks)
@@ -289,6 +277,7 @@ def calculate_status_of_competition(custom_config, comp_name):
     and runs background jobs that calculate
     user data and points.
     '''
+    
     print()
     print('** Starting bg calculations! **')
 
@@ -308,27 +297,22 @@ def calculate_status_of_competition(custom_config, comp_name):
     print('Start time: ', start)
     print('End time: ', end)
 
-    # Status
-    # 'In-Progress': 1,
-    # 'Ended': 2,
-    # 'Not started': 3,
-
     if current_time.timestamp() >= start.timestamp() and not current_time.timestamp() >= end.timestamp():
         # The competition has In-Progress
         # And the competition has not ended
-        competition.competition_status = 1
+        competition.competition_status = 'In-Progress'
         competition.save()
         print('The competition Status is: In-Progress')
 
     elif current_time.timestamp() >= start.timestamp():
         # The competition Status is: Ended
-        competition.competition_status = 2
+        competition.competition_status = 'Ended'
         competition.save()
         print('The competition Status is: Ended')
 
     else:
         # The competition Status is: not Started
-        competition.competition_status = 3
+        competition.competition_status = 'Not-Started'
         competition.save()
         print('The competition Status is: not Started')
     
@@ -341,18 +325,24 @@ def calculate_status_of_competition_once(custom_config, comp_name):
     Calculates the status of the 
     competition once.
     '''
+
     print()
     print('** Starting bg calculations once! **')
 
-    recalculate_competition_stats(custom_config, comp_name)
-    calculate_competition_scores(comp_name)
-
-    ts = time.time()
-    current_time = datetime.fromtimestamp(ts)
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+
+    # These verbose names are used to identify the jobs.
+    bg_recalculate_stats_verbose_name = 'recalculate_competition_stats-' + comp_name
+    bg_calculate_competition_scores_verbose_name = 'calculate_competition_scores-' + comp_name
+    
+    recalculate_competition_stats(verbose_name = bg_recalculate_stats_verbose_name, custom_config = custom_config, comp_name = comp_name)
+    calculate_competition_scores(verbose_name = bg_calculate_competition_scores_verbose_name, comp_name = comp_name)
 
     start = competition.start_time
     end = competition.end_time
+
+    ts = time.time()
+    current_time = datetime.fromtimestamp(ts)
 
     print('--------')
     print('competition name: ', competition.competition_name)
@@ -360,27 +350,22 @@ def calculate_status_of_competition_once(custom_config, comp_name):
     print('Start time: ', start)
     print('End time: ', end)
 
-    # Status
-    # 'In-Progress': 1,
-    # 'Ended': 2,
-    # 'Not started': 3,
-
     if current_time.timestamp() >= start.timestamp() and not current_time.timestamp() >= end.timestamp():
         # The competition has In-Progress
         # And the competition has not ended
-        competition.competition_status = 1
+        competition.competition_status = 'In-Progress'
         competition.save()
         print('The competition Status is: In-Progress')
 
     elif current_time.timestamp() >= start.timestamp():
         # The competition Status is: Ended
-        competition.competition_status = 2
+        competition.competition_status = 'Ended'
         competition.save()
         print('The competition Status is: Ended')
 
     else:
         # The competition Status is: not Started
-        competition.competition_status = 3
+        competition.competition_status = 'Not-Started'
         competition.save()
         print('The competition Status is: not Started')
     
