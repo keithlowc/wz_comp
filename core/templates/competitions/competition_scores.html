@@ -9,18 +9,18 @@
       <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
           {% if user == competition.created_by and competition.competition_started == False or user.is_superuser and competition.competition_started == False %}
-            <a class="notranslate btn btn-success" href="{% url 'recalculate_scores' comp_name=competition.competition_name %}">Start Competition</a>
+            <a class="notranslate btn btn-success btn-block" href="{% url 'recalculate_scores' comp_name=competition.competition_name %}">Start Competition</a>
 
           {% elif competition.competition_started == True %}
             {% if competition.competition_status != "Ended" %}
-              <h5>Competition has started! and will gather data every {{ config.competitions_bg_tasks|convert_seconds_to_minutes }} minutes!</h5>
+              <h5>Competition has started! will gather data every {{ config.competitions_bg_tasks|convert_seconds_to_minutes }} minutes!</h5>
             {% else %}
               <h5>Competition has ended!</h5>
             {% endif %}
           
               {% if user == competition.created_by and competition.competition_status == "Ended" or user.is_superuser %}
                 {% if competition.manually_calculate_bg_job_status == "Completed" %}
-                  <a class="btn btn-info" id="manuallyRecalculate" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
+                  <a class="btn btn-info btn-block" id="manuallyRecalculate" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
                 {% else %}
                   <h5>Calculating scores please wait, this may take a couple of minutes.</h5>
                 {% endif %}
@@ -34,13 +34,13 @@
           <div class = "row">
             {% if user == competition.created_by and competition.competition_started == True or user.is_superuser and competition.competition_started == True %}
               <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12 pt-2">
-                <a class="btn btn-primary " href="{% url 'show_competition_dashboard' comp_name=competition.competition_name %}">Dashboard</a>
+                <a class="btn btn-primary btn-block" href="{% url 'show_competition_dashboard' comp_name=competition.competition_name %}">Dashboard</a>
               </div>
             {% endif %}
 
             {% if user == competition.created_by or user.is_superuser %}
               <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12 pt-2">
-                <a class="btn btn-secondary " href="{% url 'send_competition_email' comp_name=competition.competition_name %}">Tournament Communication</a>
+                <a class="btn btn-secondary btn-block" href="{% url 'send_competition_email' comp_name=competition.competition_name %}">Tournament Communication</a>
               </div>
             {% endif %}
 
@@ -100,6 +100,12 @@
                                       {% elif competition.competition_is_closed == True %}
                                         <span class="badge badge-danger">Inscriptions: Closed</span>
                                       {% endif %}
+
+                                      {% if competition.competition_entry == "Free" %}
+                                        <span class="badge badge-secondary">Free</span>
+                                      {% elif competition.competition_entry == "Paid" %}
+                                        <span class="badge badge-danger">Paid</span>
+                                      {% endif %}
                                     </td>
 
                                 {% elif competition.competition_status == "Ended" %}
@@ -112,6 +118,12 @@
                                       {% elif competition.competition_is_closed == True %}
                                         <span class="badge badge-danger">Inscriptions: Closed</span>
                                       {% endif %}
+
+                                      {% if competition.competition_entry == "Free" %}
+                                        <span class="badge badge-secondary">Free</span>
+                                      {% elif competition.competition_entry == "Paid" %}
+                                        <span class="badge badge-danger">Paid</span>
+                                      {% endif %}
                                     </td>
                                     
                                 {% elif competition.competition_status == "Not-Started" %}
@@ -123,6 +135,12 @@
                                         <span class="badge badge-success">Inscriptions: Open</span>
                                       {% elif competition.competition_is_closed == True %}
                                         <span class="badge badge-danger">Inscriptions: Closed</span>
+                                      {% endif %}
+
+                                      {% if competition.competition_entry == "Free" %}
+                                        <span class="badge badge-secondary">Free</span>
+                                      {% elif competition.competition_entry == "Paid" %}
+                                        <span class="badge badge-danger">Paid</span>
                                       {% endif %}
                                     </td>
                                     

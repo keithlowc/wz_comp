@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, PlayerVerification, ConfigController
+from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, PlayerVerification, ConfigController, AbstractModel
 
 from django.core.exceptions import ValidationError
 
@@ -44,6 +44,22 @@ class JoinCompetitionRequestForm(forms.ModelForm):
             'player_2_id_type': 'Player 2 - Id type',
             'player_3_id_type': 'Player 3 - Id type',
             'player_4_id_type': 'Player 4 - Id type',
+        }
+
+class CompetitionPasswordRequestForm(forms.ModelForm):
+    '''
+    This form is used to request 
+    password for the competition
+    if set to paid - Never save 
+    data into this model.
+    '''
+
+    class Meta:
+        model = AbstractModel
+        fields = ('password',)
+
+        labels = {
+            'password': 'Password:'
         }
 
 class EmailCommunicationForm(forms.ModelForm):
@@ -203,9 +219,10 @@ class CompetitionAdminPage(forms.ModelForm):
         model = StaffCustomCompetition
         fields = (
                 'competition_name',
+                'competition_entry',
+                'competition_password',
                 'competition_description',
                 'competition_banner',
-                # 'total_teams_allowed_to_compete',
 
                 # Contact information
                 'discord_link',
@@ -234,6 +251,7 @@ class CompetitionAdminPage(forms.ModelForm):
                 )
         
         labels = {
+            'competition_password': 'Competition password (This password will be needed to sign up)',
             'competition_banner': 'Competition banner (URL only)',
             'start_time': 'Competition Start time',
             'end_time': 'Competition End time',
@@ -252,14 +270,16 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
     competitions and only superusers
     '''
 
+    # competition_password = forms.CharField(disabled = True)
+
     class Meta:
         model = StaffCustomCompetition
         fields = (
                 'competition_name',
+                'competition_entry',
+                'competition_password',
                 'competition_description',
                 'competition_banner',
-                'total_teams_allowed_to_compete',
-                'created_by',
 
                 # Contact information
                 'discord_link',
@@ -286,19 +306,28 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
                 'end_time',
                 'competition_is_closed',
 
-                'competition_started',
+                # ADMIN ONLY FIELDS
+                'total_teams_allowed_to_compete',
+
+                'created_by',
 
                 # Competition status
                 'competition_status',
 
-                # Cover results
-                'competition_cover_results',
-                
+                # Job status
+                'manually_calculate_bg_job_status',
+
                 # Jobs
                 'email_job_created',
-                'manually_calculate_bg_job_status',)
+
+                'competition_started',
+
+                # Cover results
+                'competition_cover_results',)
         
         labels = {
+            'total_teams_allowed_to_compete': 'Total teams allowed to compete (ADMIN)',
+            'competition_password': 'Competition password (Password is required if competition is set to paid)',
             'created_by': 'Competition created by (ADMIN)',
             'competition_banner': 'Competition banner (URL only)',
             'start_time': 'Competition Start time',
@@ -308,6 +337,11 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
             'facebook_link': 'Facebook link (OPTIONAL)',
             'twitter_link': 'Twitter link (OPTIONAL)',
             'twitch_link': 'Twitch link (OPTIONAL)',
+            'competition_started': 'Competition has started (ADMIN)',
+            'competition_status': 'Competition Status (ADMIN)',
+            'competition_cover_results': 'Competition cover results (ADMIN)',
+            'email_job_created': 'Email job created (ADMIN)',
+            'manually_calculate_bg_job_status': 'Manually calculate bg job status (ADMIN)',
         }
 
 

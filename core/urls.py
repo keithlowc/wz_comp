@@ -17,6 +17,8 @@ urlpatterns = [
 
     path('competition/<str:comp_name>/refresh', views.manually_recalculate_score_once, name = 'manually_recalculate_score_once'),
     path('competition/join/<str:comp_name>', views.join_request_competition, name = 'join_request_competition'),
+    path('competition/join/password/<str:comp_name>', views.competition_password_request, name = 'competition_password_request'),
+
     path('competition/dashboard/<str:comp_name>', views.show_competition_dashboard, name = 'show_competition_dashboard'),
     path('competition/checkin/<str:comp_name>/<uuid:checked_in_uuid>', views.check_in_to_competition, name = 'check_in_to_competition'),
     path('competition/checkin/<str:comp_name>/<str:team_name>/<uuid:checked_in_uuid>', views.check_in, name = 'check_in'),
