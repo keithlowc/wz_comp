@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import FileResponse
 
 from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
-from .forms import JoinCompetitionRequestForm, EmailCommunicationForm, PlayerVerificationForm
+from .forms import JoinCompetitionRequestForm, EmailCommunicationForm, PlayerVerificationForm, CompetitionPasswordRequestForm
 
 from . import signals, util, bg_tasks
 from .warzone_api import WarzoneApi
@@ -23,8 +23,9 @@ def home(request):
  
 def join_request_competition(request, comp_name):
     '''
-    Allows you to create
-    a team
+    This form is used to validate
+    users and allow them to sign up
+    to the competition.
     '''
 
     config = ConfigController.objects.get(name = 'main_config_controller')
@@ -37,7 +38,9 @@ def join_request_competition(request, comp_name):
         return render(request, 'competitions/competition_sign_up_is_closed.html', context)
 
     if request.method == 'POST':
+
         form = JoinCompetitionRequestForm(request.POST)
+
         if form.is_valid():
             team = form.save(commit = False)
             team.competition = competition
@@ -54,15 +57,74 @@ def join_request_competition(request, comp_name):
                                       type = 'SUCCESS')
 
             return redirect('get_competition', comp_name = comp_name)
+    else:
+        form = JoinCompetitionRequestForm()
+        
+        context = {
+            'form': form,
+            'comp_name': comp_name,
+            'config': config,
+            'competition': competition
+        }
 
-    form = JoinCompetitionRequestForm()
-    context = {
-        'form': form,
-        'comp_name': comp_name,
-        'config': config,
-        'competition': competition
-    }
-    return render(request, 'forms/join_competition_form.html', context)
+        return render(request, 'forms/join_competition_form.html', context)
+
+
+def competition_password_request(request, comp_name):
+    '''
+    This view renders competition password 
+    request form. If the competition is set to 
+    paid then it will route the user to this view.
+    Do not save any data to abstract form.
+    '''
+
+    config = ConfigController.objects.get(name = 'main_config_controller')
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+
+    competition_password = competition.competition_password
+
+    if competition.competition_is_closed:
+
+        context = {
+            'competition': competition,
+        }
+
+        return render(request, 'competitions/competition_sign_up_is_closed.html', context)
+
+    if request.method == 'POST':
+        form = CompetitionPasswordRequestForm(request.POST)
+
+        if form.is_valid():
+            # We do not save anything 
+            # As this is an abstract form
+            entry_form = form.save(commit = False)
+            
+            # Check if password is valid
+            if (competition_password == entry_form.password):
+                signals.send_message.send(sender = None,
+                            request = request,
+                            message = 'You have succesfully provided the correct password!',
+                            type = 'SUCCESS')
+
+                return redirect('join_request_competition', comp_name = comp_name)
+
+            else:
+                signals.send_message.send(sender = None,
+                            request = request,
+                            message = 'The password you submitted is wrong! Please try again!',
+                            type = 'ERROR')
+
+                return redirect('competition_password_request', comp_name = comp_name)
+    else:
+        form = CompetitionPasswordRequestForm()
+
+        context = {
+            'form': form,
+            'comp_name': comp_name,
+            'competition': competition,
+        }
+
+        return render(request, 'forms/competition_password_request.html', context)
 
 
 def recalculate_scores(request, comp_name):

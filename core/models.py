@@ -16,6 +16,16 @@ class StaffCustomCompetition(models.Model):
     ]
 
     competition_name = models.CharField(max_length = 150, null = True, unique = True)
+
+    competition_entry_type = [
+        ('Free','Free'),
+        ('Paid','Paid'),
+    ]
+
+    competition_entry = models.CharField(max_length = 5, choices = competition_entry_type, default = 'Free')
+
+    competition_password = models.CharField(max_length = 15, default = "easy012pass")
+
     competition_description = models.TextField(default = '')
     competition_type = models.CharField(max_length = 6, choices = competition_type)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, default = 0)
@@ -55,7 +65,7 @@ class StaffCustomCompetition(models.Model):
         ('Ended', 'Ended'),
     ]
 
-    competition_status = models.CharField(max_length = 20, choices = competition_statuses, default = 'Not-Started')   # 'Not started': 3, 'Ended': 2, 'In-Progress': 1
+    competition_status = models.CharField(max_length = 20, choices = competition_statuses, default = 'Not-Started')
     competition_started = models.BooleanField(default = False)
 
     # Competition closure
@@ -202,6 +212,18 @@ class PlayerVerification(models.Model):
     ]
     user_id = models.CharField(max_length = 100, null = True)
     user_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
+
+
+class AbstractModel(models.Model):
+    '''
+    Model used to display forms with
+    different verifications. For 
+    instance asking user for password.
+
+    The data should never be saved.
+    '''
+
+    password = models.CharField(max_length = 15)
 
 
 class ConfigController(models.Model):
