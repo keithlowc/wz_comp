@@ -31,23 +31,33 @@
         </div>
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12">
+
           <div class = "row">
             {% if user == competition.created_by and competition.competition_started == True or user.is_superuser and competition.competition_started == True %}
-              <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12 pt-2">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
                 <a class="btn btn-primary btn-block" href="{% url 'show_competition_dashboard' comp_name=competition.competition_name %}">Dashboard</a>
               </div>
             {% endif %}
 
             {% if user == competition.created_by or user.is_superuser %}
-              <div class="col-lg-7 col-md-7 col-sm-12 col-xm-12 pt-2">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
                 <a class="btn btn-secondary btn-block" href="{% url 'send_competition_email' comp_name=competition.competition_name %}">Tournament Communication</a>
               </div>
             {% endif %}
-
-            <div class="col-lg-4 col-md-6 col-sm-12 col-xm-12 pt-2">
-              <input id="toggle-silent" type="checkbox" data-toggle="toggle" onchange="change()" data-on="Auto-Refresh On" data-off="Auto-Refresh Off" data-onstyle="success" data-offstyle="danger">
-            </div>
           </div>
+
+          <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
+                <input id="toggle-silent" type="checkbox" data-toggle="toggle" onchange="change()" data-on="Auto-Refresh On" data-off="Auto-Refresh Off" data-onstyle="success" data-offstyle="danger">
+              </div>
+
+            {% if user.is_superuser %}
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
+                <a class="btn btn-danger btn-block" href="{% url 'migrate_competition_to_past_tournaments' comp_name=competition.competition_name %}">Migrate Tournament</a>
+              </div>
+            {% endif %}
+          </div>
+
         </div>
 
       </div>
@@ -465,12 +475,12 @@
               if (data["status"] == "Started") {
                 progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
                 progress_bar[0].style.width = "25%";
-                progress_bar[0].textContent = "Started to get data from all players.. 25%";
+                progress_bar[0].textContent = "Started to get data from all players.. 25% Please Do Not Refresh until complete!";
 
               } else if (data["status"] == "In-Progress") {
                 progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
                 progress_bar[0].style.width = "55%";
-                progress_bar[0].textContent = "Score calculation is in progress. Please give it a couple of more seconds.. 55%";
+                progress_bar[0].textContent = "Score calculation is in progress. Please give it a couple of more seconds.. 55% Please Do Not Refresh until complete!";
 
               } else if (data["status"] == "Completed") {
                 progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";

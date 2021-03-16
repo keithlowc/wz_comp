@@ -3,7 +3,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 import csv
 
-from .models import StaffCustomTeams, Match, Player, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, Analytics
+from .models import StaffCustomTeams, Match, Player, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, Analytics, PastTournaments, PastTeams
 from .forms import TeamFormAdminPage, TeamFormAdminPageSuperUser, CompetitionAdminPage, CompetitionAdminPageSuperUser, ConfigControllerAdminPage
 
 # from background_task.models import Task
@@ -94,14 +94,6 @@ class InLineStaffCustomTeam(admin.StackedInline):
         'checked_in',
     )
     extra = 1
-
-
-class MatchAdmin(admin.ModelAdmin):
-    search_fields = ('team',)
-    list_display = ('competition', 'team', 'player', 'match_id', 'kills')
-    list_filter = ('team',)
-
-admin.site.register(Match, MatchAdmin)
 
 # Competitions admin 
 class StaffCustomCompetitionAdmin(admin.ModelAdmin):
@@ -272,6 +264,40 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
 
 admin.site.register(StaffCustomCompetition, StaffCustomCompetitionAdmin)
 
+class MatchAdmin(admin.ModelAdmin):
+    search_fields = ('team',)
+    list_display = ('competition', 'team', 'player', 'match_id', 'kills')
+    list_filter = ('team',)
+
+admin.site.register(Match, MatchAdmin)
+
+
+# Past tournament admin
+class InLinePastTeams(admin.StackedInline):
+    '''
+    Allows us to show the staff
+    custom teams in the same form
+    when creating the competition.
+    '''
+
+    model = PastTeams
+    fields = (
+        'name',
+        'email',
+        'data',
+        'points',
+    )
+    extra = 1
+
+
+class PastTournamentsAdmin(admin.ModelAdmin):
+    inlines = [InLinePastTeams]
+    search_fields = ('name',)
+    list_display = ('name', 'total_teams',)
+
+admin.site.register(PastTournaments, PastTournamentsAdmin)
+
+
 # Competition communications
 class CompetitionCommunicationEmailsAdmin(admin.ModelAdmin):
     search_fields = ('competition',)
@@ -279,6 +305,7 @@ class CompetitionCommunicationEmailsAdmin(admin.ModelAdmin):
     list_display = ('competition', 'subject', 'date', 'created_by')
 
 admin.site.register(CompetitionCommunicationEmails, CompetitionCommunicationEmailsAdmin)
+
 
 # Application configuration
 class ConfigControllerAdmin(admin.ModelAdmin):
