@@ -201,8 +201,8 @@ class PastTournaments(models.Model):
     already completed.
     '''
 
-    name = models.CharField(max_length = 150)
-    host = models.CharField(max_length = 100, default = '')
+    name = models.CharField(max_length = 500)
+    host = models.CharField(max_length = 150, default = '')
     date_ended = models.DateTimeField(default = datetime.now)
     logo = models.URLField()
     total_teams = models.IntegerField()
@@ -225,7 +225,7 @@ class PastTeams(models.Model):
     '''
 
     tournament = models.ForeignKey(PastTournaments, on_delete = models.CASCADE, null = True, related_name = 'PastTeams')
-    name = models.CharField(max_length = 200)
+    name = models.CharField(max_length = 250)
     email = models.EmailField(default = '')
     data = models.JSONField(default = dict)
     points = models.IntegerField()
