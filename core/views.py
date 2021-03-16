@@ -4,8 +4,8 @@ from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse
 
-from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController
-from .forms import JoinCompetitionRequestForm, EmailCommunicationForm, PlayerVerificationForm
+from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, PastTournaments, PastTeams
+from .forms import JoinCompetitionRequestForm, EmailCommunicationForm, PlayerVerificationForm, CompetitionPasswordRequestForm
 
 from . import signals, util, bg_tasks
 from .warzone_api import WarzoneApi
@@ -23,8 +23,9 @@ def home(request):
  
 def join_request_competition(request, comp_name):
     '''
-    Allows you to create
-    a team
+    This form is used to validate
+    users and allow them to sign up
+    to the competition.
     '''
 
     config = ConfigController.objects.get(name = 'main_config_controller')
@@ -37,7 +38,9 @@ def join_request_competition(request, comp_name):
         return render(request, 'competitions/competition_sign_up_is_closed.html', context)
 
     if request.method == 'POST':
+
         form = JoinCompetitionRequestForm(request.POST)
+
         if form.is_valid():
             team = form.save(commit = False)
             team.competition = competition
@@ -54,15 +57,74 @@ def join_request_competition(request, comp_name):
                                       type = 'SUCCESS')
 
             return redirect('get_competition', comp_name = comp_name)
+    else:
+        form = JoinCompetitionRequestForm()
+        
+        context = {
+            'form': form,
+            'comp_name': comp_name,
+            'config': config,
+            'competition': competition
+        }
 
-    form = JoinCompetitionRequestForm()
-    context = {
-        'form': form,
-        'comp_name': comp_name,
-        'config': config,
-        'competition': competition
-    }
-    return render(request, 'forms/join_competition_form.html', context)
+        return render(request, 'forms/join_competition_form.html', context)
+
+
+def competition_password_request(request, comp_name):
+    '''
+    This view renders competition password 
+    request form. If the competition is set to 
+    paid then it will route the user to this view.
+    Do not save any data to abstract form.
+    '''
+
+    config = ConfigController.objects.get(name = 'main_config_controller')
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+
+    competition_password = competition.competition_password
+
+    if competition.competition_is_closed:
+
+        context = {
+            'competition': competition,
+        }
+
+        return render(request, 'competitions/competition_sign_up_is_closed.html', context)
+
+    if request.method == 'POST':
+        form = CompetitionPasswordRequestForm(request.POST)
+
+        if form.is_valid():
+            # We do not save anything 
+            # As this is an abstract form
+            entry_form = form.save(commit = False)
+            
+            # Check if password is valid
+            if (competition_password == entry_form.password):
+                signals.send_message.send(sender = None,
+                            request = request,
+                            message = 'You have succesfully provided the correct password!',
+                            type = 'SUCCESS')
+
+                return redirect('join_request_competition', comp_name = comp_name)
+
+            else:
+                signals.send_message.send(sender = None,
+                            request = request,
+                            message = 'The password you submitted is wrong! Please try again!',
+                            type = 'ERROR')
+
+                return redirect('competition_password_request', comp_name = comp_name)
+    else:
+        form = CompetitionPasswordRequestForm()
+
+        context = {
+            'form': form,
+            'comp_name': comp_name,
+            'competition': competition,
+        }
+
+        return render(request, 'forms/competition_password_request.html', context)
 
 
 def recalculate_scores(request, comp_name):
@@ -117,7 +179,7 @@ def manually_recalculate_score_once(request, comp_name):
 
     signals.send_message.send(sender = None,
                     request = request,
-                    message = 'Manually refreshing once! Make sure to refresh the page!',
+                    message = 'Manually refreshing once! wait for the status bar to complete! Do not refresh!',
                     type = 'INFO')
 
     config = ConfigController.objects.get(name = 'main_config_controller')
@@ -185,6 +247,66 @@ def get_competition(request, comp_name):
     }
 
     return render(request, 'competitions/competition_scores.html', context)
+
+
+def get_past_tournaments(request):
+    '''
+    Gets the past tournament
+    results and tables.
+    '''
+
+    past_tournaments = PastTournaments.objects.all().order_by('-date_ended')
+
+    context = {
+        'past_tournaments': past_tournaments,
+    }
+
+    return render(request, 'competitions/past/past_tournaments.html', context)
+
+
+def migrate_competition_to_past_tournaments(request, comp_name):
+    '''
+    This view starts a job that migrates the
+    data into the PastTournaments model and display it as a
+    table format. This will save a lot of rows in the db. 
+    '''
+
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+    all_teams = competition.teams.all()
+    total_teams = competition.teams.all().count()
+
+    past_tournament_exists = True
+
+    try:
+        competition = PastTournaments.objects.get(name = competition.competition_name)
+    except Exception as e:
+        past_tournament_exists = False
+    
+    if past_tournament_exists == False:
+
+        past_tournament = PastTournaments.objects.create(name = competition.competition_name, 
+                                                        host =  competition.created_by.username,
+                                                        date_ended = competition.end_time,
+                                                        logo = competition.competition_banner,
+                                                        total_teams = total_teams)
+    
+        for team in all_teams:
+            PastTeams.objects.create(tournament = past_tournament, 
+                                    name = team.team_name,
+                                    email = team.team_captain_email,
+                                    data = team.data_to_render,
+                                    points = team.score)
+        
+        # Delete the tournament and redirect
+        competition.delete()
+
+        signals.send_message.send(sender = None,
+                    request = request,
+                    message = 'The tournament has been succesfully migrated to past tournaments!',
+                    type = 'SUCCESS')
+    
+    return redirect('get_past_tournaments')
+
 
 # Charts data
 

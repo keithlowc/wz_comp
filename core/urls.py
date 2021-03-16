@@ -11,12 +11,16 @@ urlpatterns = [
     path('competition/chart/stats/<str:team_name>/<str:user>/<str:key>', views.chart_stats_key, name = 'chart_stats_key'),
     path('competition/user/chart', views.show_chart, name = 'show_chart'),
     path('competition/recalculate_scores/<str:comp_name>', views.recalculate_scores, name = 'recalculate_scores'),
+    path('competition/migratetopastournament/<str:comp_name>', views.migrate_competition_to_past_tournaments, name = 'migrate_competition_to_past_tournaments'),
     
     path('competitions/all', views.get_competitions_all, name = 'get_competitions_all'),
+    path('competitions/past/all', views.get_past_tournaments, name = 'get_past_tournaments'),
     path('competition/<str:comp_name>', views.get_competition, name = 'get_competition'),
 
     path('competition/<str:comp_name>/refresh', views.manually_recalculate_score_once, name = 'manually_recalculate_score_once'),
     path('competition/join/<str:comp_name>', views.join_request_competition, name = 'join_request_competition'),
+    path('competition/join/password/<str:comp_name>', views.competition_password_request, name = 'competition_password_request'),
+
     path('competition/dashboard/<str:comp_name>', views.show_competition_dashboard, name = 'show_competition_dashboard'),
     path('competition/checkin/<str:comp_name>/<uuid:checked_in_uuid>', views.check_in_to_competition, name = 'check_in_to_competition'),
     path('competition/checkin/<str:comp_name>/<str:team_name>/<uuid:checked_in_uuid>', views.check_in, name = 'check_in'),

@@ -46,6 +46,12 @@
                                   <span class="badge badge-danger">Inscriptions: Closed</span>
                                 {% endif %}
 
+                                {% if competition.competition_entry == "Free" %}
+                                  <span class="badge badge-secondary">Free</span>
+                                {% elif competition.competition_entry == "Paid" %}
+                                  <span class="badge badge-danger">Paid</span>
+                                {% endif %}
+
                             </div>
 
                             <div class="col-lg-2 col-md-2 text-right my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
@@ -66,10 +72,14 @@
                         
                         <div class="row">
                           <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xm-6 pt-1">
-                            <a class="btn btn-info" href="{% url 'get_competition' comp_name=competition.competition_name %}">View Competition</a>
+                            <a class="btn btn-info btn-block" href="{% url 'get_competition' comp_name=competition.competition_name %}">View Competition</a>
                           </div>
                           <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xm-6 pt-1">
-                            <a class="btn btn-success" href="{% url 'join_request_competition' comp_name=competition.competition_name %}">Sign Up Competition</a>
+                            {% if competition.competition_entry == "Free" %}
+                              <a class="btn btn-success btn-block" href="{% url 'join_request_competition' comp_name=competition.competition_name %}">Sign Up</a>
+                            {% else %}
+                              <a class="btn btn-success btn-block" href="{% url 'competition_password_request' comp_name=competition.competition_name %}">Sign Up</a>
+                            {% endif %}
                           </div>
                         </div>
                         
@@ -80,7 +90,7 @@
             </div>
           {% endfor %}
         {% else %}
-            <p>There are no competitions available!</p>
+            <p class="white-color-font">There are no competitions available!</p>
         {% endif %}
     </div>
   </div>

@@ -4,6 +4,8 @@ from django.contrib import admin
 
 from datetime import datetime
 
+from .validators import validate_competition_name
+
 import uuid
 
 # Custom competitions
@@ -15,7 +17,17 @@ class StaffCustomCompetition(models.Model):
         ('SOLOS', 'SOLOS'),
     ]
 
-    competition_name = models.CharField(max_length = 150, null = True, unique = True)
+    competition_name = models.CharField(max_length = 150, null = True, unique = True, validators = [validate_competition_name])
+
+    competition_entry_type = [
+        ('Free','Free'),
+        ('Paid','Paid'),
+    ]
+
+    competition_entry = models.CharField(max_length = 5, choices = competition_entry_type, default = 'Free')
+
+    competition_password = models.CharField(max_length = 15, default = "easy012pass")
+
     competition_description = models.TextField(default = '')
     competition_type = models.CharField(max_length = 6, choices = competition_type)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, default = 0)
@@ -55,7 +67,7 @@ class StaffCustomCompetition(models.Model):
         ('Ended', 'Ended'),
     ]
 
-    competition_status = models.CharField(max_length = 20, choices = competition_statuses, default = 'Not-Started')   # 'Not started': 3, 'Ended': 2, 'In-Progress': 1
+    competition_status = models.CharField(max_length = 20, choices = competition_statuses, default = 'Not-Started')
     competition_started = models.BooleanField(default = False)
 
     # Competition closure
@@ -80,19 +92,6 @@ class StaffCustomCompetition(models.Model):
     
     def __str__(self):
         return str(self.competition_name)
-
-
-class CompetitionCommunicationEmails(models.Model):
-    subject = models.CharField(max_length = 150)
-    body = models.TextField()
-    date = models.DateTimeField(default = datetime.now)
-
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
-    competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, related_name = 'emails')
-
-    class Meta:
-        verbose_name = 'Competition Communication'
-        verbose_name_plural = 'Competition Communications'
 
 
 class StaffCustomTeams(models.Model):
@@ -168,6 +167,12 @@ class Player(models.Model):
 
 
 class Match(models.Model):
+    '''
+    Contains all matches from current
+    tournaments. Data is used to display
+    graphs.
+    '''
+
     competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, null = True, related_name = 'competition')
     team = models.ForeignKey(StaffCustomTeams, on_delete = models.CASCADE, null = True, related_name = 'matches')
     player = models.ForeignKey(Player, on_delete = models.CASCADE, null = True, related_name = 'matches')
@@ -188,6 +193,69 @@ class Match(models.Model):
         return str(self.match_id)
 
 
+class PastTournaments(models.Model):
+    '''
+    This table is used to freeze
+    already calculated data and 
+    to display for those tournaments
+    already completed.
+    '''
+
+    name = models.CharField(max_length = 150)
+    host = models.CharField(max_length = 100, default = '')
+    date_ended = models.DateTimeField(default = datetime.now)
+    logo = models.URLField()
+    total_teams = models.IntegerField()
+
+
+    class Meta:
+        verbose_name = 'Past Tournament'
+        verbose_name_plural = 'Past Tournaments'
+    
+    def __str__(self):
+        return str(self.name)
+
+
+class PastTeams(models.Model):
+    '''
+    This table contains all data
+    of past teams within
+    tournaments - Post completion
+    of tournament.
+    '''
+
+    tournament = models.ForeignKey(PastTournaments, on_delete = models.CASCADE, null = True, related_name = 'PastTeams')
+    name = models.CharField(max_length = 200)
+    email = models.EmailField(default = '')
+    data = models.JSONField(default = dict)
+    points = models.IntegerField()
+
+    class Meta:
+        verbose_name = 'Past Team'
+        verbose_name_plural = 'Past Teams'
+    
+    def __str__(self):
+        return str(self.name)
+
+
+class CompetitionCommunicationEmails(models.Model):
+    '''
+    Contains what ever message is sent
+    to users.
+    '''
+
+    subject = models.CharField(max_length = 150)
+    body = models.TextField()
+    date = models.DateTimeField(default = datetime.now)
+
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, related_name = 'emails')
+
+    class Meta:
+        verbose_name = 'Competition Communication'
+        verbose_name_plural = 'Competition Communications'
+
+
 class PlayerVerification(models.Model):
     '''
     Model used to display the 
@@ -202,6 +270,18 @@ class PlayerVerification(models.Model):
     ]
     user_id = models.CharField(max_length = 100, null = True)
     user_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
+
+
+class AbstractModel(models.Model):
+    '''
+    Model used to display forms with
+    different verifications. For 
+    instance asking user for password.
+
+    The data should never be saved.
+    '''
+
+    password = models.CharField(max_length = 15)
 
 
 class ConfigController(models.Model):
