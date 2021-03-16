@@ -11,8 +11,10 @@ urlpatterns = [
     path('competition/chart/stats/<str:team_name>/<str:user>/<str:key>', views.chart_stats_key, name = 'chart_stats_key'),
     path('competition/user/chart', views.show_chart, name = 'show_chart'),
     path('competition/recalculate_scores/<str:comp_name>', views.recalculate_scores, name = 'recalculate_scores'),
+    path('competition/migratetopastournament/<str:comp_name>', views.migrate_competition_to_past_tournaments, name = 'migrate_competition_to_past_tournaments'),
     
     path('competitions/all', views.get_competitions_all, name = 'get_competitions_all'),
+    path('competitions/past/all', views.get_past_tournaments, name = 'get_past_tournaments'),
     path('competition/<str:comp_name>', views.get_competition, name = 'get_competition'),
 
     path('competition/<str:comp_name>/refresh', views.manually_recalculate_score_once, name = 'manually_recalculate_score_once'),

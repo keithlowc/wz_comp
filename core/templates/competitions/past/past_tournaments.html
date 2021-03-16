@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+{% load custom_filtering_tags %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row"> 
+    <div class="col">
+      <h1 class="white-color-font">All past competitions results:</h1>
+    </div>
+  </div>
+
+  <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xm-12">
+        
+        {% if past_tournaments %}
+          {% for tournament in past_tournaments %}
+            <h3 class="pt-4 pb-2 text-center display-4">{{ tournament.name }}</h3>
+            <table class="table table-sm table-striped table-dark table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Team Name</th>
+                    <th scope="col">Points</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for team in tournament.PastTeams.all|dictsortreversed:"points" %}
+                        <tr>
+                            <th scope="row" class="white-color-font">{{ forloop.counter0|add }}</th>
+                            <td class="white-color-font">{{ team.name }}</td>
+                            <td class="white-color-font">{{ team.points }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+          {% endfor %}
+        {% endif %}
+
+        
+
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+{% endblock %}
