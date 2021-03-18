@@ -223,6 +223,7 @@ def calculate_competition_scores(comp_name):
                 'kills': points_for_kills,
                 'placement': points_for_placement,
                 'total_points': int(points_for_kills + points_for_placement),
+                'top_match': False,
             }
 
         print('Sorting and calculating top matches! number_of_matches_to_count_points is {}'.format(competition.number_of_matches_to_count_points))
@@ -246,6 +247,9 @@ def calculate_competition_scores(comp_name):
                 print('-----------> Match selected for scoring with id {} and total points of {}'.format(key['key'],
                                                                                                          matches_data[key['key']]['points']['total_points']))
 
+                # Selecting the match as a top match.
+                matches_data[key['key']]['points']['top_match'] = True
+
                 total_points.append(matches_data[key['key']]['points']['total_points'])
         else:
             print('The total amount of matches {} is greater or equal to the number_of_matches_to_count_points {}'.format(len(key_list),
@@ -254,6 +258,9 @@ def calculate_competition_scores(comp_name):
 
                 print('-----------> Match selected for scoring with id {} and total points of {}'.format(key['key'], 
                                                                                                         matches_data[key['key']]['points']['total_points']))
+
+                # Selecting the match as a top match.
+                matches_data[key['key']]['points']['top_match'] = True
 
                 total_points.append(matches_data[key['key']]['points']['total_points'])
         
