@@ -284,31 +284,43 @@
                                                 <h5 class="mb-0">
                                                 <a class="collapsed" data-toggle="collapse" href="#{{ forloop.counter0|add }} {{key}}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }} {{key}}">
                                                     <div class="row ">
+                                                      <div class="col-9">Match #{{ forloop.counter0|add }}</div>
 
                                                         {% for key, val in val.items %}
 
                                                           {% if key == 'points' %}
+                                                            {% if val.top_match == True %}
+                                                              <div class="col-1">
+                                                                <p class="text-right"><i class="fas fa-crosshairs red-icon"></i></p>
+                                                              </div>
+                                                            {% else %}
+                                                              <div class="col-1">
+                                                                <p class="text-right"></p>
+                                                              </div>
+                                                            {% endif %}
+
                                                             {% if val.placement == competition.points_per_first_place %}
                                                               <div class="col-1">
-                                                                <p class="text-center"><i class="fas fa-crown first-place"></i></p>
+                                                                <p class="text-right"><i class="fas fa-crown first-place"></i></p>
                                                               </div>
                                                             {% elif val.placement == competition.points_per_second_place %}
                                                               <div class="col-1">
-                                                                <p class="text-center"><i class="fas fa-crown second-place"></i></p>
+                                                                <p class="text-right"><i class="fas fa-crown second-place"></i></p>
                                                               </div>
                                                             {% elif val.placement == competition.points_per_third_place %}
                                                               <div class="col-1">
-                                                                <p class="text-center"><i class="fas fa-crown third-place"></i></p>
+                                                                <p class="text-right"><i class="fas fa-crown third-place"></i></p>
                                                               </div>
                                                             {% else %}
                                                               <div class="col-1">
                                                               </div>
                                                             {% endif %}
+
                                                           {% endif %}
 
                                                         {% endfor %}
-                                                      <div class="col-7">Match #{{ forloop.counter0|add }}</div>
-                                                      <div class="col-4 text-right"><i class="fas fa-chevron-down"></i></td></div>
+
+                                                      <div class="col-1 text-right"><i class="fas fa-chevron-down"></i></td></div>
                                                     </div>
                                                 </a>
                                                 </h5>
