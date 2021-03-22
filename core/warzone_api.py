@@ -16,7 +16,7 @@ class WarzoneApi:
     
     def get_warzone_matches(self):
         '''
-        Get warzone matches
+        Get warzone matches.
         '''
 
         url = 'https://call-of-duty-modern-warfare.p.rapidapi.com/warzone-matches/{}/{}'.format(self.tag, self.platform)
