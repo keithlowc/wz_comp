@@ -367,6 +367,8 @@ class ConfigControllerAdminPage(forms.ModelForm):
             'cod_x_rapidapi_host',
             'twitch_api_verfication_client_id',
             'twitch_api_verfication_client_secret',
+            'system_message_type',
+            'system_message',
         )
         
         labels = {
