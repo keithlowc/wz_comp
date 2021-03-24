@@ -312,6 +312,15 @@ class ConfigController(models.Model):
     twitch_api_verfication_client_id = models.CharField(max_length = 100,  null = True, unique = True)
     twitch_api_verfication_client_secret = models.CharField(max_length = 100,  null = True, unique = True)
 
+    message_type = [
+        ('danger', 'Danger'),
+        ('warning', 'Warning'),
+        ('info', 'Info'),
+    ]
+
+    system_message_type = models.CharField(max_length = 10, choices = message_type, default = 'Info')
+    system_message = models.CharField(max_length = 250,  null = True, unique = True, blank = True)
+
     class Meta:
         verbose_name = 'Application Configuration'
         verbose_name_plural = 'Application Configuration'
