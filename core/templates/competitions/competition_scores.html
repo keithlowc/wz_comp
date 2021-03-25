@@ -4,6 +4,11 @@
 {% block content %}
 
 <div class="container">
+  
+  {% if config.system_message %}
+    {% include 'messages/system_message.html' with system_message=config.system_message system_message_type=config.system_message_type %}
+  {% endif %}
+
   <div class="row pt-4">
     <div class="col-12">
       <div class="row">

@@ -11,7 +11,11 @@ import time
 
 # Competition bg jobs
 
-config = ConfigController.objects.get(name = 'main_config_controller')
+# This config controller is instantiated here to avoid any issues with migrations
+try:
+    time_to_run = ConfigController.objects.get(name = 'main_config_controller').competitions_bg_tasks
+except Exception as e:
+    time_to_run = 1
 
 @background(schedule = 1)
 def recalculate_competition_stats(custom_config, comp_name):
@@ -241,11 +245,11 @@ def calculate_competition_scores(comp_name):
         if len(key_list) < competition.number_of_matches_to_count_points:
 
             print('The total amount of matches {} is smaller than number_of_matches_to_count_points {}'.format(len(key_list),
-                                                                                                              competition.number_of_matches_to_count_points))
+                                                                                                            competition.number_of_matches_to_count_points))
             for key in key_list[0 : len(key_list)]:
 
                 print('-----------> Match selected for scoring with id {} and total points of {}'.format(key['key'],
-                                                                                                         matches_data[key['key']]['points']['total_points']))
+                                                                                                        matches_data[key['key']]['points']['total_points']))
 
                 # Selecting the match as a top match.
                 matches_data[key['key']]['points']['top_match'] = True
@@ -253,7 +257,7 @@ def calculate_competition_scores(comp_name):
                 total_points.append(matches_data[key['key']]['points']['total_points'])
         else:
             print('The total amount of matches {} is greater or equal to the number_of_matches_to_count_points {}'.format(len(key_list),
-                                                                                                                         competition.number_of_matches_to_count_points))
+                                                                                                                        competition.number_of_matches_to_count_points))
             for key in key_list[0 : competition.number_of_matches_to_count_points]:
 
                 print('-----------> Match selected for scoring with id {} and total points of {}'.format(key['key'], 
@@ -276,7 +280,7 @@ def calculate_competition_scores(comp_name):
         competition.save()
 
 
-@background(schedule = config.competitions_bg_tasks)
+@background(schedule = time_to_run)
 def calculate_status_of_competition(custom_config, comp_name):
     '''
     Calculates the status of the competition
@@ -342,8 +346,12 @@ def calculate_status_of_competition_once(custom_config, comp_name):
     bg_recalculate_stats_verbose_name = 'recalculate_competition_stats-' + comp_name
     bg_calculate_competition_scores_verbose_name = 'calculate_competition_scores-' + comp_name
     
-    recalculate_competition_stats(verbose_name = bg_recalculate_stats_verbose_name, custom_config = custom_config, comp_name = comp_name)
-    calculate_competition_scores(verbose_name = bg_calculate_competition_scores_verbose_name, comp_name = comp_name)
+    recalculate_competition_stats(verbose_name = bg_recalculate_stats_verbose_name,
+                                        custom_config = custom_config,
+                                        comp_name = comp_name)
+
+    calculate_competition_scores(verbose_name = bg_calculate_competition_scores_verbose_name,
+                                        comp_name = comp_name)
 
     start = competition.start_time
     end = competition.end_time
@@ -378,8 +386,8 @@ def calculate_status_of_competition_once(custom_config, comp_name):
     
     print('--------')
 
-# Notification bg jobs
 
+# Notification bg jobs
 class EmailNotificationSystemJob:
     @background(schedule = 120)
     def send_check_in_notification(competition_name, competition_id):
