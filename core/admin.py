@@ -291,9 +291,40 @@ class InLinePastTeams(admin.StackedInline):
 
 
 class PastTournamentsAdmin(admin.ModelAdmin):
+    def export_contact_information(self, request, queryset):
+        '''
+        Exports all emails from past tournaments.
+        '''
+
+        if not request.user.is_superuser:
+            raise PermissionDenied
+        else:
+            try:
+                response = HttpResponse(content_type = 'text/csv')
+                response['Content-Disposition'] = 'attachment; filename="contact_information.csv"'
+                writer = csv.writer(response)
+
+                header_rows = ['email']
+                writer.writerow(header_rows)
+
+                tournaments = queryset
+
+                for tournament in tournaments:
+                    teams = tournament.PastTeams.all()
+                    for team in teams:
+                        writer.writerow([team.email])
+
+                self.message_user(request, 'Succesfully downloaded files!', messages.SUCCESS)
+                return response
+
+            except Exception as e:
+                self.message_user(request, 'There was an issue while downloading the file', messages.SUCCESS)
+                return True
+
     inlines = [InLinePastTeams]
     search_fields = ('name',)
     list_display = ('name', 'total_teams',)
+    actions = ['export_contact_information', ]
 
 admin.site.register(PastTournaments, PastTournamentsAdmin)
 
