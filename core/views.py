@@ -167,6 +167,10 @@ def recalculate_scores(request, comp_name):
                     request = request,
                     message = 'The data being loaded is Dummy Data! For real data message Admin to change settings',
                     type = 'WARNING')
+        
+        # Job starts flag
+        competition.manually_calculate_bg_job_status = 'Started'
+        competition.save()
 
     return redirect('get_competition', comp_name = comp_name)
 
@@ -210,7 +214,7 @@ def manually_recalculate_score_once(request, comp_name):
                     request = request,
                     message = 'The data being loaded is Dummy Data! For real data message Admin to change settings',
                     type = 'WARNING')
-        
+
         # Job starts flag
         competition.manually_calculate_bg_job_status = 'Started'
         competition.save()
