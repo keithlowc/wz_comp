@@ -124,6 +124,7 @@ def recalculate_competition_stats(custom_config, comp_name):
                 util.pprintstart('Ending Matches to Match model')
             except Exception as e:
                 print('THERE WAS AN ISSUE WITH THE PLAYERS DATA - SO I WILL NOT LOAD THE {} DATA'.format(user))
+                print('Error: {}'.format(e))
                 error_with_user = True
 
         if not error_with_user:
