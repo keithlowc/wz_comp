@@ -17,7 +17,7 @@ try:
 except Exception as e:
     time_to_run = 1
 
-@background(schedule = 1)
+
 def recalculate_competition_stats(custom_config, comp_name):
     '''
     Caculates all the competition stats
@@ -153,12 +153,7 @@ def recalculate_competition_stats(custom_config, comp_name):
             team.data_to_render = organized_data
             team.save()
 
-        # Bg job flag
-        competition.manually_calculate_bg_job_status = 'In-Progress'
-        competition.save()
 
-
-@background(schedule = 1)
 def calculate_competition_scores(comp_name):
     '''
     Parses from previous data and 
@@ -275,10 +270,6 @@ def calculate_competition_scores(comp_name):
         team.data_to_render = matches_data
         team.score = sum(total_points)
         team.save()
-        
-        # Job ends flag
-        competition.manually_calculate_bg_job_status = 'Completed'
-        competition.save()
 
 
 @background(schedule = time_to_run)
@@ -293,12 +284,27 @@ def calculate_status_of_competition(custom_config, comp_name):
     print()
     print('** Starting bg calculations! **')
 
-    recalculate_competition_stats(custom_config, comp_name)
-    calculate_competition_scores(comp_name)
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+
+    # Job starts flag
+    competition.manually_calculate_bg_job_status = 'Started'
+    competition.save()
+
+    # Job in-progress flag
+    competition.manually_calculate_bg_job_status = 'In-Progress'
+    competition.save()
+    
+    recalculate_competition_stats(custom_config = custom_config,
+                                comp_name = comp_name)
+
+    calculate_competition_scores(comp_name = comp_name)
+
+    # Job ends flag
+    competition.manually_calculate_bg_job_status = 'Completed'
+    competition.save()
 
     ts = time.time()
     current_time = datetime.fromtimestamp(ts)
-    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
     start = competition.start_time
     end = competition.end_time
@@ -342,17 +348,19 @@ def calculate_status_of_competition_once(custom_config, comp_name):
     print('** Starting bg calculations once! **')
 
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
-
-    # These verbose names are used to identify the jobs.
-    bg_recalculate_stats_verbose_name = 'recalculate_competition_stats-' + comp_name
-    bg_calculate_competition_scores_verbose_name = 'calculate_competition_scores-' + comp_name
     
-    recalculate_competition_stats(verbose_name = bg_recalculate_stats_verbose_name,
-                                        custom_config = custom_config,
-                                        comp_name = comp_name)
+    recalculate_competition_stats(custom_config = custom_config,
+                                comp_name = comp_name)
+    
+    # Job in-progress flag
+    competition.manually_calculate_bg_job_status = 'In-Progress'
+    competition.save()
 
-    calculate_competition_scores(verbose_name = bg_calculate_competition_scores_verbose_name,
-                                        comp_name = comp_name)
+    calculate_competition_scores(comp_name = comp_name)
+
+    # Job ends flag
+    competition.manually_calculate_bg_job_status = 'Completed'
+    competition.save()
 
     start = competition.start_time
     end = competition.end_time

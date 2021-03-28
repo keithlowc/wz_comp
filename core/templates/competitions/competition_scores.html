@@ -192,7 +192,7 @@
                 {% if competition.competition_cover_results == False %}
                 
                   {% for team in teams %}
-                    <div class="card">
+                    <div class="card mt-1">
                         <div class="card-header" role="tab" id="headingThree">
                           <h5 class="mb-0">
                             <a id="{{team}}-collapse" onclick="loadStreamVideoToFrame('{{team}}-collapse', '{{team.team_stream_user}}-header-twitch', '{{team.team_stream_user}}-iframe');" class="collapsed" data-toggle="collapse" href="#{{ team }}" aria-expanded="false" aria-controls="{{ team }}">
@@ -487,19 +487,21 @@
           $.ajax({
             url: "/api/" + competition_name + "/manually_calculate_job/status",
             success: function(data) {
-              progress_bar_row.style.display = "block";
 
               if (data["status"] == "Started") {
+                progress_bar_row.style.display = "block";
                 progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
                 progress_bar[0].style.width = "25%";
-                progress_bar[0].textContent = "Started to get data from all players.. 25% Please Do Not Refresh until complete!";
+                progress_bar[0].textContent = "Started to get data from all players.. 25%";
 
               } else if (data["status"] == "In-Progress") {
+                progress_bar_row.style.display = "block";
                 progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
                 progress_bar[0].style.width = "55%";
-                progress_bar[0].textContent = "Score calculation is in progress. Please give it a couple of more seconds.. 55% Please Do Not Refresh until complete!";
+                progress_bar[0].textContent = "Score calculation is in progress. Please give it a couple of more seconds.. 55%";
 
               } else if (data["status"] == "Completed") {
+                progress_bar_row.style.display = "block";
                 progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
                 progress_bar[0].style.width = "100%";
                 progress_bar[0].textContent = "Scores are 100% calculated, please refresh page!";
@@ -511,6 +513,26 @@
             }
           });
         }
+
+        function getBgStatus(manual_bg_job_status) {
+          // Gets bg job status and sets 
+          // And sets the manual_bg_job_status to the current status
+
+          $.ajax({
+            url: "/api/" + competition_name + "/manually_calculate_job/status",
+            success: function(data) {
+              manual_bg_job_status = data["status"];
+
+              if (manual_bg_job_status != 'Completed') {
+                checkJobStatus();
+                interval = setInterval(checkJobStatus, 5000);
+              }
+            }
+          })
+        }
+
+        // Re check for api and update manual bg status every 10 seconds
+        setInterval(getBgStatus, 10000);
 
         if (manual_bg_job_status != 'Completed') {
           checkJobStatus();
