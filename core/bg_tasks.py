@@ -336,7 +336,7 @@ def calculate_status_of_competition(custom_config, comp_name):
     
     print('--------')
 
-    time.sleep(20)
+    time.sleep(7)
 
     # Reset job
     competition.manually_calculate_bg_job_status = 'Not-Running'
