@@ -336,6 +336,12 @@ def calculate_status_of_competition(custom_config, comp_name):
     
     print('--------')
 
+    time.sleep(20)
+
+    # Reset job
+    competition.manually_calculate_bg_job_status = 'Not-Running'
+    competition.save()
+
 
 @background(schedule = 1)
 def calculate_status_of_competition_once(custom_config, comp_name):
@@ -394,6 +400,11 @@ def calculate_status_of_competition_once(custom_config, comp_name):
         print('The competition Status is: not Started')
     
     print('--------')
+    time.sleep(7)
+
+    # Reset job
+    competition.manually_calculate_bg_job_status = 'Not-Running'
+    competition.save()
 
 
 # Notification bg jobs
