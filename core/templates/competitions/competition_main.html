@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container pt-4">
 
   {% if config.system_message %}
     {% include 'messages/system_message.html' with system_message=config.system_message system_message_type=config.system_message_type %}
@@ -31,7 +31,7 @@
                               <img src="{{ competition.competition_banner }}" class="circular border-image">
                             </div>
                             <div class="col-xl-5 col-lg-5 col-md-4 col-sm-12 col-xm-12 my-auto">
-                              <h2 class="display-5 align-middle"> {{ competition.competition_name }} </h2>
+                              <h2 class="display-5 align-middle"> {{ competition.competition_name|title  }} </h2>
                             </div>
 
                             <div class="col-xl-2 col-lg-2 col-md-2 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">

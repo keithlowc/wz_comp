@@ -52,9 +52,9 @@
           </div>
 
           <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
+              <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
                 <input id="toggle-silent" type="checkbox" data-toggle="toggle" onchange="change()" data-on="Auto-Refresh On" data-off="Auto-Refresh Off" data-onstyle="success" data-offstyle="danger">
-              </div>
+              </div> -->
 
             {% if user.is_superuser %}
               <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
@@ -101,7 +101,7 @@
                               </div>
                               <div class="col-6">
                                   <td class="border-0 align-middle">
-                                    <h2 class="display-4">{{ competition.competition_name }}</h2>
+                                    <h2 class="display-4">{{ competition.competition_name|title  }}</h2>
                                   </td>
                               </div>
                               <div class="col-2">
@@ -203,7 +203,7 @@
                                     </div>
 
                                     <div class="col-7 my-auto">
-                                          <h4 id="{{team.team_stream_user}}-header" class="notranslate" data-url="https://embed.twitch.tv?channel={{team.team_stream_user}}&amp;height=480&amp;migration=true&amp;parent=www.duelout.com&amp;width=100%25">{{ team }}</h4>
+                                          <h4 id="{{team.team_stream_user}}-header" class="notranslate" data-url="https://embed.twitch.tv?channel={{team.team_stream_user}}&amp;height=480&amp;migration=true&amp;parent=www.duelout.com&amp;width=100%25">{{ team|title }}</h4>
                                     </div>
 
                                     {% if team.checked_in %}
@@ -211,6 +211,10 @@
                                       <div class="col-2 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
                                           <span class="badge badge-success">Checked in</span>
                                       </div>
+
+                                      <!-- <div class="col-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                                        <span class="badge badge-danger">User is private</span>
+                                    </div> -->
 
                                     {% else %}
 

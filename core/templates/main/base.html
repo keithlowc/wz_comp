@@ -29,6 +29,10 @@
     {% endblock head %}
 
     <title>Duelout</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Roboto:wght@500&family=Rubik:wght@500&display=swap" rel="stylesheet">
+
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -58,7 +62,7 @@
 
     {% include 'messages/messages.html' %}
 
-    <div class="pt-4">
+    <div class="">
       {% block content %}
       {% endblock content%}
     </div>
