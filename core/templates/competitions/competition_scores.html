@@ -24,7 +24,7 @@
             {% endif %}
           
               {% if user == competition.created_by and competition.competition_status == "Ended" or user.is_superuser %}
-                {% if competition.manually_calculate_bg_job_status == "Completed" %}
+                {% if competition.manually_calculate_bg_job_status == "Not-Running" %}
                   <a class="btn btn-info btn-block" id="manuallyRecalculate" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
                 {% else %}
                   <h5>Calculating scores please wait, this may take a couple of minutes.</h5>
@@ -70,10 +70,10 @@
         <div class="col">
         
           <!-- Progress bar -->
-          <div class="row" id="progressBar">
+          <div class="row" id="progressBar" style="display: none;">
               <div class="col">
-                  <div class="progress" style="height:35px;">
-                      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%">Validating.. 0</div>
+                  <div class="progress" style="height:18px;">
+                      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">Validating.. 0</div>
                   </div>
               </div>
           </div>
@@ -421,14 +421,11 @@
     <script>
         let time_to_refresh = {{ config.competitions_page_refresh_time }};
         let competition_name = "{{ competition.competition_name }}";
-        let manual_bg_job_status = "{{ competition.manually_calculate_bg_job_status }}";
 
         let progress_bar_row = document.getElementById('progressBar');
         let progress_bar = document.getElementsByClassName('progress-bar');
         
         let interval;
-
-        progress_bar_row.style.display = "none";
 
         $('#toggle-silent')[0].checked = false;
 
@@ -482,13 +479,18 @@
         function checkJobStatus() {
           // Makes an api call and 
           // gets the job status for 
-          // manual job run
+          // manual job run and changes the
+          // bar dynamically
 
           $.ajax({
             url: "/api/" + competition_name + "/manually_calculate_job/status",
             success: function(data) {
 
-              if (data["status"] == "Started") {
+              if (data["status"] == "Not-Running") {
+                // Do not display bar or hide
+                progress_bar_row.style.display = "none";
+              }
+              else if (data["status"] == "Started") {
                 progress_bar_row.style.display = "block";
                 progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
                 progress_bar[0].style.width = "25%";
@@ -506,7 +508,6 @@
                 progress_bar[0].style.width = "100%";
                 progress_bar[0].textContent = "Scores are 100% calculated, please refresh page!";
                 clearInterval(interval)
-                
               } else {
                 alert("Something went wrong. BG status " + data["status"]);
               }
@@ -514,30 +515,7 @@
           });
         }
 
-        function getBgStatus(manual_bg_job_status) {
-          // Gets bg job status and sets 
-          // And sets the manual_bg_job_status to the current status
-
-          $.ajax({
-            url: "/api/" + competition_name + "/manually_calculate_job/status",
-            success: function(data) {
-              manual_bg_job_status = data["status"];
-
-              if (manual_bg_job_status != 'Completed') {
-                checkJobStatus();
-                interval = setInterval(checkJobStatus, 5000);
-              }
-            }
-          })
-        }
-
-        // Re check for api and update manual bg status every 10 seconds
-        setInterval(getBgStatus, 10000);
-
-        if (manual_bg_job_status != 'Completed') {
-          checkJobStatus();
-          interval = setInterval(checkJobStatus, 5000);
-        }
+        interval = setInterval(checkJobStatus, 3000);
 
         checkStates();
         change();
