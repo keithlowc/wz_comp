@@ -174,6 +174,7 @@ class TeamFormAdminPageSuperUser(forms.ModelForm):
                 'data',
                 'data_stats', 
                 'data_to_render',
+                'errors',
                 'score',
                 'data_stats_loaded',
                 'email_check_in_sent',

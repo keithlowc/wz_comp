@@ -208,13 +208,20 @@
 
                                     {% if team.checked_in %}
                                     
-                                      <div class="col-2 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                                      <div class="col-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
                                           <span class="badge badge-success">Checked in</span>
                                       </div>
 
-                                      <!-- <div class="col-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
-                                        <span class="badge badge-danger">User is private</span>
-                                    </div> -->
+                                      <div class="col-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                                        {% if team.errors|length > 0 %}
+                                        <span class="badge badge-danger">
+                                          
+                                            Issues: 
+                                            {{ team.errors|length }}
+                                          
+                                        </span>
+                                        {% endif %}
+                                      </div>
 
                                     {% else %}
 
@@ -267,19 +274,19 @@
 
                             <ul>
                               {% if team.player_1 != None %}
-                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_1 %}
+                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_1 errors=team.errors|get_item:team.player_1%}
                               {% endif %}
 
                               {% if team.player_2 != None %}
-                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_2 %}
+                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_2 errors=team.errors|get_item:team.player_2%}
                               {% endif %}
 
                               {% if team.player_3 != None %}
-                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_3 %}
+                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_3 errors=team.errors|get_item:team.player_3%}
                               {% endif %}
 
                               {% if team.player_4 != None %}
-                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_4 %}
+                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_4 errors=team.errors|get_item:team.player_4%}
                               {% endif %}
                             </ul>
 
@@ -431,28 +438,28 @@
         
         let interval;
 
-        $('#toggle-silent')[0].checked = false;
+        // $('#toggle-silent')[0].checked = false;
 
-        let checked = localStorage.getItem("checkBox");
+        // let checked = localStorage.getItem("checkBox");
 
-        function checkStates() {
-            if (checked == "true") {
-                $('#toggle-silent')[0].checked = true;
-            } else if (checked == "false") {
-            }
-        }
+        // function checkStates() {
+        //     if (checked == "true") {
+        //         $('#toggle-silent')[0].checked = true;
+        //     } else if (checked == "false") {
+        //     }
+        // }
 
-        function change() {
-            let decider = document.getElementById('toggle-silent');
-            if(decider.checked){
-                localStorage.setItem("checkBox", true);
-                setTimeout(reload, time_to_refresh);
-            } else {
-                clearTimeout(reload);
-                localStorage.removeItem("checkBox");
-                localStorage.setItem("checkBox", false);
-            }
-        }
+        // function change() {
+        //     let decider = document.getElementById('toggle-silent');
+        //     if(decider.checked){
+        //         localStorage.setItem("checkBox", true);
+        //         setTimeout(reload, time_to_refresh);
+        //     } else {
+        //         clearTimeout(reload);
+        //         localStorage.removeItem("checkBox");
+        //         localStorage.setItem("checkBox", false);
+        //     }
+        // }
 
         function reload() {
             document.location.reload();
@@ -485,6 +492,7 @@
           // gets the job status for 
           // manual job run and changes the
           // bar dynamically
+          console.log('Running');
 
           $.ajax({
             url: "/api/" + competition_name + "/manually_calculate_job/status",
@@ -521,8 +529,8 @@
 
         interval = setInterval(checkJobStatus, 3000);
 
-        checkStates();
-        change();
+        // checkStates();
+        // change();
 
     </script>
 {% endblock %}

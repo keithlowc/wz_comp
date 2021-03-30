@@ -19,6 +19,9 @@ class WarzoneApi:
         Get warzone matches.
         '''
 
+        error = False
+        error_message = ''
+
         url = 'https://call-of-duty-modern-warfare.p.rapidapi.com/warzone-matches/{}/{}'.format(self.tag, self.platform)
 
         response = requests.request("GET", url, headers = self.headers)
@@ -36,8 +39,18 @@ class WarzoneApi:
         except Exception as e:
             Analytics.objects.create(date = todays_date, amount_of_warzone_api_requests_calls = 1)
             print('Analytics does not exist so creating new!')
+        
+        try:
+            if battle_royale_data['error'] == True and battle_royale_data['message'] == '404 - Not found. Incorrect username or platform? Misconfigured privacy settings?':
+                error = True
+                error_message = 'User account not found'
+            elif battle_royale_data['error'] == True and battle_royale_data['message'] == 'Not permitted: not allowed':
+                error = True
+                error_message = 'Account is private'
+        except Exception:
+            pass
 
-        return battle_royale_data
+        return battle_royale_data, error, error_message
 
 
     def get_warzone_general_stats(self):
