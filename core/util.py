@@ -221,6 +221,9 @@ def get_custom_data(user_tag, user_id_type, competition_start_time, competition_
     Gets the matches for user_tag
     '''
 
+    clean_data = []
+    matches_without_time_filter = []
+
     warzone_api = WarzoneApi(tag = user_tag.replace('#', '%23'),
                              platform = user_id_type, 
                              cod_x_rapidapi_key = custom_config["cod_x_rapidapi_key"], 
@@ -233,8 +236,7 @@ def get_custom_data(user_tag, user_id_type, competition_start_time, competition_
         # data then we will return empty values
         # and the error and error message
 
-        clean_data = []
-        matches_without_time_filter = []
+
         return clean_data, matches_without_time_filter, error, error_message
 
     else:
@@ -257,9 +259,12 @@ def get_custom_data(user_tag, user_id_type, competition_start_time, competition_
                             competition_start_time = competition_start_time,
                             competition_end_time = competition_end_time)
 
-        clean_data = get_values_from_matches(matches_list = data, 
-                                            message = 'Clean data',
-                                            user_tag = user_tag)
+        # If matches are found within the
+        # time range
+        if len(data) > 0:
+            clean_data = get_values_from_matches(matches_list = data, 
+                                                message = 'Clean data',
+                                                user_tag = user_tag)
 
         matches_without_time_filter = exclude_matches_of_type(matches_list = matches_without_time_filter, 
                                                             competition_type_list = ['br_dmz_plnbld',
