@@ -24,7 +24,7 @@
             {% endif %}
           
               {% if user == competition.created_by and competition.competition_status == "Ended" or user.is_superuser %}
-                {% if competition.manually_calculate_bg_job_status == "Completed" %}
+                {% if competition.manually_calculate_bg_job_status == "Not-Running" %}
                   <a class="btn btn-info btn-block" id="manuallyRecalculate" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
                 {% else %}
                   <h5>Calculating scores please wait, this may take a couple of minutes.</h5>
@@ -52,9 +52,9 @@
           </div>
 
           <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
+              <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
                 <input id="toggle-silent" type="checkbox" data-toggle="toggle" onchange="change()" data-on="Auto-Refresh On" data-off="Auto-Refresh Off" data-onstyle="success" data-offstyle="danger">
-              </div>
+              </div> -->
 
             {% if user.is_superuser %}
               <div class="col-lg-6 col-md-6 col-sm-12 col-xm-12 pt-2">
@@ -70,10 +70,10 @@
         <div class="col">
         
           <!-- Progress bar -->
-          <div class="row" id="progressBar">
+          <div class="row" id="progressBar" style="display: none;">
               <div class="col">
-                  <div class="progress" style="height:35px;">
-                      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%">Validating.. 0</div>
+                  <div class="progress" style="height:18px;">
+                      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">Validating.. 0</div>
                   </div>
               </div>
           </div>
@@ -101,7 +101,7 @@
                               </div>
                               <div class="col-6">
                                   <td class="border-0 align-middle">
-                                    <h2 class="display-4">{{ competition.competition_name }}</h2>
+                                    <h2 class="display-4">{{ competition.competition_name|title  }}</h2>
                                   </td>
                               </div>
                               <div class="col-2">
@@ -192,7 +192,7 @@
                 {% if competition.competition_cover_results == False %}
                 
                   {% for team in teams %}
-                    <div class="card">
+                    <div class="card mt-1">
                         <div class="card-header" role="tab" id="headingThree">
                           <h5 class="mb-0">
                             <a id="{{team}}-collapse" onclick="loadStreamVideoToFrame('{{team}}-collapse', '{{team.team_stream_user}}-header-twitch', '{{team.team_stream_user}}-iframe');" class="collapsed" data-toggle="collapse" href="#{{ team }}" aria-expanded="false" aria-controls="{{ team }}">
@@ -203,13 +203,24 @@
                                     </div>
 
                                     <div class="col-7 my-auto">
-                                          <h4 id="{{team.team_stream_user}}-header" class="notranslate" data-url="https://embed.twitch.tv?channel={{team.team_stream_user}}&amp;height=480&amp;migration=true&amp;parent=www.duelout.com&amp;width=100%25">{{ team }}</h4>
+                                          <h4 id="{{team.team_stream_user}}-header" class="notranslate" data-url="https://embed.twitch.tv?channel={{team.team_stream_user}}&amp;height=480&amp;migration=true&amp;parent=www.duelout.com&amp;width=100%25">{{ team|title }}</h4>
                                     </div>
 
                                     {% if team.checked_in %}
                                     
-                                      <div class="col-2 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                                      <div class="col-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
                                           <span class="badge badge-success">Checked in</span>
+                                      </div>
+
+                                      <div class="col-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                                        {% if team.errors|length > 0 %}
+                                        <span class="badge badge-danger">
+                                          
+                                            Issues: 
+                                            {{ team.errors|length }}
+                                          
+                                        </span>
+                                        {% endif %}
                                       </div>
 
                                     {% else %}
@@ -263,19 +274,19 @@
 
                             <ul>
                               {% if team.player_1 != None %}
-                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_1 %}
+                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_1 errors=team.errors|get_item:team.player_1%}
                               {% endif %}
 
                               {% if team.player_2 != None %}
-                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_2 %}
+                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_2 errors=team.errors|get_item:team.player_2%}
                               {% endif %}
 
                               {% if team.player_3 != None %}
-                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_3 %}
+                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_3 errors=team.errors|get_item:team.player_3%}
                               {% endif %}
 
                               {% if team.player_4 != None %}
-                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_4 %}
+                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_4 errors=team.errors|get_item:team.player_4%}
                               {% endif %}
                             </ul>
 
@@ -421,37 +432,34 @@
     <script>
         let time_to_refresh = {{ config.competitions_page_refresh_time }};
         let competition_name = "{{ competition.competition_name }}";
-        let manual_bg_job_status = "{{ competition.manually_calculate_bg_job_status }}";
 
         let progress_bar_row = document.getElementById('progressBar');
         let progress_bar = document.getElementsByClassName('progress-bar');
         
         let interval;
 
-        progress_bar_row.style.display = "none";
+        // $('#toggle-silent')[0].checked = false;
 
-        $('#toggle-silent')[0].checked = false;
+        // let checked = localStorage.getItem("checkBox");
 
-        let checked = localStorage.getItem("checkBox");
+        // function checkStates() {
+        //     if (checked == "true") {
+        //         $('#toggle-silent')[0].checked = true;
+        //     } else if (checked == "false") {
+        //     }
+        // }
 
-        function checkStates() {
-            if (checked == "true") {
-                $('#toggle-silent')[0].checked = true;
-            } else if (checked == "false") {
-            }
-        }
-
-        function change() {
-            let decider = document.getElementById('toggle-silent');
-            if(decider.checked){
-                localStorage.setItem("checkBox", true);
-                setTimeout(reload, time_to_refresh);
-            } else {
-                clearTimeout(reload);
-                localStorage.removeItem("checkBox");
-                localStorage.setItem("checkBox", false);
-            }
-        }
+        // function change() {
+        //     let decider = document.getElementById('toggle-silent');
+        //     if(decider.checked){
+        //         localStorage.setItem("checkBox", true);
+        //         setTimeout(reload, time_to_refresh);
+        //     } else {
+        //         clearTimeout(reload);
+        //         localStorage.removeItem("checkBox");
+        //         localStorage.setItem("checkBox", false);
+        //     }
+        // }
 
         function reload() {
             document.location.reload();
@@ -482,29 +490,36 @@
         function checkJobStatus() {
           // Makes an api call and 
           // gets the job status for 
-          // manual job run
+          // manual job run and changes the
+          // bar dynamically
+          console.log('Running');
 
           $.ajax({
             url: "/api/" + competition_name + "/manually_calculate_job/status",
             success: function(data) {
-              progress_bar_row.style.display = "block";
 
-              if (data["status"] == "Started") {
+              if (data["status"] == "Not-Running") {
+                // Do not display bar or hide
+                progress_bar_row.style.display = "none";
+              }
+              else if (data["status"] == "Started") {
+                progress_bar_row.style.display = "block";
                 progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
                 progress_bar[0].style.width = "25%";
-                progress_bar[0].textContent = "Started to get data from all players.. 25% Please Do Not Refresh until complete!";
+                progress_bar[0].textContent = "Started to get data from all players.. 25%";
 
               } else if (data["status"] == "In-Progress") {
+                progress_bar_row.style.display = "block";
                 progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
                 progress_bar[0].style.width = "55%";
-                progress_bar[0].textContent = "Score calculation is in progress. Please give it a couple of more seconds.. 55% Please Do Not Refresh until complete!";
+                progress_bar[0].textContent = "Score calculation is in progress. Please give it a couple of more seconds.. 55%";
 
               } else if (data["status"] == "Completed") {
+                progress_bar_row.style.display = "block";
                 progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
                 progress_bar[0].style.width = "100%";
                 progress_bar[0].textContent = "Scores are 100% calculated, please refresh page!";
                 clearInterval(interval)
-                
               } else {
                 alert("Something went wrong. BG status " + data["status"]);
               }
@@ -512,13 +527,10 @@
           });
         }
 
-        if (manual_bg_job_status != 'Completed') {
-          checkJobStatus();
-          interval = setInterval(checkJobStatus, 5000);
-        }
+        interval = setInterval(checkJobStatus, 3000);
 
-        checkStates();
-        change();
+        // checkStates();
+        // change();
 
     </script>
 {% endblock %}

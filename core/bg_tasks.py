@@ -17,7 +17,7 @@ try:
 except Exception as e:
     time_to_run = 1
 
-@background(schedule = 1)
+
 def recalculate_competition_stats(custom_config, comp_name):
     '''
     Caculates all the competition stats
@@ -70,19 +70,27 @@ def recalculate_competition_stats(custom_config, comp_name):
 
         data_list = []
         old_matches_list = []
+        error_per_team_dict = {}
 
         for user, user_id_type in team_users.items():
             time.sleep(1)
             error_with_user = False
             
-            try:
-                clean_data, matches_without_time_filter = util.get_custom_data(user_tag = user, 
+            # try:
+            clean_data, matches_without_time_filter, error, error_message = util.get_custom_data(user_tag = user, 
                                                                             user_id_type = user_id_type,
                                                                             competition_start_time = competition_start_time,
                                                                             competition_end_time = competition_end_time,
                                                                             competition_type = competition_type,
                                                                             custom_config = custom_config)
 
+            if error:
+                print()
+                print('Error retriving data from {}'.format(user))
+                print()
+                error_per_team_dict[user] = error_message
+            else:
+                    
                 # Display data
                 data_list.append(clean_data)
                 old_matches_list.append(matches_without_time_filter)
@@ -122,43 +130,36 @@ def recalculate_competition_stats(custom_config, comp_name):
                                             index = index)
                 
                 util.pprintstart('Ending Matches to Match model')
-            except Exception as e:
-                print('THERE WAS AN ISSUE WITH THE PLAYERS DATA - SO I WILL NOT LOAD THE {} DATA'.format(user))
-                print('Error: {}'.format(e))
-                error_with_user = True
-
-        if not error_with_user:
-            # match matches per team with match id
-            organized_data = util.match_matches_with_matches_id(data_list, team_users)
-
-            team_users = {}
-
-            team = StaffCustomTeams.objects.get(team_name = team.team_name)
-            team.data = data_list
             
-            print()
-            print('-- Loading team data_stats --')
-            print('-- Team {} --'.format(team))
-            # If the stats were loaded once, do not load again.
-            if team.data_stats_loaded == False:
-                print('-- data_stats_loaded == False --')
-                print('-- data_stats_loaded will be loaded--')
-                team.data_stats = old_matches_list
-                team.data_stats_loaded = True
-
-            print('-- data_stats_loaded == True --')
-            print('-- data_stats_loaded will NOT be loaded--')
-            print()
-
-            team.data_to_render = organized_data
+            team.errors = error_per_team_dict
             team.save()
 
-        # Bg job flag
-        competition.manually_calculate_bg_job_status = 'In-Progress'
-        competition.save()
+        # match matches per team with match id
+        organized_data = util.match_matches_with_matches_id(data_list, team_users)
+
+        team_users = {}
+
+        team = StaffCustomTeams.objects.get(team_name = team.team_name)
+        team.data = data_list
+        
+        print()
+        print('-- Loading team data_stats --')
+        print('-- Team {} --'.format(team))
+        # If the stats were loaded once, do not load again.
+        if team.data_stats_loaded == False:
+            print('-- data_stats_loaded == False --')
+            print('-- data_stats_loaded will be loaded--')
+            team.data_stats = old_matches_list
+            team.data_stats_loaded = True
+
+        print('-- data_stats_loaded == True --')
+        print('-- data_stats_loaded will NOT be loaded--')
+        print()
+
+        team.data_to_render = organized_data
+        team.save()
 
 
-@background(schedule = 1)
 def calculate_competition_scores(comp_name):
     '''
     Parses from previous data and 
@@ -275,10 +276,6 @@ def calculate_competition_scores(comp_name):
         team.data_to_render = matches_data
         team.score = sum(total_points)
         team.save()
-        
-        # Job ends flag
-        competition.manually_calculate_bg_job_status = 'Completed'
-        competition.save()
 
 
 @background(schedule = time_to_run)
@@ -293,12 +290,27 @@ def calculate_status_of_competition(custom_config, comp_name):
     print()
     print('** Starting bg calculations! **')
 
-    recalculate_competition_stats(custom_config, comp_name)
-    calculate_competition_scores(comp_name)
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+
+    # Job starts flag
+    competition.manually_calculate_bg_job_status = 'Started'
+    competition.save()
+
+    # Job in-progress flag
+    competition.manually_calculate_bg_job_status = 'In-Progress'
+    competition.save()
+    
+    recalculate_competition_stats(custom_config = custom_config,
+                                comp_name = comp_name)
+
+    calculate_competition_scores(comp_name = comp_name)
+
+    # Job ends flag
+    competition.manually_calculate_bg_job_status = 'Completed'
+    competition.save()
 
     ts = time.time()
     current_time = datetime.fromtimestamp(ts)
-    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
     start = competition.start_time
     end = competition.end_time
@@ -329,6 +341,12 @@ def calculate_status_of_competition(custom_config, comp_name):
         print('The competition Status is: not Started')
     
     print('--------')
+
+    time.sleep(7)
+
+    # Reset job
+    competition.manually_calculate_bg_job_status = 'Not-Running'
+    competition.save()
 
 
 @background(schedule = 1)
@@ -342,17 +360,19 @@ def calculate_status_of_competition_once(custom_config, comp_name):
     print('** Starting bg calculations once! **')
 
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
-
-    # These verbose names are used to identify the jobs.
-    bg_recalculate_stats_verbose_name = 'recalculate_competition_stats-' + comp_name
-    bg_calculate_competition_scores_verbose_name = 'calculate_competition_scores-' + comp_name
     
-    recalculate_competition_stats(verbose_name = bg_recalculate_stats_verbose_name,
-                                        custom_config = custom_config,
-                                        comp_name = comp_name)
+    recalculate_competition_stats(custom_config = custom_config,
+                                comp_name = comp_name)
+    
+    # Job in-progress flag
+    competition.manually_calculate_bg_job_status = 'In-Progress'
+    competition.save()
 
-    calculate_competition_scores(verbose_name = bg_calculate_competition_scores_verbose_name,
-                                        comp_name = comp_name)
+    calculate_competition_scores(comp_name = comp_name)
+
+    # Job ends flag
+    competition.manually_calculate_bg_job_status = 'Completed'
+    competition.save()
 
     start = competition.start_time
     end = competition.end_time
@@ -386,6 +406,11 @@ def calculate_status_of_competition_once(custom_config, comp_name):
         print('The competition Status is: not Started')
     
     print('--------')
+    time.sleep(7)
+
+    # Reset job
+    competition.manually_calculate_bg_job_status = 'Not-Running'
+    competition.save()
 
 
 # Notification bg jobs
