@@ -105,7 +105,6 @@ class StaffCustomTeams(models.Model):
     stream_type = [
         ('twitch', 'Twitch'),
         ('facebook', 'Facebook'),
-        ('youtube', 'Youtube'),
     ]
 
     team_name = models.CharField(max_length = 100, null = True, unique = True)
