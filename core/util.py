@@ -226,43 +226,53 @@ def get_custom_data(user_tag, user_id_type, competition_start_time, competition_
                              cod_x_rapidapi_key = custom_config["cod_x_rapidapi_key"], 
                              cod_x_rapidapi_host = custom_config["cod_x_rapidapi_host"])
     
-    matches = warzone_api.get_warzone_matches()
+    matches, error, error_message = warzone_api.get_warzone_matches()
 
-    total_matches_len = len(matches['matches'])
+    if error:
+        # If there is any error while getting user
+        # data then we will return empty values
+        # and the error and error message
 
-    # For dummy data return all matches 
-    # From last match 2 hours before
-    # And we are not filtering the matches
-    # So we get any match
-    if custom_config["competitions_dummy_data"]:
-        filtered_matches = matches['matches']
+        clean_data = []
+        matches_without_time_filter = []
+        return clean_data, matches_without_time_filter, error, error_message
+
     else:
-        filtered_matches = filter_matches(matches['matches'][0:total_matches_len - 1],
-                                        competition_type)
+        total_matches_len = len(matches['matches'])
 
-    matches_without_time_filter = matches['matches'][0:total_matches_len - 1] # All matches
+        # For dummy data return all matches 
+        # From last match 2 hours before
+        # And we are not filtering the matches
+        # So we get any match
+        if custom_config["competitions_dummy_data"]:
+            filtered_matches = matches['matches']
+        else:
+            filtered_matches = filter_matches(matches['matches'][0:total_matches_len - 1],
+                                            competition_type)
 
-    data = filter_for_time(custom_config = custom_config,
-                          matches_list = filtered_matches, 
-                          competition_start_time = competition_start_time,
-                          competition_end_time = competition_end_time)
+        matches_without_time_filter = matches['matches'][0:total_matches_len - 1] # All matches
 
-    clean_data = get_values_from_matches(matches_list = data, 
-                                        message = 'Clean data',
-                                        user_tag = user_tag)
+        data = filter_for_time(custom_config = custom_config,
+                            matches_list = filtered_matches, 
+                            competition_start_time = competition_start_time,
+                            competition_end_time = competition_end_time)
 
-    matches_without_time_filter = exclude_matches_of_type(matches_list = matches_without_time_filter, 
-                                                        competition_type_list = ['br_dmz_plnbld',
-                                                                                'br_dmz_plndtrios',
-                                                                                'br_dmz_plndval1',
-                                                                                'brtdm_rmbl',
-                                                                                'brtdm_wzrumval2'])
+        clean_data = get_values_from_matches(matches_list = data, 
+                                            message = 'Clean data',
+                                            user_tag = user_tag)
 
-    matches_without_time_filter = get_values_from_matches(matches_list = matches_without_time_filter,
-                                                         message = 'Matches without time filter',
-                                                         user_tag = user_tag)
+        matches_without_time_filter = exclude_matches_of_type(matches_list = matches_without_time_filter, 
+                                                            competition_type_list = ['br_dmz_plnbld',
+                                                                                    'br_dmz_plndtrios',
+                                                                                    'br_dmz_plndval1',
+                                                                                    'brtdm_rmbl',
+                                                                                    'brtdm_wzrumval2'])
 
-    return clean_data, matches_without_time_filter
+        matches_without_time_filter = get_values_from_matches(matches_list = matches_without_time_filter,
+                                                            message = 'Matches without time filter',
+                                                            user_tag = user_tag)
+
+        return clean_data, matches_without_time_filter, error, error_message
 
 
 def add_to_player_model(competition, team, user_id, user_id_type):

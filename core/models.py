@@ -138,6 +138,9 @@ class StaffCustomTeams(models.Model):
 
     score = models.IntegerField(default = 0)
 
+    # errors with users
+    errors = models.JSONField(default = dict, blank = True)
+
     # email checkin
     email_check_in_sent = models.BooleanField(default = False)
 

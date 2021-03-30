@@ -9,7 +9,10 @@
     <div class="col-2"></div>
       <div class="col-8">
         <a type="button" class="btn btn-info btn-block" onclick="runCharts('{{ user|remove_everything_after_hashtag }}')" data-toggle="modal" data-target="#damageModal-{{user|remove_everything_after_hashtag}}">
-          {{user}}
+          {{ user }} 
+          {% if errors != None %}
+            <span class="badge badge-danger">{{ errors }}</span>
+          {% endif %}
         </a>
       </div>
     <div class="col-2"></div>
