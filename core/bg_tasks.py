@@ -48,7 +48,7 @@ def recalculate_competition_stats(custom_config, comp_name):
         }
 
         # Saves user to Player Model
-        util.pprintstart('Adding Players to Player model')
+        print('Adding Players to Player model')
 
         for user_id, user_id_type in team_users.items():
             if user_id is not None:
@@ -57,7 +57,7 @@ def recalculate_competition_stats(custom_config, comp_name):
                                         user_id = user_id,
                                         user_id_type = user_id_type)
 
-        util.pprintstart('Ending Players to Player model')
+        print('Ending Players to Player model')
 
         # Cleaning none values
         filtered = {k: v for k, v in team_users.items() if k is not None}
@@ -101,7 +101,7 @@ def recalculate_competition_stats(custom_config, comp_name):
                                                 user_id = user)
 
                     # Saving data into matches model object
-                    util.pprintstart('Adding Matches to Match model')
+                    print('Adding Matches to Match model')
 
                     user_matches_list = clean_data[user]
                     
@@ -131,7 +131,7 @@ def recalculate_competition_stats(custom_config, comp_name):
                 except Exception as e:
                     print('Error: {}'.format(e))
                 
-                util.pprintstart('Ending Matches to Match model')
+                print('Ending Matches to Match model')
             
             team.errors = error_per_team_dict
             team.save()
