@@ -22,28 +22,34 @@ class JoinCompetitionRequestForm(forms.ModelForm):
                 'team_stream_user_type',
 
                 'player_1', 
-                'player_1_id_type', 
+                'player_1_id_type',
+
+                'player_2_email',
                 'player_2', 
                 'player_2_id_type', 
+
+                'player_3_email',
                 'player_3', 
-                'player_3_id_type', 
+                'player_3_id_type',
+
+                'player_4_email',
                 'player_4', 
                 'player_4_id_type',)
 
         labels = {
             'team_banner': 'Team logo (URL only - Do not change if you do not have logo)',
-            'team_captain_email': 'Team Captain Email (Contact Information - Any updates will be via email)',
+            'team_captain_email': 'Team Captain Email',
             'team_stream_user': 'Team stream user (Do not put URL except if youtube stream)',
 
-            'player_1': 'Player 1 Id - (Battlenet, Psnet or Xbox Id)',
-            'player_2': 'Player 2 Id - (Battlenet, Psnet or Xbox Id)',
-            'player_3': 'Player 3 Id - (Battlenet, Psnet or Xbox Id)',
-            'player_4': 'Player 4 Id - (Battlenet, Psnet or Xbox Id)',
+            'player_1': 'Player 1 ID - (Battlenet, Psnet or Xbox ID)',
+            'player_2': 'Player 2 ID - (Battlenet, Psnet or Xbox ID)',
+            'player_3': 'Player 3 ID - (Battlenet, Psnet or Xbox ID)',
+            'player_4': 'Player 4 ID - (Battlenet, Psnet or Xbox ID)',
 
-            'player_1_id_type': 'Player 1 - Id type',
-            'player_2_id_type': 'Player 2 - Id type',
-            'player_3_id_type': 'Player 3 - Id type',
-            'player_4_id_type': 'Player 4 - Id type',
+            'player_1_id_type': 'Player 1 - ID type',
+            'player_2_id_type': 'Player 2 - ID type',
+            'player_3_id_type': 'Player 3 - ID type',
+            'player_4_id_type': 'Player 4 - ID type',
         }
 
 class CompetitionPasswordRequestForm(forms.ModelForm):
