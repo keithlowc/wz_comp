@@ -376,15 +376,25 @@ def check_if_competition_is_one_hour_from_start(competition_config):
 
                 print('--> Checking the following teams: {}'.format(team))
 
+                team_emails = []
+                team_emails.append(team.team_captain_email)
+                team_emails.append(team.player_2_email)
+                team_emails.append(team.player_3_email)
+                team_emails.append(team.player_4_email)
+
+                team_emails = [i for i in team_emails if i] # Clearn empty values
+
                 if team.email_check_in_sent == False:
-                    print('------> The team {} with email {} will be sent out a check-in notification'.format(team, team.team_captain_email))
-                    email_sent = email_sys.send_competition_email(check_in_url, subject, competition_name, [team.team_captain_email])
+                    print('------> The team {} with email {} will be sent out a check-in notification'.format(team, team_emails))
+
+                    for email in team_emails:
+                        email_sent = email_sys.send_competition_email(check_in_url, subject, competition_name, [email])
 
                     if email_sent:
                         team.email_check_in_sent = True
                         team.save()
                 else:
-                    print('------> Notification was already sent for team {} with email {}'.format(team, team.team_captain_email))
+                    print('------> Notification was already sent for team {} with email {}'.format(team, team_emails))
                     print()
         else:
             print('----> No teams registered')

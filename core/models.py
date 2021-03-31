@@ -119,15 +119,15 @@ class StaffCustomTeams(models.Model):
     player_1 = models.CharField(max_length = 100, null = True, blank = True)
     player_1_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
 
-    player_2_email = models.EmailField(max_length = 254, null = True, blank = False)
+    player_2_email = models.EmailField(max_length = 254, null = True, blank = True)
     player_2 = models.CharField(max_length = 100, null = True, blank = True)
     player_2_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
 
-    player_3_email = models.EmailField(max_length = 254, null = True, blank = False)
+    player_3_email = models.EmailField(max_length = 254, null = True, blank = True)
     player_3 = models.CharField(max_length = 100, null = True, blank = True)
     player_3_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
 
-    player_4_email = models.EmailField(max_length = 254, null = True, blank = False)
+    player_4_email = models.EmailField(max_length = 254, null = True, blank = True)
     player_4 = models.CharField(max_length = 100, null = True, blank = True)
     player_4_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
 

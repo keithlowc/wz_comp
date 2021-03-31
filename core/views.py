@@ -415,6 +415,11 @@ def check_in(request, comp_name, team_name, checked_in_uuid):
     team.checked_in = True
     team.save()
 
+    signals.send_message.send(sender = None,
+                            request = request,
+                            message = 'You have succesfully checked in your team: {}'.format(team_name),
+                            type = 'SUCCESS')
+
     return redirect('get_competition', comp_name = comp_name)
 
 
