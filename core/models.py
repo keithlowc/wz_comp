@@ -79,13 +79,14 @@ class StaffCustomCompetition(models.Model):
 
     # Statuses for bg jobs
     bg_job_statuses = [
+        ('Scheduled', 'Scheduled'),
         ('Started','Started'),
         ('In-Progress', 'In-Progress'),
         ('Completed', 'Completed'),
         ('Not-Running','Not-Running')
     ]
 
-    manually_calculate_bg_job_status = models.CharField(max_length = 12, choices = bg_job_statuses, default = 'Not-Running')
+    manually_calculate_bg_job_status = models.CharField(max_length = 12, choices = bg_job_statuses, default = 'Scheduled')
 
     class Meta:
         verbose_name = 'Custom Competition'
