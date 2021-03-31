@@ -24,7 +24,7 @@
             {% endif %}
           
               {% if user == competition.created_by and competition.competition_status == "Ended" or user.is_superuser %}
-                {% if competition.manually_calculate_bg_job_status == "Not-Running" %}
+                {% if competition.manually_calculate_bg_job_status == "Not-Running" or competition.manually_calculate_bg_job_status == "Scheduled"%}
                   <a class="btn btn-info btn-block" id="manuallyRecalculate" href="{% url 'manually_recalculate_score_once' comp_name=competition.competition_name %}">Manually Recalculate</a>
                 {% else %}
                   <h5>Calculating scores please wait, this may take a couple of minutes.</h5>
@@ -500,7 +500,7 @@
             url: "/api/" + competition_name + "/manually_calculate_job/status",
             success: function(data) {
 
-              if (data["status"] == "Not-Running") {
+              if (data["status"] == "Not-Running" || data["status"] == "Scheduled") {
                 // Do not display bar or hide
                 progress_bar_row.style.display = "none";
               }

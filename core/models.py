@@ -79,13 +79,14 @@ class StaffCustomCompetition(models.Model):
 
     # Statuses for bg jobs
     bg_job_statuses = [
+        ('Scheduled', 'Scheduled'),
         ('Started','Started'),
         ('In-Progress', 'In-Progress'),
         ('Completed', 'Completed'),
         ('Not-Running','Not-Running')
     ]
 
-    manually_calculate_bg_job_status = models.CharField(max_length = 12, choices = bg_job_statuses, default = 'Not-Running')
+    manually_calculate_bg_job_status = models.CharField(max_length = 12, choices = bg_job_statuses, default = 'Scheduled')
 
     class Meta:
         verbose_name = 'Custom Competition'
@@ -108,23 +109,25 @@ class StaffCustomTeams(models.Model):
     ]
 
     team_name = models.CharField(max_length = 100, null = True, unique = True)
-
-    team_captain_email = models.EmailField(max_length = 254, null = True, blank = False) # Null = true populates existing values in db as null - blank = false means the field cannot be blank
     
     team_banner = models.URLField(max_length = 1000, default = 'https://play-lh.googleusercontent.com/r2-_2oE9tU_46_n4GIC21PmqNIqPMoQNRPhfVNnK1v8hmDfA_yLuRwCy_E1cf5Wh4oM')
 
     team_stream_user = models.CharField(max_length = 150, null = True, blank = True)
     team_stream_user_type = models.CharField(max_length = 10, null = True, choices = stream_type, default = 'twitch')
 
+    team_captain_email = models.EmailField(max_length = 254, null = True, blank = False) # Null = true populates existing values in db as null - blank = false means the field cannot be blank
     player_1 = models.CharField(max_length = 100, null = True, blank = True)
     player_1_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
 
+    player_2_email = models.EmailField(max_length = 254, null = True, blank = False)
     player_2 = models.CharField(max_length = 100, null = True, blank = True)
     player_2_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
 
+    player_3_email = models.EmailField(max_length = 254, null = True, blank = False)
     player_3 = models.CharField(max_length = 100, null = True, blank = True)
     player_3_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
 
+    player_4_email = models.EmailField(max_length = 254, null = True, blank = False)
     player_4 = models.CharField(max_length = 100, null = True, blank = True)
     player_4_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
 
@@ -229,8 +232,24 @@ class PastTeams(models.Model):
 
     tournament = models.ForeignKey(PastTournaments, on_delete = models.CASCADE, null = True, related_name = 'PastTeams')
     name = models.CharField(max_length = 100)
-    email = models.EmailField(default = '')
-    data = models.JSONField(default = dict)
+
+    email_captain = models.EmailField(default = '', null = True, blank = True)
+    player_1 = models.CharField(max_length = 100, null = True, blank = True)
+    player_1_id_type = models.CharField(max_length = 10, null = True, blank = True)
+
+    player_2_email = models.EmailField(default = '', null = True, blank = True)
+    player_2 = models.CharField(max_length = 100, null = True, blank = True)
+    player_2_id_type = models.CharField(max_length = 10, null = True, blank = True)
+
+    player_3_email = models.EmailField(default = '', null = True, blank = True)
+    player_3 = models.CharField(max_length = 100, null = True, blank = True)
+    player_3_id_type = models.CharField(max_length = 10, null = True, blank = True)
+
+    player_4_email = models.EmailField(default = '', null = True, blank = True)
+    player_4 = models.CharField(max_length = 100, null = True, blank = True)
+    player_4_id_type = models.CharField(max_length = 10, null = True, blank = True)
+
+    data = models.JSONField(default = dict, blank = True)
     points = models.IntegerField()
 
     class Meta:
