@@ -207,10 +207,6 @@
                                     </div>
 
                                     {% if team.checked_in %}
-                                    
-                                      <div class="col-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
-                                          <span class="badge badge-success">Checked in</span>
-                                      </div>
 
                                       <div class="col-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
                                         {% if team.errors|length > 0 %}
@@ -223,9 +219,15 @@
                                         {% endif %}
                                       </div>
 
-                                    {% else %}
+                                      <div class="col-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                                          <span class="badge badge-success">Checked in</span>
+                                      </div>
 
-                                      <div class="col-2 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                                    {% else %}
+                                      <div class="col-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
+                                      </div>
+
+                                      <div class="col-1 my-auto d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block">
                                         <span class="badge badge-danger">Not checked in</span>
                                       </div>
 

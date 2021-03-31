@@ -48,7 +48,7 @@ def recalculate_competition_stats(custom_config, comp_name):
         }
 
         # Saves user to Player Model
-        util.pprintstart('Adding Players to Player model')
+        print('Adding Players to Player model')
 
         for user_id, user_id_type in team_users.items():
             if user_id is not None:
@@ -57,7 +57,7 @@ def recalculate_competition_stats(custom_config, comp_name):
                                         user_id = user_id,
                                         user_id_type = user_id_type)
 
-        util.pprintstart('Ending Players to Player model')
+        print('Ending Players to Player model')
 
         # Cleaning none values
         filtered = {k: v for k, v in team_users.items() if k is not None}
@@ -90,46 +90,48 @@ def recalculate_competition_stats(custom_config, comp_name):
                 print()
                 error_per_team_dict[user] = error_message
             else:
+                try:
+                    # Display data
+                    data_list.append(clean_data)
+                    old_matches_list.append(matches_without_time_filter)
+
+                    # Get the player object
+                    player = Player.objects.get(competition = competition,
+                                                team = team,
+                                                user_id = user)
+
+                    # Saving data into matches model object
+                    print('Adding Matches to Match model')
+
+                    user_matches_list = clean_data[user]
                     
-                # Display data
-                data_list.append(clean_data)
-                old_matches_list.append(matches_without_time_filter)
+                    for index, match in enumerate(user_matches_list):
+                        match_id = match['matchID']
+                        kills = match['kills']
+                        kd = match['kd']
+                        damage_done = match['damageDone']
+                        damage_taken = match['damageTaken']
+                        placement = match['teamPlacement']
+                        deaths = match['deaths']
+                        headshots = match['headshots']
 
-                # Get the player object
-                player = Player.objects.get(competition = competition,
-                                            team = team,
-                                            user_id = user)
-
-                # Saving data into matches model object
-                util.pprintstart('Adding Matches to Match model')
-
-                user_matches_list = clean_data[user]
+                        # Search if the match already exists if not then add it.
+                        util.add_to_match_model(competition = competition, 
+                                                team = team,
+                                                player = player,
+                                                match_id = match_id,
+                                                kills = kills,
+                                                kd = kd,
+                                                deaths = deaths,
+                                                headshots = headshots,
+                                                damage_done = damage_done,
+                                                damage_taken = damage_taken,
+                                                placement = placement,
+                                                index = index)
+                except Exception as e:
+                    print('Error: {}'.format(e))
                 
-                for index, match in enumerate(user_matches_list):
-                    match_id = match['matchID']
-                    kills = match['kills']
-                    kd = match['kd']
-                    damage_done = match['damageDone']
-                    damage_taken = match['damageTaken']
-                    placement = match['teamPlacement']
-                    deaths = match['deaths']
-                    headshots = match['headshots']
-
-                    # Search if the match already exists if not then add it.
-                    util.add_to_match_model(competition = competition, 
-                                            team = team,
-                                            player = player,
-                                            match_id = match_id,
-                                            kills = kills,
-                                            kd = kd,
-                                            deaths = deaths,
-                                            headshots = headshots,
-                                            damage_done = damage_done,
-                                            damage_taken = damage_taken,
-                                            placement = placement,
-                                            index = index)
-                
-                util.pprintstart('Ending Matches to Match model')
+                print('Ending Matches to Match model')
             
             team.errors = error_per_team_dict
             team.save()
