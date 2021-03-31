@@ -169,7 +169,7 @@ def recalculate_scores(request, comp_name):
                     type = 'WARNING')
         
         # Job starts flag
-        competition.manually_calculate_bg_job_status = 'Started'
+        competition.manually_calculate_bg_job_status = 'Scheduled'
         competition.save()
 
     return redirect('get_competition', comp_name = comp_name)

@@ -8,59 +8,62 @@
 
 {% block content %}
 
-<div class="container border rounded dashboard">
-    <div class="row">
-        <div class="col">
-            <h1 class="display-4 white-color-font text-center pt-4">{{ comp_name}} Dashboard</h1>
+<div class="pt-4">
 
-            <div class="row white-color-font text-center p-4">
-                <div class="col">
-                    <div class="container" style="width: 100%;">
-                        <canvas id="top-killers" data-url="{% url 'get_top_killers' comp_name=comp_name%}"></canvas>
+    <div class="container border rounded dashboard">
+        <div class="row">
+            <div class="col">
+                <h1 class="display-4 white-color-font text-center pt-4">{{ comp_name}} Dashboard</h1>
+
+                <div class="row white-color-font text-center p-4">
+                    <div class="col">
+                        <div class="container" style="width: 100%;">
+                            <canvas id="top-killers" data-url="{% url 'get_top_killers' comp_name=comp_name%}"></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row white-color-font text-center p-4">
-                <div class="col">
-                    <div class="container" style="width: 100%;">
-                        <canvas id="top-damage-team" data-url="{% url 'get_top_damage_by_team' comp_name=comp_name%}"></canvas>
+                <div class="row white-color-font text-center p-4">
+                    <div class="col">
+                        <div class="container" style="width: 100%;">
+                            <canvas id="top-damage-team" data-url="{% url 'get_top_damage_by_team' comp_name=comp_name%}"></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row white-color-font text-center p-4">
-                <div class="col">
-                    <div class="container" style="width: 100%;">
-                        <canvas id="top-deaths" data-url="{% url 'get_top_deaths' comp_name=comp_name%}"></canvas>
+                <div class="row white-color-font text-center p-4">
+                    <div class="col">
+                        <div class="container" style="width: 100%;">
+                            <canvas id="top-deaths" data-url="{% url 'get_top_deaths' comp_name=comp_name%}"></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row white-color-font text-center p-4">
-                <div class="col">
-                    <div class="container" style="width: 100%;">
-                        <canvas id="top-damage-taken-team" data-url="{% url 'get_top_damage_taken_by_team' comp_name=comp_name%}"></canvas>
+                <div class="row white-color-font text-center p-4">
+                    <div class="col">
+                        <div class="container" style="width: 100%;">
+                            <canvas id="top-damage-taken-team" data-url="{% url 'get_top_damage_taken_by_team' comp_name=comp_name%}"></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row white-color-font text-center p-4">
-                <div class="col">
-                    <div class="container" style="width: 100%;">
-                        <canvas id="top-headshots" data-url="{% url 'get_top_headshots' comp_name=comp_name%}"></canvas>
+                <div class="row white-color-font text-center p-4">
+                    <div class="col">
+                        <div class="container" style="width: 100%;">
+                            <canvas id="top-headshots" data-url="{% url 'get_top_headshots' comp_name=comp_name%}"></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row white-color-font text-center p-4">
-                <div class="col">
-                    <div class="container" style="width: 100%;">
-                        <canvas id="player-distribution" data-url="{% url 'get_type_of_players' comp_name=comp_name%}"></canvas>
+                <div class="row white-color-font text-center p-4">
+                    <div class="col">
+                        <div class="container" style="width: 100%;">
+                            <canvas id="player-distribution" data-url="{% url 'get_type_of_players' comp_name=comp_name%}"></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
 </div>

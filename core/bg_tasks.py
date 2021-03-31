@@ -73,10 +73,8 @@ def recalculate_competition_stats(custom_config, comp_name):
         error_per_team_dict = {}
 
         for user, user_id_type in team_users.items():
-            time.sleep(1)
-            error_with_user = False
+            time.sleep(1) # Needed since our api only allows us to do one request per 1 sec
             
-            # try:
             clean_data, matches_without_time_filter, error, error_message = util.get_custom_data(user_tag = user, 
                                                                             user_id_type = user_id_type,
                                                                             competition_start_time = competition_start_time,
@@ -147,6 +145,7 @@ def recalculate_competition_stats(custom_config, comp_name):
         print()
         print('-- Loading team data_stats --')
         print('-- Team {} --'.format(team))
+        
         # If the stats were loaded once, do not load again.
         if team.data_stats_loaded == False:
             print('-- data_stats_loaded == False --')
