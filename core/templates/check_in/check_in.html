@@ -23,7 +23,13 @@
                 {% if team.player_4 != None %}
                 <p class="white-color-font">Player 4: {{ team.player_4 }}</p>
                 {% endif %}
-                <a class="btn btn-success" href="{% url 'check_in' checked_in_uuid=uuid comp_name=comp_name|convert_plus_to_empty team_name=team.team_name%}">Check In</a>
+
+                {% if team.checked_in == False %}
+                    <a class="btn btn-success" href="{% url 'check_in' checked_in_uuid=uuid comp_name=comp_name|convert_plus_to_empty team_name=team.team_name%}">Check In</a>
+                {% else %}
+                    <p class="white-color-font">Your team is already checked in!</p>
+                    <a class="btn btn-info" href="{% url 'get_competition' comp_name=comp_name|convert_plus_to_empty %}">Go back to competition</a>
+                {% endif %}
             </div>
         </div>
     </div>
