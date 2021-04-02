@@ -379,8 +379,15 @@
                                                             <th scope="col" class="notranslate stimGlitch" colspan="2"><i class="fas fa-syringe"></i>glitch?</th>
                                                         </tr>
                                                       </thead>
-                                                      {% for key, val in matches.items %}
+
+                                                      <!-- <p>{{ val.0.kd }}</p>
+                                                      <p>{{ val.0.kills }}</p>
+                                                      <p>{{ val.0.damageDone }}</p>
+                                                      <p>{{ val.0.teamPlacement }}</p> -->
+
                                                       <tbody>
+                                                        {% for key, val in matches.items %}
+                                                        <p>{{ val }}</p>
                                                         <tr>
                                                             {% if key == 'points' %}
                                                               <!-- Don't do anything -->
@@ -388,33 +395,16 @@
                                                               <td class="player">{{ key }}</td> 
                                                             {% endif %}
 
-                                                          
-                                                            {% for key, value in val.0.items %}
-                                                              {% if key == 'kd' %}
-                                                                <td class="kd">{{ value }}</td>
-                                                              {% elif  key == 'kills' %}
-                                                                <td class="kills">{{ value }}</td>
-                                                              {% elif  key == 'damageDone' %}
-                                                                <td class="damage">{{ value }}</td>
-                                                              {% elif  key == 'teamPlacement' %}
-                                                                <td class="placement">{{ value }}</td>
-                                                              {% elif  key == 'gulag' %}
-                                                                <td class="gulag">
-                                                                  {% if value == False %}
-                                                                    <i class="fas fa-times-circle check-mark-icon"></i>
-                                                                  {% else %}
-                                                                    <i class="fas fa-times-circle youtube-icon-color"></i>
-                                                                  {% endif %}
-                                                                </td>
-                                                              {% elif  key == 'stimGlitch' %}
-                                                                <td class="stimGlitch">
-                                                                  {{ value }}
-                                                                </td>
-                                                              {% endif %}
-                                                            {% endfor %}
+                                                            <td class="kd">{{ val.0.kd }}</td>
+                                                            <td class="kills">{{ val.0.kills }}</td>
+                                                            <td class="damageDone">{{ val.0.damageDone }}</td>
+                                                            <td class="teamPlacement">{{ val.0.teamPlacement }}</td>
+                                                            <td class="gulag">{{ val.0.gulag }}</td>
+                                                            <td class="stimGlitch">{{ val.0.stimGlitch }}</td>
                                                         </tr>
+                                                        {% endfor %}
                                                       </tbody>
-                                                      {% endfor %}
+
                                                   </table>
                                                 </div>
 
