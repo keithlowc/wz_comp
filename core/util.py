@@ -128,7 +128,7 @@ def stimulant_glitch_detection(loadouts_in_match, damage_taken):
     return False
             
 
-
+from collections import OrderedDict
 
 def match_matches_with_matches_id(data_list, team_users):
     '''
@@ -154,7 +154,7 @@ def match_matches_with_matches_id(data_list, team_users):
     ]
     '''
 
-    dics = {}
+    dics = OrderedDict()
     for k1 in data_list:
         for k2 in k1:        
             for e in k1[k2]:
