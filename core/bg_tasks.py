@@ -206,11 +206,17 @@ def calculate_competition_scores(comp_name):
 
             kills = []
             placements = []
+            stim_glitch_detected = False
+
             for user in users:
                 if user is not None:
                     try:
                         kills.append(val[user][0]['kills'])
                         placements.append(val[user][0]['teamPlacement'])
+
+                        if val[user][0]['stimGlitch'] == True:
+                            stim_glitch_detected = True
+
                     except Exception as e:
                         # print(e)
                         pass
@@ -231,6 +237,7 @@ def calculate_competition_scores(comp_name):
                 'placement': points_for_placement,
                 'total_points': int(points_for_kills + points_for_placement),
                 'top_match': False,
+                'stim_glitch_detected': stim_glitch_detected,
             }
 
         print('Sorting and calculating top matches! number_of_matches_to_count_points is {}'.format(competition.number_of_matches_to_count_points))

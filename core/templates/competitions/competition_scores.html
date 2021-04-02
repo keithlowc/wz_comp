@@ -296,41 +296,50 @@
 
                                 {% if team.data %}
 
-                                    {% for key, val in team.data_to_render.items %}
+                                    {% for key, matches in team.data_to_render.items %}
                                             <div class="card">
                                             <div class="card-header" role="tab" id="headingInside">
                                                 <h5 class="mb-0">
                                                 <a class="collapsed" data-toggle="collapse" href="#{{ forloop.counter0|add }} {{key}}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }} {{key}}">
-                                                    <div class="row ">
-                                                      <div class="col-9">Match #{{ forloop.counter0|add }}</div>
+                                                    <div class="row">
+                                                      <div class="col-8 my-auto">Match #{{ forloop.counter0|add }}</div>
 
-                                                        {% for key, val in val.items %}
+                                                        {% for key, val in matches.items %}
 
                                                           {% if key == 'points' %}
-                                                            {% if val.top_match == True %}
-                                                              <div class="col-1">
-                                                                <p class="text-right"><i class="fas fa-crosshairs red-icon"></i></p>
+                                                            {% if val.stim_glitch_detected == True %}
+                                                              <div class="col-1 my-auto">
+                                                                <!-- <i class="fas fa-syringe note-icon"></i> -->
+                                                                <i class="fas fa-exclamation-triangle note-icon"></i>
                                                               </div>
                                                             {% else %}
-                                                              <div class="col-1">
-                                                                <p class="text-right"></p>
+                                                              <div class="col-1 my-auto">
                                                               </div>
                                                             {% endif %}
 
                                                             {% if val.placement == competition.points_per_first_place %}
-                                                              <div class="col-1">
-                                                                <p class="text-right"><i class="fas fa-crown first-place"></i></p>
+                                                              <div class="col-1 my-auto">
+                                                                <i class="fas fa-crown first-place"></i>
                                                               </div>
                                                             {% elif val.placement == competition.points_per_second_place %}
-                                                              <div class="col-1">
-                                                                <p class="text-right"><i class="fas fa-crown second-place"></i></p>
+                                                              <div class="col-1 my-auto">
+                                                                <i class="fas fa-crown second-place"></i>
                                                               </div>
                                                             {% elif val.placement == competition.points_per_third_place %}
-                                                              <div class="col-1">
-                                                                <p class="text-right"><i class="fas fa-crown third-place"></i></p>
+                                                              <div class="col-1 my-auto">
+                                                                <i class="fas fa-crown third-place"></i>
                                                               </div>
                                                             {% else %}
-                                                              <div class="col-1">
+                                                              <div class="col-1 my-auto">
+                                                              </div>
+                                                            {% endif %}
+                                
+                                                            {% if val.top_match == True %}
+                                                              <div class="col-1 my-auto">
+                                                                <i class="fas fa-crosshairs red-icon"></i>
+                                                              </div>
+                                                            {% else %}
+                                                              <div class="col-1 my-auto">
                                                               </div>
                                                             {% endif %}
 
@@ -338,7 +347,7 @@
 
                                                         {% endfor %}
 
-                                                      <div class="col-1 text-right"><i class="fas fa-chevron-down"></i></td></div>
+                                                      <div class="col-1 text-right my-auto"><i class="fas fa-chevron-down"></i></td></div>
                                                     </div>
                                                 </a>
                                                 </h5>
@@ -349,14 +358,13 @@
                                                   <table class="table table-dark table-hover table-bordered">
                                                       <thead>
                                                         <tr class="bg-primary">
-                                                          <th scope="col">Match ID:</th>
-                                                          <th scope="col">{{ key }}</th>
-                                                          {% for key, val in val.items %}
+                                                          <th scope="col" >Match ID:</th>
+                                                          <th scope="col" >{{ key }}</th>
+                                                          {% for key, val in matches.items %}
 
                                                             {% if key == 'points' %}
-                                                              <th class="col">Points Earned In Match:</th>
-                                                              <th class="col">{{ val.total_points }}</th>
-                                                              <th class="col"></th>
+                                                              <th class="col" colspan="2">Match Points:</th>
+                                                              <th class="col" colspan="3">{{ val.total_points }}</th>
                                                             {% endif %}
 
                                                           {% endfor %}
@@ -364,18 +372,23 @@
                                                         <tr>
                                                             <th scope="col">Player</th>
                                                             <th scope="col">KD</th>
-                                                            <th scope="col">KILLS</th>
+                                                            <th scope="col" class="notranslate">KILLS</th>
                                                             <th scope="col">Damage</th>
-                                                            <th scope="col">Placement</th>
+                                                            <th scope="col" class="notranslate">Placement</th>
+                                                            <th scope="col" class="notranslate">Gulag</th>
+                                                            <th scope="col" class="notranslate" colspan="2"><i class="fas fa-syringe"></i>glitch?</th>
                                                         </tr>
                                                       </thead>
-                                                      {% for key, val in val.items %}
+                                                      {% for key, val in matches.items %}
                                                       <tbody>
                                                         <tr>
                                                             {% if key == 'points' %}
                                                               <!-- Don't do anything -->
                                                             {% else %}
-                                                              <td>{{ key }}</td>
+                                                              <td>
+                                                                <!-- This is the username of the player -->
+                                                                {{ key }}
+                                                              </td> 
                                                             {% endif %}
                                                           
                                                             {% for key, value in val.0.items %}
@@ -387,6 +400,18 @@
                                                                 <td>{{ value }}</td>
                                                               {% elif  key == 'teamPlacement' %}
                                                                 <td>{{ value }}</td>
+                                                              {% elif  key == 'gulag' %}
+                                                                <td>
+                                                                  {% if value == False %}
+                                                                    <i class="fas fa-times-circle check-mark-icon"></i>
+                                                                  {% else %}
+                                                                    <i class="fas fa-times-circle youtube-icon-color"></i>
+                                                                  {% endif %}
+                                                                </td>
+                                                              {% elif  key == 'stimGlitch' %}
+                                                                <td>
+                                                                  {{ value }}
+                                                                </td>
                                                               {% endif %}
                                                             {% endfor %}
                                                         </tr>
