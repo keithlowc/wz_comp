@@ -390,30 +390,31 @@
                                                                 {{ key }}
                                                               </td> 
                                                             {% endif %}
+
                                                           
-                                                            {% for key, value in val.0.items %}
-                                                              {% if key == 'kd' %}
+                                                            <!-- {% for key, value in val.0.items %} -->
+                                                              <!-- {% if key == 'kd' %} -->
                                                                 <td>{{ value|format_kd }}</td>
-                                                              {% elif  key == 'kills' %}
-                                                                <td>{{ value }}</td>
-                                                              {% elif  key == 'damageDone' %}
-                                                                <td>{{ value }}</td>
-                                                              {% elif  key == 'teamPlacement' %}
-                                                                <td>{{ value }}</td>
-                                                              {% elif  key == 'gulag' %}
+                                                              <!-- {% elif  key == 'kills' %} -->
+                                                                <td>{{ val.0.kills }}</td>
+                                                              <!-- {% elif  key == 'damageDone' %} -->
+                                                                <td>{{ val.0.damageDone }}</td>
+                                                              <!-- {% elif  key == 'teamPlacement' %} -->
+                                                                <td>{{ val.0.teamPlacement }}</td>
+                                                              <!-- {% elif  key == 'gulag' %} -->
                                                                 <td>
-                                                                  {% if value == False %}
+                                                                  {% if val.0.gulag == False %}
                                                                     <i class="fas fa-times-circle check-mark-icon"></i>
                                                                   {% else %}
                                                                     <i class="fas fa-times-circle youtube-icon-color"></i>
                                                                   {% endif %}
                                                                 </td>
-                                                              {% elif  key == 'stimGlitch' %}
+                                                              <!-- {% elif  key == 'stimGlitch' %} -->
                                                                 <td>
-                                                                  {{ value }}
+                                                                  {{ val.0.stimGlitch }}
                                                                 </td>
-                                                              {% endif %}
-                                                            {% endfor %}
+                                                              <!-- {% endif %} -->
+                                                            <!-- {% endfor %} -->
                                                         </tr>
                                                       </tbody>
                                                       {% endfor %}
