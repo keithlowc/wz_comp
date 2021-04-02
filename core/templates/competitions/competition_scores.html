@@ -370,13 +370,13 @@
                                                           {% endfor %}
                                                         </tr>
                                                         <tr>
-                                                            <th scope="col">Player</th>
-                                                            <th scope="col">KD</th>
-                                                            <th scope="col" class="notranslate">KILLS</th>
+                                                            <th scope="col" class="player">Player</th>
+                                                            <th scope="col" class="kd">KD</th>
+                                                            <th scope="col" class="notranslate kills">KILLS</th>
                                                             <th scope="col">Damage</th>
-                                                            <th scope="col" class="notranslate">Placement</th>
-                                                            <th scope="col" class="notranslate">Gulag</th>
-                                                            <th scope="col" class="notranslate" colspan="2"><i class="fas fa-syringe"></i>glitch?</th>
+                                                            <th scope="col" class="notranslate placement">Placement</th>
+                                                            <th scope="col" class="notranslate gulag">Gulag</th>
+                                                            <th scope="col" class="notranslate stimGlitch" colspan="2"><i class="fas fa-syringe"></i>glitch?</th>
                                                         </tr>
                                                       </thead>
                                                       {% for key, val in matches.items %}
@@ -385,36 +385,34 @@
                                                             {% if key == 'points' %}
                                                               <!-- Don't do anything -->
                                                             {% else %}
-                                                              <td>
-                                                                <!-- This is the username of the player -->
-                                                                {{ key }}
-                                                              </td> 
+                                                              <td class="player">{{ key }}</td> 
                                                             {% endif %}
 
                                                           
-                                                            <!-- {% for key, value in val.0.items %} -->
-                                                              <!-- {% if key == 'kd' %} -->
-                                                                <td>{{ value|format_kd }}</td>
-                                                              <!-- {% elif  key == 'kills' %} -->
-                                                                <td>{{ val.0.kills }}</td>
-                                                              <!-- {% elif  key == 'damageDone' %} -->
-                                                                <td>{{ val.0.damageDone }}</td>
-                                                              <!-- {% elif  key == 'teamPlacement' %} -->
-                                                                <td>{{ val.0.teamPlacement }}</td>
-                                                              <!-- {% elif  key == 'gulag' %} -->
-                                                                <td>
-                                                                  {% if val.0.gulag == False %}
+                                                            {% for key, value in val.0.items %}
+                                                            <h1>{{ val.0.items }}</h1>
+                                                              {% if key == 'kd' %}
+                                                                <td class="kd">{{ value }}</td>
+                                                              {% elif  key == 'kills' %}
+                                                                <td class="kills">{{ value }}</td>
+                                                              {% elif  key == 'damageDone' %}
+                                                                <td class="damage">{{ value }}</td>
+                                                              {% elif  key == 'teamPlacement' %}
+                                                                <td class="placement">{{ value }}</td>
+                                                              {% elif  key == 'gulag' %}
+                                                                <td class="gulag">
+                                                                  {% if value == False %}
                                                                     <i class="fas fa-times-circle check-mark-icon"></i>
                                                                   {% else %}
                                                                     <i class="fas fa-times-circle youtube-icon-color"></i>
                                                                   {% endif %}
                                                                 </td>
-                                                              <!-- {% elif  key == 'stimGlitch' %} -->
-                                                                <td>
-                                                                  {{ val.0.stimGlitch }}
+                                                              {% elif  key == 'stimGlitch' %}
+                                                                <td class="stimGlitch">
+                                                                  {{ value }}
                                                                 </td>
-                                                              <!-- {% endif %} -->
-                                                            <!-- {% endfor %} -->
+                                                              {% endif %}
+                                                            {% endfor %}
                                                         </tr>
                                                       </tbody>
                                                       {% endfor %}
