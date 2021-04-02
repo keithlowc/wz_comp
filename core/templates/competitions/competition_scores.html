@@ -380,28 +380,27 @@
                                                         </tr>
                                                       </thead>
 
-                                                      <!-- <p>{{ val.0.kd }}</p>
-                                                      <p>{{ val.0.kills }}</p>
-                                                      <p>{{ val.0.damageDone }}</p>
-                                                      <p>{{ val.0.teamPlacement }}</p> -->
-
                                                       <tbody>
                                                         {% for key, val in matches.items %}
-                                                        <p>{{ val }}</p>
-                                                        <tr>
-                                                            {% if key == 'points' %}
-                                                              <!-- Don't do anything -->
-                                                            {% else %}
-                                                              <td class="player">{{ key }}</td> 
-                                                            {% endif %}
-
-                                                            <td class="kd">{{ val.0.kd }}</td>
-                                                            <td class="kills">{{ val.0.kills }}</td>
-                                                            <td class="damageDone">{{ val.0.damageDone }}</td>
-                                                            <td class="teamPlacement">{{ val.0.teamPlacement }}</td>
-                                                            <td class="gulag">{{ val.0.gulag }}</td>
-                                                            <td class="stimGlitch">{{ val.0.stimGlitch }}</td>
-                                                        </tr>
+                                                          <tr>
+                                                              {% if key == 'points' %}
+                                                                <!-- Don't do anything -->
+                                                              {% else %}
+                                                                <td class="player">{{ key }}</td> 
+                                                                <td class="kd">{{ val.0.kd|format_kd }}</td>
+                                                                <td class="kills">{{ val.0.kills }}</td>
+                                                                <td class="damageDone">{{ val.0.damageDone }}</td>
+                                                                <td class="teamPlacement">{{ val.0.teamPlacement }}</td>
+                                                                <td class="gulag">
+                                                                  {% if val.0.gulag == 1 %}
+                                                                    <i class="fas fa-times-circle check-mark-icon"></i>
+                                                                  {% else %}
+                                                                    <i class="fas fa-times-circle red-icon"></i>
+                                                                  {% endif %}
+                                                                </td>
+                                                                <td class="stimGlitch">{{ val.0.stimGlitch }}</td>
+                                                              {% endif %}
+                                                          </tr>
                                                         {% endfor %}
                                                       </tbody>
 
