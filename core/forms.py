@@ -163,16 +163,22 @@ class TeamFormAdminPageSuperUser(forms.ModelForm):
         model = StaffCustomTeams
         fields = ('team_name', 
                 'team_banner',
-                'team_captain_email',
                 'team_stream_user',
                 'team_stream_user_type',
 
+                'team_captain_email',
                 'player_1', 
-                'player_1_id_type', 
+                'player_1_id_type',
+
+                'player_2_email',
                 'player_2', 
-                'player_2_id_type', 
+                'player_2_id_type',
+
+                'player_3_email',
                 'player_3', 
-                'player_3_id_type', 
+                'player_3_id_type',
+
+                'player_4_email',
                 'player_4', 
                 'player_4_id_type',
 

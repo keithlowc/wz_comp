@@ -90,6 +90,15 @@ def get_values_from_matches(matches_list, message, user_tag = None):
             data['damageDone'] = matches['playerStats']['damageDone']
             data['damageTaken'] = matches['playerStats']['damageTaken']
             data['teamPlacement'] = matches['playerStats']['teamPlacement']
+            data['gulag'] = matches['playerStats']['gulagKills']
+            data['loadouts'] = matches['player']['loadout']
+
+            # Gulag
+            if data['gulag'] > 1:
+                data['gulag'] == True
+            
+            # Exploit/Bug detection
+            data['stimGlitch'] = stimulant_glitch_detection(data['loadouts'], data['damageTaken'])
 
             all_matches.append(data)
         except Exception as e:
@@ -104,6 +113,22 @@ def get_values_from_matches(matches_list, message, user_tag = None):
     else:
         return all_matches
 
+
+def stimulant_glitch_detection(loadouts_in_match, damage_taken):
+    '''
+    Returns true if stimulant glitch detection
+    is found.
+    '''
+
+    for loadout in loadouts_in_match:
+        if loadout['tactical']['name'] == 'equip_adrenaline':
+            if damage_taken > 3000:
+                return True
+
+    return False
+            
+
+from collections import OrderedDict
 
 def match_matches_with_matches_id(data_list, team_users):
     '''
@@ -129,7 +154,7 @@ def match_matches_with_matches_id(data_list, team_users):
     ]
     '''
 
-    dics = {}
+    dics = OrderedDict()
     for k1 in data_list:
         for k2 in k1:        
             for e in k1[k2]:
