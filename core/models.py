@@ -190,6 +190,11 @@ class Match(models.Model):
     damage_done = models.FloatField(null = True)
     damage_taken = models.FloatField(null = True)
     placement = models.IntegerField(null = True)
+    team_wipes = models.IntegerField(null = True)
+    longest_streak = models.IntegerField(null = True)
+    utc_start_time = models.CharField(max_length = 100, null = True)
+    time_played = models.CharField(max_length = 100, null = True)
+    percent_time_moving = models.FloatField(null = True)
 
     class Meta:
         verbose_name = 'Match'
