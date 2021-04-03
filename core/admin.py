@@ -265,8 +265,11 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
 admin.site.register(StaffCustomCompetition, StaffCustomCompetitionAdmin)
 
 class MatchAdmin(admin.ModelAdmin):
-    search_fields = ('team',)
-    list_display = ('competition', 'team', 'player', 'match_id', 'kills')
+    search_fields = ('team', 'match_id', 'player',)
+    list_display = ('competition', 'team', 'player', 'match_id', 
+                    'kills', 'kd', 'deaths', 'headshots', 'damage_done', 
+                    'damage_taken', 'placement', 'team_wipes', 'longest_streak',
+                    'utc_start_time', 'time_played', 'percent_time_moving',)
     list_filter = ('team',)
 
 admin.site.register(Match, MatchAdmin)

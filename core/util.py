@@ -78,6 +78,13 @@ def get_values_from_matches(matches_list, message, user_tag = None):
     for index, matches in enumerate(matches_list):
 
         data = {}
+
+        # Data that may not show up
+        try:
+            data['teamWipes'] = matches['playerStats']['objectiveTeamWiped']
+        except Exception as e:
+            data['teamWipes'] = 0
+
         try:
             # Plunder matches do not have positioning 
             # This is important because we are getting 
@@ -90,8 +97,13 @@ def get_values_from_matches(matches_list, message, user_tag = None):
             data['damageDone'] = matches['playerStats']['damageDone']
             data['damageTaken'] = matches['playerStats']['damageTaken']
             data['teamPlacement'] = matches['playerStats']['teamPlacement']
+            data['longestStreak'] = matches['playerStats']['longestStreak']
             data['gulag'] = matches['playerStats']['gulagKills']
             data['loadouts'] = matches['player']['loadout']
+            data['percent_time_moving'] = matches['playerStats']['percentTimeMoving']
+            data['utcStartSeconds'] = matches['utcStartSeconds']
+            data['timePlayed'] = matches['playerStats']['timePlayed']
+
 
             # Gulag
             if data['gulag'] > 1:
@@ -101,6 +113,7 @@ def get_values_from_matches(matches_list, message, user_tag = None):
             data['stimGlitch'] = stimulant_glitch_detection(data['loadouts'], data['damageTaken'])
 
             all_matches.append(data)
+
         except Exception as e:
             print('SKIPPING this match since there was an error with: {} - Match type {}'.format(e, matches['mode']))
     
@@ -122,7 +135,7 @@ def stimulant_glitch_detection(loadouts_in_match, damage_taken):
 
     for loadout in loadouts_in_match:
         if loadout['tactical']['name'] == 'equip_adrenaline':
-            if damage_taken > 3000:
+            if damage_taken > 3500:
                 return True
 
     return False
@@ -323,7 +336,7 @@ def add_to_player_model(competition, team, user_id, user_id_type):
         print('Not saving Player {} since it already exists in db!'.format(user_id))
 
 
-def add_to_match_model(competition, team, player, match_id, kills, kd, deaths, headshots, damage_done, damage_taken, placement, index):
+def add_to_match_model(competition, team, player, match_id, kills, kd, deaths, headshots, damage_done, damage_taken, placement, team_wipes, longest_streak, percent_time_moving, utc_start_time, time_played, index):
     '''
     Adds the match to the MATCH model
     if this match with
@@ -348,8 +361,13 @@ def add_to_match_model(competition, team, player, match_id, kills, kd, deaths, h
                                 deaths = deaths,
                                 headshots = headshots, 
                                 damage_done = damage_done,
-                                damage_taken = damage_taken, 
-                                placement = placement)
+                                damage_taken = damage_taken,
+                                team_wipes = team_wipes,
+                                longest_streak = longest_streak,
+                                percent_time_moving = percent_time_moving,
+                                placement = placement,
+                                time_played = time_played,
+                                utc_start_time = utc_start_time)
 
         print('Match #{} saved!'.format(index))
     else:

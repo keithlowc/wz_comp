@@ -112,6 +112,11 @@ def recalculate_competition_stats(custom_config, comp_name):
                         placement = match['teamPlacement']
                         deaths = match['deaths']
                         headshots = match['headshots']
+                        team_wipes = match['teamWipes']
+                        longest_streak = match['longestStreak']
+                        percent_time_moving = match['percent_time_moving']
+                        utc_start_time = match['utcStartSeconds']
+                        time_played = match['timePlayed']
 
                         # Search if the match already exists if not then add it.
                         util.add_to_match_model(competition = competition, 
@@ -125,6 +130,11 @@ def recalculate_competition_stats(custom_config, comp_name):
                                                 damage_done = damage_done,
                                                 damage_taken = damage_taken,
                                                 placement = placement,
+                                                team_wipes = team_wipes,
+                                                longest_streak = longest_streak,
+                                                percent_time_moving = percent_time_moving,
+                                                utc_start_time = utc_start_time,
+                                                time_played = time_played,
                                                 index = index)
                 except Exception as e:
                     print('Error: {}'.format(e))
