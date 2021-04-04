@@ -103,6 +103,21 @@
                         </div>
                     </div>
 
+                    <div class="row" id="kdlists">
+                        <div class="col">
+                            {{ form.player_1_kd|as_crispy_field }}
+                        </div>
+                        <div class="col">
+                            {{ form.player_2_kd|as_crispy_field }}
+                        </div>
+                        <div class="col">
+                            {{ form.player_3_kd|as_crispy_field }}
+                        </div>
+                        <div class="col">
+                            {{ form.player_4_kd|as_crispy_field }}
+                        </div>
+                    </div>
+
                     <div class="row pt-2">
                         <div class="col">
                             <h4>This form will verify that your account meets the following:</h4>
@@ -181,6 +196,9 @@
     let progress_bar_row = document.getElementById('progressBar');
     let progress_bar = document.getElementsByClassName('progress-bar');
 
+    // KD list row
+    let kd_lists_row = document.getElementById('kdlists');
+
     let player_1_has_text = false;
     let player_2_has_text = false;
     let player_3_has_text = false;
@@ -189,28 +207,34 @@
     let messages = [];
 
     progress_bar_row.style.display = "none";
+    kd_lists_row.style.display = "none";
 
     disable_submit_button();
     displayFieldDependingOnCompType(competition_type);
 
+
     async function validate_users() {
         let user_1 = document.getElementById('id_player_1').value;
         let id_player_1_id_type = document.getElementById('id_player_1_id_type').value;
+        let player_1_kd = document.getElementById('id_player_1_kd');
 
         if (user_1 != "") {player_1_has_text = true;}
 
         let user_2 = document.getElementById('id_player_2').value;
         let id_player_2_id_type = document.getElementById('id_player_2_id_type').value;
+        let player_2_kd = document.getElementById('id_player_2_kd');
 
         if (user_2 != "") {player_2_has_text = true;}
 
         let user_3 = document.getElementById('id_player_3').value;
         let id_player_3_id_type = document.getElementById('id_player_3_id_type').value;
+        let player_3_kd = document.getElementById('id_player_3_kd');
 
         if (user_3 != "") {player_3_has_text = true;}
 
         let user_4 = document.getElementById('id_player_4').value;
         let id_player_4_id_type = document.getElementById('id_player_4_id_type').value;
+        let player_4_kd = document.getElementById('id_player_4_kd');
 
         if (user_4 != "") {player_4_has_text = true;}
 
@@ -302,6 +326,10 @@
 
             } else {
                 let user_1_verified = verification_rules(user_1_data["br_all"], user_1);
+
+                // Setting up the kd
+                player_1_kd.value = user_1_data["br_all"]["kdRatio"];
+
                 total_users.push({"user_1": user_1_verified})
             }
 
@@ -324,6 +352,10 @@
 
                 } else {
                     let user_2_verified = verification_rules(user_2_data["br_all"], user_2);
+                    
+                    // Setting up the kd
+                    player_2_kd.value = user_2_data["br_all"]["kdRatio"];
+
                     total_users.push({"user_2": user_2_verified})
                 }
             }
@@ -352,6 +384,10 @@
 
                 } else {
                     let user_3_verified = verification_rules(user_3_data["br_all"], user_3);
+
+                    // Setting up the kd
+                    player_3_kd.value = user_3_data["br_all"]["kdRatio"];
+
                     total_users.push({"user_3": user_3_verified})
                 }
             }
@@ -376,6 +412,10 @@
 
                 } else {
                     let user_4_verified = verification_rules(user_4_data["br_all"], user_4);
+
+                    // Setting up the kd
+                    player_4_kd.value = user_4_data["br_all"]["kdRatio"];
+
                     total_users.push({"user_4": user_4_verified})
                 }
             }

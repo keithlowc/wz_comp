@@ -29,4 +29,7 @@ urlpatterns = [
 
     # Verify specific player
     path('cod/verify/player', views.verify_individual_player, name = 'verify_individual_player'),
+
+    # Data remediation
+    path('competition/<str:comp_name>/dataremediation', views.remediate_kds, name = 'remediate_kds'),
 ]

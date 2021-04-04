@@ -1,7 +1,9 @@
 from background_task import background
 from core.models import StaffCustomTeams, StaffCustomCompetition, Player, Match, ConfigController
+from django.db.models import Q
 
 from .email import EmailNotificationSystem
+from .warzone_api import WarzoneApi
 
 from . import util, signals
 from .scoring import ScoringSystem
@@ -16,6 +18,63 @@ try:
     time_to_run = ConfigController.objects.get(name = 'main_config_controller').competitions_bg_tasks
 except Exception as e:
     time_to_run = 1
+
+@background(schedule = 1)
+def remediate_users_kd(custom_config, comp_name):
+    '''
+    Remediation for all users that do not have
+    their kd's loaded.
+    '''
+
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+
+    competition.manually_calculate_bg_job_status = 'In-Progress'
+    competition.save()
+
+    players = competition.players.all()
+
+    all_players_to_remediate = players.count()
+    counter = 0
+
+    for player in players:
+        # Calculate kd for each user in competition
+        
+        time.sleep(1)
+
+        print('Remediating user {} kd'.format(player.user_id))
+
+        warzone_api = WarzoneApi(tag = player.user_id, platform = player.user_id_type, 
+                                cod_x_rapidapi_key = custom_config["cod_x_rapidapi_key"], 
+                                cod_x_rapidapi_host = custom_config["cod_x_rapidapi_host"])
+
+        data = warzone_api.get_warzone_general_stats()
+
+        print('New kd {} for {}'.format(player.user_id, data['br_all']['kdRatio']))
+                    
+        player_kd = data['br_all']['kdRatio']
+        player.user_kd = player_kd
+        player.save()
+
+        player_matches = Match.objects.filter(player = player.id, competition = competition.id)
+
+        for match in player_matches:
+            print('Updating match: {} with kd {}'.format(match.match_id, player_kd))
+            match.player_kd_at_time = player_kd
+            match.kd = match.kd
+            match.save()
+
+        counter += 1
+        total = all_players_to_remediate - counter
+        print('Total players left to remidiate {}'.format(total))
+    
+    competition.manually_calculate_bg_job_status = 'Completed'
+    competition.save()
+
+    time.sleep(7)
+
+    # Reset job
+    competition.manually_calculate_bg_job_status = 'Not-Running'
+    competition.save()
 
 
 def recalculate_competition_stats(custom_config, comp_name):
@@ -41,21 +100,46 @@ def recalculate_competition_stats(custom_config, comp_name):
 
     for team in teams:
         team_users = {
-            team.player_1: team.player_1_id_type,
-            team.player_2: team.player_2_id_type,
-            team.player_3: team.player_3_id_type,
-            team.player_4: team.player_4_id_type,
+            team.player_1: (team.player_1_kd, team.player_1_id_type),
+            team.player_2: (team.player_2_kd, team.player_2_id_type),
+            team.player_3: (team.player_3_kd, team.player_3_id_type),
+            team.player_4: (team.player_4_kd, team.player_4_id_type),
         }
 
         # Saves user to Player Model
         print('Adding Players to Player model')
 
-        for user_id, user_id_type in team_users.items():
+        for user_id, data in team_users.items():
+            player_kd = data[0]
+            player_id_type = data[1]
+
             if user_id is not None:
+
+                # if player_kd == null or 0 or empty
+                # Then we want to recalculate it.
+
+                if player_kd == 0 or player_kd == '' or player_kd == None:
+                    print('KD Is not present for player - Will recalculate')
+
+                    time.sleep(1)
+
+                    warzone_api = WarzoneApi(tag = user_id, platform = player_id_type, 
+                                            cod_x_rapidapi_key = custom_config["cod_x_rapidapi_key"], 
+                                            cod_x_rapidapi_host = custom_config["cod_x_rapidapi_host"])
+                    
+                    data = warzone_api.get_warzone_general_stats()
+
+                    print('New kd {} for {}'.format(user_id, data['br_all']['kdRatio']))
+                    
+                    player_kd = data['br_all']['kdRatio']
+
+                    team_users[user_id] = (player_kd, player_id_type)
+
                 util.add_to_player_model(competition = competition,
                                         team = team,
+                                        user_kd = player_kd,
                                         user_id = user_id,
-                                        user_id_type = user_id_type)
+                                        user_id_type = player_id_type)
 
         print('Ending Players to Player model')
 
@@ -72,7 +156,8 @@ def recalculate_competition_stats(custom_config, comp_name):
         old_matches_list = []
         error_per_team_dict = {}
 
-        for user, user_id_type in team_users.items():
+        for user, data in team_users.items():
+            user_id_type = data[1] # Check tuple
             time.sleep(1) # Needed since our api only allows us to do one request per 1 sec
             
             clean_data, matches_without_time_filter, error, error_message = util.get_custom_data(user_tag = user, 
@@ -135,6 +220,7 @@ def recalculate_competition_stats(custom_config, comp_name):
                                                 percent_time_moving = percent_time_moving,
                                                 utc_start_time = utc_start_time,
                                                 time_played = time_played,
+                                                player_kd_at_time = player.user_kd,
                                                 index = index)
                 except Exception as e:
                     print('Error: {}'.format(e))
@@ -310,6 +396,9 @@ def calculate_status_of_competition(custom_config, comp_name):
 
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
+    # Remediate data
+    # recalculate_users_kds(custom_config = custom_config, comp_name = comp_name)
+
     # Job starts flag
     competition.manually_calculate_bg_job_status = 'Started'
     competition.save()
@@ -378,6 +467,9 @@ def calculate_status_of_competition_once(custom_config, comp_name):
     print('** Starting bg calculations once! **')
 
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+
+    # Remediate data
+    # recalculate_users_kds(custom_config = custom_config, comp_name = comp_name)
     
     recalculate_competition_stats(custom_config = custom_config,
                                 comp_name = comp_name)
