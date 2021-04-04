@@ -118,18 +118,22 @@ class StaffCustomTeams(models.Model):
     team_captain_email = models.EmailField(max_length = 254, null = True, blank = False) # Null = true populates existing values in db as null - blank = false means the field cannot be blank
     player_1 = models.CharField(max_length = 100, null = True, blank = True)
     player_1_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
+    player_1_kd = models.FloatField(null = True, blank = True)
 
     player_2_email = models.EmailField(max_length = 254, null = True, blank = True)
     player_2 = models.CharField(max_length = 100, null = True, blank = True)
     player_2_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
+    player_2_kd = models.FloatField(null = True, blank = True)
 
     player_3_email = models.EmailField(max_length = 254, null = True, blank = True)
     player_3 = models.CharField(max_length = 100, null = True, blank = True)
     player_3_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
+    player_3_kd = models.FloatField(null = True, blank = True)
 
     player_4_email = models.EmailField(max_length = 254, null = True, blank = True)
     player_4 = models.CharField(max_length = 100, null = True, blank = True)
     player_4_id_type = models.CharField(max_length = 10, choices = user_id_type, default = 'battle')
+    player_4_kd = models.FloatField(null = True, blank = True)
 
     competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, related_name = 'teams')
 
@@ -154,6 +158,23 @@ class StaffCustomTeams(models.Model):
         verbose_name = 'Custom Team'
         verbose_name_plural = 'Custom Teams'
     
+    def save(self, *args, **kwargs):
+
+        # Kds are only saved with 2 decimal points
+        if self.player_1_kd != None:
+            self.player_1_kd = round(self.player_1_kd, 2)
+
+        if self.player_2_kd != None:
+            self.player_2_kd = round(self.player_2_kd, 2)
+
+        if self.player_3_kd != None:
+            self.player_3_kd = round(self.player_3_kd, 2)
+        
+        if self.player_4_kd != None:
+            self.player_4_kd = round(self.player_4_kd, 2)
+
+        super(StaffCustomTeams, self).save(*args, **kwargs)
+    
     def __str__(self):
         return str(self.team_name)
 
@@ -161,12 +182,17 @@ class StaffCustomTeams(models.Model):
 class Player(models.Model):
     competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, null = True, related_name = 'players')
     team = models.ForeignKey(StaffCustomTeams, on_delete = models.CASCADE, null = True, related_name = 'players')
+    user_kd = models.FloatField(null = True)
     user_id = models.CharField(max_length = 100, null = True)
     user_id_type = models.CharField(max_length = 150, null = True)
 
     class Meta:
         verbose_name = 'Player'
         verbose_name_plural = 'Players'
+    
+    def save(self, *args, **kwargs):
+        self.user_kd = round(self.user_kd, 2)
+        super(Player, self).save(*args, **kwargs)
     
     def __str__(self):
         return str(self.user_id)
@@ -195,11 +221,17 @@ class Match(models.Model):
     utc_start_time = models.CharField(max_length = 100, null = True)
     time_played = models.CharField(max_length = 100, null = True)
     percent_time_moving = models.FloatField(null = True)
+    player_kd_at_time = models.FloatField(null = True)
 
     class Meta:
         verbose_name = 'Match'
         verbose_name_plural = 'Matches'
-    
+
+    def save(self, *args, **kwargs):
+        self.kd = round(self.kd, 2)
+        self.player_kd_at_time = round(self.player_kd_at_time, 2)
+        super(Match, self).save(*args, **kwargs)
+
     def __str__(self):
         return str(self.match_id)
 
