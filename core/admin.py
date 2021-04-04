@@ -16,7 +16,6 @@ admin.site.site_header = 'Duelout Manager'
 admin.site.site_title = 'Duelout Admin Portal'
 admin.site.index_title = 'Welcome to Duelout Portal'
 
-admin.site.register(Player)
 admin.site.register(Analytics)
 
 # StaffCustomTeam admin
@@ -269,7 +268,7 @@ class MatchAdmin(admin.ModelAdmin):
     list_display = ('competition', 'team', 'player', 'match_id', 
                     'kills', 'kd', 'deaths', 'headshots', 'damage_done', 
                     'damage_taken', 'placement', 'team_wipes', 'longest_streak',
-                    'utc_start_time', 'time_played', 'percent_time_moving',)
+                    'utc_start_time', 'time_played', 'percent_time_moving', 'player_kd_at_time',)
     list_filter = ('team',)
 
 admin.site.register(Match, MatchAdmin)
@@ -352,6 +351,11 @@ class PastTournamentsAdmin(admin.ModelAdmin):
 
 admin.site.register(PastTournaments, PastTournamentsAdmin)
 
+class PlayerAdmin(admin.ModelAdmin):
+    search_fields = ('user_id',)
+    list_display = ('user_id', 'user_id_type', 'user_kd',)
+
+admin.site.register(Player, PlayerAdmin)
 
 # Competition communications
 class CompetitionCommunicationEmailsAdmin(admin.ModelAdmin):

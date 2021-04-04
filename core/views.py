@@ -19,8 +19,39 @@ import requests, datetime, time, ast, json
 def home(request):
     return render(request, 'main/home.html')
 
+
+# Data remediation
+def remediate_kds(request, comp_name):
+    '''
+    Manually loads all players
+    kd's
+    '''
+
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+
+    config = ConfigController.objects.get(name = 'main_config_controller')
+
+    custom_config = {
+        'cod_x_rapidapi_key': config.cod_x_rapidapi_key,
+        'cod_x_rapidapi_host': config.cod_x_rapidapi_host,
+        'competitions_dummy_data': config.competitions_dummy_data
+    }
+    
+    bg_tasks.remediate_users_kd(custom_config = custom_config, comp_name = comp_name)
+
+    signals.send_message.send(sender = None,
+                request = request,
+                message = 'Remediating data',
+                type = 'INFO')
+    
+    # Job starts flag
+    competition.manually_calculate_bg_job_status = 'Started'
+    competition.save()
+
+    return redirect('get_competition', comp_name = comp_name)
+
 # Competition related
- 
+
 def join_request_competition(request, comp_name):
     '''
     This form is used to validate
@@ -68,6 +99,13 @@ def join_request_competition(request, comp_name):
         }
 
         return render(request, 'forms/join_competition_form.html', context)
+    
+    signals.send_message.send(sender = None,
+                            request = request,
+                            message = 'Something went wrong..',
+                            type = 'DANGER')
+    
+    return redirect('get_competition', comp_name = comp_name)
 
 
 def competition_password_request(request, comp_name):

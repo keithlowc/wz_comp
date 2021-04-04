@@ -310,7 +310,7 @@ def get_custom_data(user_tag, user_id_type, competition_start_time, competition_
         return clean_data, matches_without_time_filter, error, error_message
 
 
-def add_to_player_model(competition, team, user_id, user_id_type):
+def add_to_player_model(competition, team, user_kd, user_id, user_id_type):
     '''
     Adds to the player model
     if the player does not 
@@ -329,14 +329,15 @@ def add_to_player_model(competition, team, user_id, user_id_type):
     if not player_found:
         print('Saving Player {} to model'.format(user_id))
         Player.objects.create(competition = competition, 
-                                team = team, 
+                                team = team,
+                                user_kd = user_kd,
                                 user_id = user_id,
                                 user_id_type = user_id_type)
     else:
         print('Not saving Player {} since it already exists in db!'.format(user_id))
 
 
-def add_to_match_model(competition, team, player, match_id, kills, kd, deaths, headshots, damage_done, damage_taken, placement, team_wipes, longest_streak, percent_time_moving, utc_start_time, time_played, index):
+def add_to_match_model(competition, team, player, match_id, kills, kd, deaths, headshots, damage_done, damage_taken, placement, team_wipes, longest_streak, percent_time_moving, utc_start_time, time_played, player_kd_at_time, index):
     '''
     Adds the match to the MATCH model
     if this match with
@@ -367,7 +368,8 @@ def add_to_match_model(competition, team, player, match_id, kills, kd, deaths, h
                                 percent_time_moving = percent_time_moving,
                                 placement = placement,
                                 time_played = time_played,
-                                utc_start_time = utc_start_time)
+                                utc_start_time = utc_start_time,
+                                player_kd_at_time = player_kd_at_time)
 
         print('Match #{} saved!'.format(index))
     else:
