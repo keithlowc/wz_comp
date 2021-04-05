@@ -19,64 +19,6 @@ try:
 except Exception as e:
     time_to_run = 1
 
-@background(schedule = 1)
-def remediate_users_kd(custom_config, comp_name):
-    '''
-    Remediation for all users that do not have
-    their kd's loaded.
-    '''
-
-    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
-
-    competition.manually_calculate_bg_job_status = 'In-Progress'
-    competition.save()
-
-    players = competition.players.all()
-
-    all_players_to_remediate = players.count()
-    counter = 0
-
-    for player in players:
-        # Calculate kd for each user in competition
-        
-        time.sleep(1)
-
-        print('Remediating user {} kd'.format(player.user_id))
-
-        warzone_api = WarzoneApi(tag = player.user_id, platform = player.user_id_type, 
-                                cod_x_rapidapi_key = custom_config["cod_x_rapidapi_key"], 
-                                cod_x_rapidapi_host = custom_config["cod_x_rapidapi_host"])
-
-        data = warzone_api.get_warzone_general_stats()
-
-        print('New kd {} for {}'.format(player.user_id, data['br_all']['kdRatio']))
-                    
-        player_kd = data['br_all']['kdRatio']
-        player.user_kd = player_kd
-        player.save()
-
-        player_matches = Match.objects.filter(player = player.id, competition = competition.id)
-
-        for match in player_matches:
-            print('Updating match: {} with kd {}'.format(match.match_id, player_kd))
-            match.player_kd_at_time = player_kd
-            match.kd = match.kd
-            match.save()
-
-        counter += 1
-        total = all_players_to_remediate - counter
-        print('Total players left to remidiate {}'.format(total))
-    
-    competition.manually_calculate_bg_job_status = 'Completed'
-    competition.save()
-
-    time.sleep(7)
-
-    # Reset job
-    competition.manually_calculate_bg_job_status = 'Not-Running'
-    competition.save()
-
-
 def recalculate_competition_stats(custom_config, comp_name):
     '''
     Caculates all the competition stats
@@ -179,9 +121,7 @@ def recalculate_competition_stats(custom_config, comp_name):
                     old_matches_list.append(matches_without_time_filter)
 
                     # Get the player object
-                    player = Player.objects.get(competition = competition,
-                                                team = team,
-                                                user_id = user)
+                    player = Player.objects.get(user_id = user)
 
                     # Saving data into matches model object
                     print('Adding Matches to Match model')
@@ -396,9 +336,6 @@ def calculate_status_of_competition(custom_config, comp_name):
 
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
-    # Remediate data
-    # recalculate_users_kds(custom_config = custom_config, comp_name = comp_name)
-
     # Job starts flag
     competition.manually_calculate_bg_job_status = 'Started'
     competition.save()
@@ -467,9 +404,6 @@ def calculate_status_of_competition_once(custom_config, comp_name):
     print('** Starting bg calculations once! **')
 
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
-
-    # Remediate data
-    # recalculate_users_kds(custom_config = custom_config, comp_name = comp_name)
     
     recalculate_competition_stats(custom_config = custom_config,
                                 comp_name = comp_name)
@@ -516,6 +450,65 @@ def calculate_status_of_competition_once(custom_config, comp_name):
         print('The competition Status is: not Started')
     
     print('--------')
+    time.sleep(7)
+
+    # Reset job
+    competition.manually_calculate_bg_job_status = 'Not-Running'
+    competition.save()
+
+
+@background(schedule = 1)
+def remediate_users_kd(custom_config, comp_name):
+    '''
+    Remediation for all users that do not have
+    their kd's loaded - We load each players kd
+    and their respective existing matches with the
+    player kd at time.
+    '''
+
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+
+    competition.manually_calculate_bg_job_status = 'In-Progress'
+    competition.save()
+
+    players = competition.players.all()
+
+    all_players_to_remediate = players.count()
+    counter = 0
+
+    for player in players:
+        
+        time.sleep(1)
+
+        print('Remediating user {} kd'.format(player.user_id))
+
+        warzone_api = WarzoneApi(tag = player.user_id, platform = player.user_id_type, 
+                                cod_x_rapidapi_key = custom_config["cod_x_rapidapi_key"], 
+                                cod_x_rapidapi_host = custom_config["cod_x_rapidapi_host"])
+
+        data = warzone_api.get_warzone_general_stats()
+
+        print('New kd {} for {}'.format(player.user_id, data['br_all']['kdRatio']))
+                    
+        player_kd = data['br_all']['kdRatio']
+        player.user_kd = player_kd
+        player.save()
+
+        player_matches = Match.objects.filter(player = player.id, competition = competition.id)
+
+        for match in player_matches:
+            print('Updating match: {} with kd {}'.format(match.match_id, player_kd))
+            match.player_kd_at_time = player_kd
+            match.kd = match.kd
+            match.save()
+
+        counter += 1
+        total = all_players_to_remediate - counter
+        print('Total players left to remidiate {}'.format(total))
+    
+    competition.manually_calculate_bg_job_status = 'Completed'
+    competition.save()
+
     time.sleep(7)
 
     # Reset job
