@@ -319,22 +319,30 @@ def add_to_player_model(competition, team, user_kd, user_id, user_id_type):
 
     player_found = True
     try:
-        Player.objects.get(competition = competition, 
-                            team = team, 
-                            user_id = user_id, 
+        # Search for the player name and id type
+        # if player exists
+        # then we go ahead and make sure we add the new 
+        # team to it.
+        Player.objects.get(user_id = user_id, 
                             user_id_type = user_id_type)
     except Exception as e:
         player_found = False
     
     if not player_found:
         print('Saving Player {} to model'.format(user_id))
-        Player.objects.create(competition = competition, 
-                                team = team,
-                                user_kd = user_kd,
-                                user_id = user_id,
-                                user_id_type = user_id_type)
+        player = Player.objects.create(user_kd = user_kd,
+                                        user_id = user_id,
+                                        user_id_type = user_id_type)
+
+        player.competition.add(competition)
+        player.team.add(team)
     else:
-        print('Not saving Player {} since it already exists in db!'.format(user_id))
+        player = Player.objects.get(user_id = user_id, 
+                                    user_id_type = user_id_type)
+
+        player.competition.add(competition)
+        player.team.add(team)
+        print('Not saving Player {} since it already exists in db! But adding relation ship to team and competition'.format(user_id))
 
 
 def add_to_match_model(competition, team, player, match_id, kills, kd, deaths, headshots, damage_done, damage_taken, placement, team_wipes, longest_streak, percent_time_moving, utc_start_time, time_played, player_kd_at_time, index):
@@ -345,9 +353,7 @@ def add_to_match_model(competition, team, player, match_id, kills, kd, deaths, h
 
     found_match = True
     try:
-        Match.objects.get(competition = competition, 
-                            team = team, 
-                            player = player, 
+        Match.objects.get(player = player, 
                             match_id = match_id)
     except Exception as e:
         found_match = False

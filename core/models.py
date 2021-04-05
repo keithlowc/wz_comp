@@ -180,8 +180,8 @@ class StaffCustomTeams(models.Model):
 
 
 class Player(models.Model):
-    competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, null = True, related_name = 'players')
-    team = models.ForeignKey(StaffCustomTeams, on_delete = models.CASCADE, null = True, related_name = 'players')
+    competition = models.ManyToManyField(StaffCustomCompetition, related_name = 'players')
+    team = models.ManyToManyField(StaffCustomTeams, related_name = 'players')
     user_kd = models.FloatField(null = True)
     user_id = models.CharField(max_length = 100, null = True)
     user_id_type = models.CharField(max_length = 150, null = True)
@@ -205,9 +205,9 @@ class Match(models.Model):
     graphs.
     '''
 
-    competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.CASCADE, null = True, related_name = 'competition')
-    team = models.ForeignKey(StaffCustomTeams, on_delete = models.CASCADE, null = True, related_name = 'matches')
-    player = models.ForeignKey(Player, on_delete = models.CASCADE, null = True, related_name = 'matches')
+    competition = models.ForeignKey(StaffCustomCompetition, on_delete = models.SET_NULL, null = True, related_name = 'competition')
+    team = models.ForeignKey(StaffCustomTeams, on_delete = models.SET_NULL, null = True, related_name = 'matches')
+    player = models.ForeignKey(Player, on_delete = models.SET_NULL, null = True, related_name = 'matches')
     match_id = models.CharField(max_length = 300, null = True)
     kills = models.IntegerField(null = True)
     kd = models.FloatField(null = True)
