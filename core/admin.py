@@ -301,7 +301,6 @@ class InLinePastTeams(admin.StackedInline):
         'player_4',
         'player_4_id_type',
 
-        'data',
         'points',
     )
     extra = 1

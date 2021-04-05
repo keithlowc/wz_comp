@@ -354,7 +354,6 @@ def migrate_competition_to_past_tournaments(request, comp_name):
                                     player_4 = team.player_4,
                                     player_4_id_type = team.player_4_id_type,
 
-                                    data = team.data_to_render,
                                     points = team.score)
         
         # Delete the tournament and redirect
