@@ -286,7 +286,6 @@ class PastTeams(models.Model):
     player_4 = models.CharField(max_length = 100, null = True, blank = True)
     player_4_id_type = models.CharField(max_length = 10, null = True, blank = True)
 
-    data = models.JSONField(default = dict, blank = True)
     points = models.IntegerField()
 
     class Meta:
