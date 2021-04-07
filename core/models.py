@@ -360,7 +360,7 @@ class ConfigController(models.Model):
     competitions_bg_tasks = models.IntegerField(default = 900)
     competitions_dummy_data = models.BooleanField(default = False)
     competition_email_active = models.BooleanField(default = True)
-    competition_email_time_to_repeat = models.IntegerField(default = 60 * 30) # 60 seconds * 30 times = 30 minutes
+    competition_email_time_before_start = models.IntegerField(default = 60 * 30) # 60 seconds * 30 times = 30 minutes
 
     cod_url_warzone_stats = models.CharField(max_length = 500,  null = True, unique = True)
     cod_url_warzone_matches = models.CharField(max_length = 500,  null = True, unique = True)
