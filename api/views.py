@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 
 from .serializers import MatchSerializer
 from core.models import Player, Match, StaffCustomCompetition
@@ -211,6 +212,7 @@ def get_type_of_players(request, comp_name):
 
 
 @api_view(['GET'])
+@permission_classes((AllowAny, ))
 def get_bg_job_status(request, comp_name):
     '''
     Retrieves the bg job status
