@@ -379,7 +379,7 @@ class ConfigControllerAdminPage(forms.ModelForm):
             'name',
             'competitions_page_refresh_time',
             'competitions_bg_tasks',
-            'competition_email_time_to_repeat',
+            'competition_email_time_before_start',
             'competitions_dummy_data',
             'competition_email_active',
             'cod_url_warzone_stats',
@@ -395,5 +395,5 @@ class ConfigControllerAdminPage(forms.ModelForm):
         labels = {
             'competitions_bg_tasks': 'Competition time to repeat BG jobs (Seconds)',
             'competitions_page_refresh_time': 'Competition Page refresh time (Miliseconds)',
-            'competition_email_time_to_repeat': 'Competition time to repeat email job (Seconds)',
+            'competition_email_time_before_start': 'Competition time to fire email job before competition start (Seconds)',
         }

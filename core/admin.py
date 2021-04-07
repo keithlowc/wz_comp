@@ -1,7 +1,7 @@
 from django.contrib import admin, messages
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
-import csv
+import csv, datetime
 
 from .models import StaffCustomTeams, Match, Player, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, Analytics, PastTournaments, PastTeams
 from .forms import TeamFormAdminPage, TeamFormAdminPageSuperUser, CompetitionAdminPage, CompetitionAdminPageSuperUser, ConfigControllerAdminPage
@@ -130,13 +130,13 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
 
         if config.competition_email_active:
             competition = StaffCustomCompetition.objects.get(id = instance.id)
+            competition_start_time = competition.start_time
 
             if competition.email_job_created == False:
                 email_job = EmailNotificationSystemJob()
                 email_job.send_check_in_notification(competition_name = instance.competition_name,
                                                     competition_id = instance.id,
-                                                    repeat = config.competition_email_time_to_repeat,
-                                                    repeat_until = instance.start_time, 
+                                                    schedule = competition_start_time - datetime.timedelta(seconds = config.competition_email_time_before_start),
                                                     verbose_name = "Check-in email - for competition with id: {}".format(instance.id), 
                                                     creator = user)
             else:
