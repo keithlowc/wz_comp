@@ -92,7 +92,7 @@
           <div class="container">
               <div id="accordion pt-4">
                 <div class="card">
-                  <div class="card-header">
+                  <div class="card-header" onclick="toggleCompetitionChevron()">
                     <table class="table table-sm mb-0">
                       <tbody>
                         <tr id="headingOne" data-toggle="collapse" data-target="#header">
@@ -164,11 +164,10 @@
                                     
                                 {% endif %}
                               </div>
-
                               <div class="col-2">
                                 <td class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block border-0 text-right align-middle">
                                   <i>Created by: {{ competition.created_by }}</i>
-                                  <i class="fas fa-chevron-down"></i>
+                                  <i id="chevron-competition" class="fas fa-chevron-down"></i>
                                 </td>
                               </div>
                           </div>
@@ -198,7 +197,7 @@
                     <div class="card mt-1">
                         <div class="card-header" role="tab" id="headingThree">
                           <h5 class="mb-0">
-                            <a id="{{team}}-collapse" onclick="loadStreamVideoToFrame('{{team}}-collapse', '{{team.team_stream_user}}-header-twitch', '{{team.team_stream_user}}-iframe');" class="collapsed" data-toggle="collapse" href="#{{ team }}" aria-expanded="false" aria-controls="{{ team }}">
+                            <a id="{{team}}-collapse" onclick="loadStreamVideoToFrame('{{team}}-collapse', '{{team.team_stream_user}}-header-twitch', '{{team.team_stream_user}}-iframe'); toggleIcon('{{ forloop.counter0|add }}')" class="collapsed" data-toggle="collapse" href="#{{ team }}" aria-expanded="false" aria-controls="{{ team }}">
                                   <div class="row">
                                     
                                     <div class="col-1">
@@ -239,9 +238,11 @@
                                     <div class="col-1 my-auto text-right">
                                         {{ team.score }}
                                     </div>
+              
                                     <div class="col-1 my-auto text-right">
-                                        <i class="fas fa-chevron-down"></i>
+                                        <i id="card-chevron-{{ forloop.counter0|add }}" class="fas fa-chevron-down"></i>
                                     </div>
+                                    
                                   </div>
                             </a>
                           </h5>
@@ -303,7 +304,7 @@
                                             <div class="card">
                                             <div class="card-header" role="tab" id="headingInside">
                                                 <h5 class="mb-0">
-                                                <a class="collapsed" data-toggle="collapse" href="#{{ forloop.counter0|add }} {{key}}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }} {{key}}">
+                                                <a class="collapsed" onclick="toggleIcon_2('{{forloop.counter0|add}}-{{team.team_name|convert_spaces_to_underscore}}')" data-toggle="collapse" href="#{{ forloop.counter0|add }} - {{key}} - {{team}}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }} - {{key}} - {{team}}">
                                                     <div class="row">
                                                       <div class="col-8 my-auto">Match #{{ forloop.counter0|add }}</div>
 
@@ -350,12 +351,15 @@
 
                                                         {% endfor %}
 
-                                                      <div class="col-1 text-right my-auto"><i class="fas fa-chevron-down"></i></td></div>
+                                                      <div class="col-1 text-right my-auto">
+                                                        <i id="card-chevron-match-{{forloop.counter0|add}}-{{team.team_name|convert_spaces_to_underscore}}" class="fas fa-chevron-down"></i></td>
+                                                      </div>
+                                                    
                                                     </div>
                                                 </a>
                                                 </h5>
                                             </div>
-                                            <div id="{{ forloop.counter0|add }} {{key}}" class="collapse" role="tabpanel" aria-labelledby="headingInside" data-parent="#accordionInside">
+                                            <div id="{{ forloop.counter0|add }} - {{key}} - {{team}}" class="collapse" role="tabpanel" aria-labelledby="headingInside" data-parent="#accordionInside">
                                                 <div class="card-body">
                                                 <div class="table-responsive">
                                                   <table class="table table-dark table-hover table-bordered">
@@ -454,29 +458,7 @@
         let progress_bar = document.getElementsByClassName('progress-bar');
         
         let interval;
-
-        // $('#toggle-silent')[0].checked = false;
-
-        // let checked = localStorage.getItem("checkBox");
-
-        // function checkStates() {
-        //     if (checked == "true") {
-        //         $('#toggle-silent')[0].checked = true;
-        //     } else if (checked == "false") {
-        //     }
-        // }
-
-        // function change() {
-        //     let decider = document.getElementById('toggle-silent');
-        //     if(decider.checked){
-        //         localStorage.setItem("checkBox", true);
-        //         setTimeout(reload, time_to_refresh);
-        //     } else {
-        //         clearTimeout(reload);
-        //         localStorage.removeItem("checkBox");
-        //         localStorage.setItem("checkBox", false);
-        //     }
-        // }
+        let reloadInterval;
 
         function reload() {
             document.location.reload();
@@ -536,7 +518,8 @@
                 progress_bar[0].className = "progress-bar progress-bar-striped progress-bar-animated";
                 progress_bar[0].style.width = "100%";
                 progress_bar[0].textContent = "Scores are 100% calculated, please refresh page!";
-                clearInterval(interval)
+                clearInterval(interval);
+                reloadInterval = setInterval(reloadWebsite, 5000)
               } else {
                 alert("Something went wrong. BG status " + data["status"]);
               }
@@ -544,10 +527,24 @@
           });
         }
 
-        interval = setInterval(checkJobStatus, 3000);
+        function reloadWebsite() {
+          clearInterval(reloadInterval);
+          location.reload();
+        }
 
-        // checkStates();
-        // change();
+        function toggleCompetitionChevron() {
+          $("#chevron-competition").toggleClass("fas fa-chevron-up fas fa-chevron-down");
+        }
+
+        function toggleIcon(id) {
+          $("#card-chevron-" + id).toggleClass("fas fa-chevron-up fas fa-chevron-down");
+        };
+
+        function toggleIcon_2(id) {
+          $("#card-chevron-match-" + id).toggleClass("fas fa-chevron-up fas fa-chevron-down");
+        }
+
+        interval = setInterval(checkJobStatus, 3000);
 
     </script>
 {% endblock %}

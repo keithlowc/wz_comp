@@ -49,3 +49,7 @@ def youtube_embed_url_fixer(string):
 @register.filter
 def convert_seconds_to_minutes(seconds):
     return int(seconds / 60)
+
+@register.filter
+def convert_spaces_to_underscore(string):
+    return string.replace(' ','_')
