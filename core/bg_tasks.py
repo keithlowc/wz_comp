@@ -50,6 +50,7 @@ def recalculate_competition_stats(custom_config, comp_name):
 
         # Saves user to Player Model
         print('Adding Players to Player model')
+        print()
 
         for user_id, data in team_users.items():
             player_kd = data[0]
@@ -61,7 +62,7 @@ def recalculate_competition_stats(custom_config, comp_name):
                 # Then we want to recalculate it.
 
                 if player_kd == 0 or player_kd == '' or player_kd == None:
-                    print('KD Is not present for player - Will recalculate')
+                    print('KD Is not present for {} - Will recalculate'.format(user_id))
 
                     time.sleep(1)
 
@@ -69,30 +70,57 @@ def recalculate_competition_stats(custom_config, comp_name):
                                             cod_x_rapidapi_key = custom_config["cod_x_rapidapi_key"], 
                                             cod_x_rapidapi_host = custom_config["cod_x_rapidapi_host"])
                     
-                    data = warzone_api.get_warzone_general_stats()
+                    data, error, error_message = warzone_api.get_warzone_general_stats()
 
-                    print('New kd {} for {}'.format(user_id, data['br_all']['kdRatio']))
-                    
-                    player_kd = data['br_all']['kdRatio']
+                    if error == False:
+                        print('New kd {} for {}'.format(user_id, data['br_all']['kdRatio']))
+                        
+                        player_kd = data['br_all']['kdRatio']
 
-                    team_users[user_id] = (player_kd, player_id_type)
+                        team_users[user_id] = (player_kd, player_id_type)
 
-                util.add_to_player_model(competition = competition,
-                                        team = team,
-                                        user_kd = player_kd,
-                                        user_id = user_id,
-                                        user_id_type = player_id_type)
+                        util.add_to_player_model(competition = competition,
+                                                team = team,
+                                                user_kd = player_kd,
+                                                user_id = user_id,
+                                                user_id_type = player_id_type)
+                    else:
+                        print('There was an error with the player data - the kd will be set as default and will not save player')
+                        player_kd = 0
+                        team_users[user_id] = (player_kd, player_id_type)
+                else:
+                    util.add_to_player_model(competition = competition,
+                                            team = team,
+                                            user_kd = player_kd,
+                                            user_id = user_id,
+                                            user_id_type = player_id_type)
 
+        print()
         print('Ending Players to Player model')
 
-        # Cleaning none values
+        # Use the team_users dict to repopulate
+        # Kds to those missing.
+        kd_list = []
+
+        for user, data in team_users.items():
+            kd_list.append(data[0])
+        
+        try:
+            team.player_1_kd = kd_list[0]
+            team.player_2_kd = kd_list[1]
+            team.player_3_kd = kd_list[2]
+            team.player_4_kd = kd_list[3]
+        except IndexError:
+            print('Kd list is index error')
+
+        # Cleaning none dataues from team_users
         filtered = {k: v for k, v in team_users.items() if k is not None}
         team_users.clear()
         team_users.update(filtered)
 
         print('******* Team Users for team {} ********'.format(team.team_name))
         print(team_users)
-        print('***************************')
+        print('***************************************************')
 
         data_list = []
         old_matches_list = []
@@ -179,18 +207,18 @@ def recalculate_competition_stats(custom_config, comp_name):
         team.data = data_list
         
         print()
-        print('-- Loading team data_stats --')
-        print('-- Team {} --'.format(team))
+        print('******** Loading team data_stats ********')
+        print('******** Team {} ********'.format(team))
         
         # If the stats were loaded once, do not load again.
         if team.data_stats_loaded == False:
-            print('-- data_stats_loaded == False --')
-            print('-- data_stats_loaded will be loaded--')
+            print('******** data_stats_loaded == False ********')
+            print('******** data_stats_loaded will be loaded********')
             team.data_stats = old_matches_list
             team.data_stats_loaded = True
 
-        print('-- data_stats_loaded == True --')
-        print('-- data_stats_loaded will NOT be loaded--')
+        print('******** data_stats_loaded == True ********')
+        print('******** data_stats_loaded will NOT be loaded********')
         print()
 
         team.data_to_render = organized_data
@@ -482,29 +510,35 @@ def remediate_users_kd(custom_config, comp_name):
 
         print('Remediating user {} kd'.format(player.user_id))
 
-        warzone_api = WarzoneApi(tag = player.user_id, platform = player.user_id_type, 
-                                cod_x_rapidapi_key = custom_config["cod_x_rapidapi_key"], 
-                                cod_x_rapidapi_host = custom_config["cod_x_rapidapi_host"])
+        try:
 
-        data = warzone_api.get_warzone_general_stats()
+            warzone_api = WarzoneApi(tag = player.user_id, platform = player.user_id_type, 
+                                    cod_x_rapidapi_key = custom_config["cod_x_rapidapi_key"], 
+                                    cod_x_rapidapi_host = custom_config["cod_x_rapidapi_host"])
 
-        print('New kd {} for {}'.format(player.user_id, data['br_all']['kdRatio']))
-                    
-        player_kd = data['br_all']['kdRatio']
-        player.user_kd = player_kd
-        player.save()
+            data = warzone_api.get_warzone_general_stats()
 
-        player_matches = Match.objects.filter(player = player.id, competition = competition.id)
+            print('New kd {} for {}'.format(player.user_id, data['br_all']['kdRatio']))
+                        
+            player_kd = data['br_all']['kdRatio']
+            player.user_kd = player_kd
+            player.save()
 
-        for match in player_matches:
-            print('Updating match: {} with kd {}'.format(match.match_id, player_kd))
-            match.player_kd_at_time = player_kd
-            match.kd = match.kd
-            match.save()
+            player_matches = Match.objects.filter(player = player.id, competition = competition.id)
 
-        counter += 1
-        total = all_players_to_remediate - counter
-        print('Total players left to remidiate {}'.format(total))
+            for match in player_matches:
+                print('Updating match: {} with kd {}'.format(match.match_id, player_kd))
+                match.player_kd_at_time = player_kd
+                match.kd = match.kd
+                match.save()
+
+            counter += 1
+            total = all_players_to_remediate - counter
+            print('Total players left to remidiate {}'.format(total))
+        
+        except Exception as e:
+            print(e)
+            print('There was an error with the user')
     
     competition.manually_calculate_bg_job_status = 'Completed'
     competition.save()
