@@ -20,5 +20,8 @@ urlpatterns = [
     # Job statuses
     path('api/<str:comp_name>/manually_calculate_job/status', views.get_bg_job_status, name = 'get_bg_job_status'),
 
+    # Charts
+    path('competition/chart/stats/<str:team_name>/<str:user>/<str:key>', views.chart_stats_key, name = 'chart_stats_key'),
+
     path('api-auth/', include('rest_framework.urls', namespace = 'rest_framework'))
 ]

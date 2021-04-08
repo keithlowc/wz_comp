@@ -369,50 +369,6 @@ def migrate_competition_to_past_tournaments(request, comp_name):
 
 # Charts data
 
-def chart_stats_key(request, team_name, user, key):
-    '''
-    Provides data depending on the key
-    if key = damageDone it will return
-    the last values of damagedone based
-    on the last few matches before the competition
-    '''
-
-    user = user
-    user_key = key
-
-    team = StaffCustomTeams.objects.get(team_name = team_name)
-    data_stats = team.data_stats
-
-    size = 0
-    data = []
-
-    if len(data_stats) > 0:
-
-        for val in data_stats:
-            try:
-                for key in val[user]:
-                    size = len(val[user])
-                    data.append(key[user_key])
-            except Exception as e:
-                print(e)
-
-        matches = [i for i in range(1, size)]
-
-        average_data = sum(data) / len(data)
-        avg = [average_data for i in range(1, size)]
-    
-    else:
-        matches = 0
-        data = 0
-        avg = 0
-
-    return JsonResponse(data = {
-        'matches': matches,
-        'key': data,
-        'avg': avg,
-    })
-
-
 def show_chart(request):
     return render(request,  'competitions/competition_user_chart.html')
 
