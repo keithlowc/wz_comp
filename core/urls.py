@@ -4,11 +4,9 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    # path('send_mail', views.test_send_mail, name = 'test_send_mail'),
     path('', views.get_competitions_all, name = 'get_competitions_all'),
 
     # Competition charts
-    path('competition/chart/stats/<str:team_name>/<str:user>/<str:key>', views.chart_stats_key, name = 'chart_stats_key'),
     path('competition/user/chart', views.show_chart, name = 'show_chart'),
     path('competition/recalculate_scores/<str:comp_name>', views.recalculate_scores, name = 'recalculate_scores'),
     path('competition/migratetopastournament/<str:comp_name>', views.migrate_competition_to_past_tournaments, name = 'migrate_competition_to_past_tournaments'),
