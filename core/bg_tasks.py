@@ -550,6 +550,22 @@ def remediate_users_kd(custom_config, comp_name):
     competition.save()
 
 
+@background(schedule = 1)
+def competition_close_inscriptions(competition_id):
+    '''
+    This bg job is fired when the 
+    competition is created and it will
+    automatically close the job when
+    there are 30 minutes before the 
+    competition
+    '''
+
+    competition = StaffCustomCompetition.objects.get(competition_name = competition_id)
+    competition.competition_is_closed = True
+    competition.save()
+
+
+
 # Notification bg jobs
 class EmailNotificationSystemJob:
     @background(schedule = 120)

@@ -339,6 +339,7 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
                 'manually_calculate_bg_job_status',
 
                 # Jobs
+                'close_inscriptions_started',
                 'email_job_created',
 
                 'competition_started',
@@ -362,6 +363,7 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
             'competition_status': 'Competition Status (ADMIN)',
             'competition_cover_results': 'Competition cover results (ADMIN)',
             'email_job_created': 'Email job created (ADMIN)',
+            'close_inscriptions_started': 'Close inscriptions job created (ADMIN)',
             'manually_calculate_bg_job_status': 'Manually calculate bg job status (ADMIN)',
         }
 
@@ -379,6 +381,7 @@ class ConfigControllerAdminPage(forms.ModelForm):
             'name',
             'competitions_page_refresh_time',
             'competitions_bg_tasks',
+            'competition_close_inscriptions_bg_active',
             'competition_email_time_before_start',
             'competitions_dummy_data',
             'competition_email_active',
@@ -393,6 +396,7 @@ class ConfigControllerAdminPage(forms.ModelForm):
         )
         
         labels = {
+            'competition_close_inscriptions_bg_active': 'Competition bg job to close inscriptions',
             'competitions_bg_tasks': 'Competition time to repeat BG jobs (Seconds)',
             'competitions_page_refresh_time': 'Competition Page refresh time (Miliseconds)',
             'competition_email_time_before_start': 'Competition time to fire email job before competition start (Seconds)',
