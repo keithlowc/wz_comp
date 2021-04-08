@@ -560,7 +560,7 @@ def competition_close_inscriptions(competition_id):
     competition
     '''
     try:
-        competition = StaffCustomCompetition.objects.get(competition_name = competition_id)
+        competition = StaffCustomCompetition.objects.get(id = competition_id)
         competition.competition_is_closed = True
         competition.save()
     except Exception as e:
