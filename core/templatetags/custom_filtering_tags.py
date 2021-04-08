@@ -20,8 +20,11 @@ def add(index):
 
 @register.filter
 def format_kd(kd):
-    kd = str(kd).replace(',','.')
-    return '{:.2f}'.format(float(kd))
+    try:
+        kd = str(kd).replace(',','.')
+        return '{:.2f}'.format(float(kd))
+    except Exception:
+        return 0
             
 
 @register.filter

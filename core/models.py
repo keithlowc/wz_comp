@@ -74,7 +74,10 @@ class StaffCustomCompetition(models.Model):
     competition_is_closed = models.BooleanField(default = False)
     competition_cover_results = models.BooleanField(default = False)
 
-    # bg_job
+    # Close inscriptions
+    close_inscriptions_started = models.BooleanField(default = False) 
+
+    # Email job
     email_job_created = models.BooleanField(default = False)
 
     # Statuses for bg jobs
@@ -356,9 +359,14 @@ class ConfigController(models.Model):
     '''
 
     name = models.CharField(max_length = 100, null = True, unique = True, default = 'main_config_controller')
+
     competitions_page_refresh_time = models.IntegerField(default = 15000)
     competitions_bg_tasks = models.IntegerField(default = 900)
     competitions_dummy_data = models.BooleanField(default = False)
+
+    competition_close_inscriptions_bg_active = models.BooleanField(default = True)
+    competition_close_inscriptions_before_start = models.IntegerField(default = 60 * 30) # 60 seconds * 30 times = 30 minutes
+
     competition_email_active = models.BooleanField(default = True)
     competition_email_time_before_start = models.IntegerField(default = 60 * 30) # 60 seconds * 30 times = 30 minutes
 

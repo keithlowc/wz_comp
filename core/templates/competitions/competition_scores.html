@@ -280,19 +280,19 @@
 
                             <ul>
                               {% if team.player_1 != None %}
-                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_1 errors=team.errors|get_item:team.player_1%}
+                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_1 errors=team.errors|get_item:team.player_1 kd=team.player_1_kd%}
                               {% endif %}
 
                               {% if team.player_2 != None %}
-                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_2 errors=team.errors|get_item:team.player_2%}
+                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_2 errors=team.errors|get_item:team.player_2 kd=team.player_2_kd%}
                               {% endif %}
 
                               {% if team.player_3 != None %}
-                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_3 errors=team.errors|get_item:team.player_3%}
+                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_3 errors=team.errors|get_item:team.player_3 kd=team.player_3_kd%}
                               {% endif %}
 
                               {% if team.player_4 != None %}
-                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_4 errors=team.errors|get_item:team.player_4%}
+                                {% include 'competitions/competition_user_chart.html' with team_name=team user=team.player_4 errors=team.errors|get_item:team.player_4 kd=team.player_4_kd%}
                               {% endif %}
                             </ul>
 

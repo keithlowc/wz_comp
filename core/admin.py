@@ -8,7 +8,7 @@ from .forms import TeamFormAdminPage, TeamFormAdminPageSuperUser, CompetitionAdm
 
 # from background_task.models import Task
 
-from core.bg_tasks import EmailNotificationSystemJob
+from core.bg_tasks import EmailNotificationSystemJob, competition_close_inscriptions
 
 # Register your models here.
 
@@ -127,20 +127,28 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
         # the bg job will run every 1 hour
         # The bg job should not duplicate
         config = ConfigController.objects.get(name = 'main_config_controller')
+        competition = StaffCustomCompetition.objects.get(id = instance.id)
+        competition_start_time = competition.start_time
+
+        if config.competition_close_inscriptions_bg_active:
+            if competition.close_inscriptions_started == False:
+                competition_close_inscriptions(competition_id = instance.id,
+                                               schedule = competition_start_time - datetime.timedelta(seconds = config.competition_close_inscriptions_before_start))
+                competition.close_inscriptions_started = True
+                competition.save()
 
         if config.competition_email_active:
-            competition = StaffCustomCompetition.objects.get(id = instance.id)
-            competition_start_time = competition.start_time
-
             if competition.email_job_created == False:
+
                 email_job = EmailNotificationSystemJob()
                 email_job.send_check_in_notification(competition_name = instance.competition_name,
-                                                    competition_id = instance.id,
-                                                    schedule = competition_start_time - datetime.timedelta(seconds = config.competition_email_time_before_start),
-                                                    verbose_name = "Check-in email - for competition with id: {}".format(instance.id), 
-                                                    creator = user)
-            else:
-                print('Did not create a new BG job')
+                                                     competition_id = instance.id,
+                                                     schedule = competition_start_time - datetime.timedelta(seconds = config.competition_email_time_before_start),
+                                                     verbose_name = "Check-in email - for competition with id: {}".format(instance.id), 
+                                                     creator = user)
+                competition.email_job_created = True
+                competition.save()
+
         return instance
     
     def has_view_permission(self, request, obj=None):
