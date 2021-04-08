@@ -132,10 +132,10 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
 
         if config.competition_close_inscriptions_bg_active:
             if competition.close_inscriptions_started == False:
-
                 competition_close_inscriptions(competition_id = instance.id,
                                                schedule = competition_start_time - datetime.timedelta(seconds = config.competition_close_inscriptions_before_start))
                 competition.close_inscriptions_started = True
+                competition.save()
 
         if config.competition_email_active:
             if competition.email_job_created == False:
@@ -146,8 +146,9 @@ class StaffCustomCompetitionAdmin(admin.ModelAdmin):
                                                      schedule = competition_start_time - datetime.timedelta(seconds = config.competition_email_time_before_start),
                                                      verbose_name = "Check-in email - for competition with id: {}".format(instance.id), 
                                                      creator = user)
-            else:
-                print('Did not create a new BG job')
+                competition.email_job_created = True
+                competition.save()
+
         return instance
     
     def has_view_permission(self, request, obj=None):
