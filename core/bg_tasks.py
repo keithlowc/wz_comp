@@ -559,10 +559,13 @@ def competition_close_inscriptions(competition_id):
     there are 30 minutes before the 
     competition
     '''
-
-    competition = StaffCustomCompetition.objects.get(competition_name = competition_id)
-    competition.competition_is_closed = True
-    competition.save()
+    try:
+        competition = StaffCustomCompetition.objects.get(competition_name = competition_id)
+        competition.competition_is_closed = True
+        competition.save()
+    except Exception as e:
+        print('Competition with id {} does not exist'.format(competition_id))
+        print('Orphan bg job to close inscriptions')
 
 
 
