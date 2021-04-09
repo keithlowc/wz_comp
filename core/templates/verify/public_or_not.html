@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container">
+<div class="container pt-4">
     <div class="border rounded join-competition-form">
         <div class="row p-4">
             <div class="col-12">
@@ -77,6 +77,7 @@
         progress_bar_row.style.display = "none";
 
         async function validate_users() {
+            accounts_validated = false;
             let user = document.getElementById("id_user_id").value;
             let id_user_id_type = document.getElementById("id_user_id_type").value;
 
@@ -112,6 +113,10 @@
                     let error_message = getErrorMessage(user_data["message"])
 
                     messages.push(user + error_message);
+
+                } else if (user_data["message"] == "You have exceeded the rate limit per second for your plan, BASIC, by the API provider") {
+                    accounts_validated = false;
+                    alert('Please try again in a few seconds.');
 
                 } else {
                     let user_verified = true;
@@ -200,6 +205,8 @@
                 new_message = " Does not exist or ID type selection is wrong!";
             } else if (message == "Not permitted: not allowed") {
                 new_message = " Account is private. Needs to be public to work! Log into Activision > Profile > Account Linking > Searchable = All and Data Visible = All";
+            } else if (message = "You have exceeded the rate limit per second for your plan, BASIC, by the API provider") {
+                new_message = "Please refresh the page and try again in a few minutes";
             } else {
                 new_message = " " + message;
             }

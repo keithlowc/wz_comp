@@ -43,7 +43,7 @@ class JoinCompetitionRequestForm(forms.ModelForm):
         labels = {
             'team_banner': 'Team logo (URL only - Do not change if you do not have logo)',
             'team_captain_email': 'Team Captain Email',
-            'team_stream_user': 'Team stream user (Do not put URL except if youtube stream)',
+            'team_stream_user': 'Team stream user (DO NOT PUT URL! Username only!)',
 
             'player_1': 'Player 1 ID - (Battlenet, Psnet or Xbox ID)',
             'player_2': 'Player 2 ID - (Battlenet, Psnet or Xbox ID)',

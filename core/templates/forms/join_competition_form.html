@@ -276,7 +276,11 @@
 
         // If stream type is twitch
         // verify account other wise don't
-        if (!stream_user.includes("youtube.com")  && stream_type == "twitch") {
+        if (stream_user.includes('http') || stream_user.includes('https') || stream_user.includes('twitch.tv') || stream_user.includes('facebook.com')) {
+            messages.push(stream_type + ": You input an URL. It should be username only!");
+            twitch_account_exists = false;
+
+        } else {
 
             if (stream_user != "") {
 
@@ -293,16 +297,11 @@
                     progress_bar[0].style.width = "35%";
                     progress_bar[0].textContent = "Validating twitch account.. 35%";
                 }
+
             } else {
-                // Will make the twitch account validation to fail
                 messages.push("You did not input a twitch account");
                 twitch_account_exists = false;
             }
-        // Check if stream user includes youtube in it and 
-        // Not checked the stream type
-        } else if (stream_user.includes('youtube.com') && stream_type != "youtube") {
-            twitch_account_exists = false;
-            messages.push("You input a youtube url and set stream type to " + stream_type);
         }
 
         progress_bar[0].style.width = "45%";
@@ -324,7 +323,10 @@
 
                 messages.push(user_1 + error_message);
 
-            } else {
+            } else if (user_1_data["message"] == "You have exceeded the rate limit per second for your plan, BASIC, by the API provider") {
+                    accounts_validated = false;
+                    alert('Please try again in a few seconds.');
+            }  else {
                 let user_1_verified = verification_rules(user_1_data["br_all"], user_1);
 
                 // Setting up the kd
@@ -350,6 +352,9 @@
 
                     messages.push(user_2 + error_message);
 
+                } else if (user_2_data["message"] == "You have exceeded the rate limit per second for your plan, BASIC, by the API provider") {
+                    accounts_validated = false;
+                    alert('Please try again in a few seconds.');
                 } else {
                     let user_2_verified = verification_rules(user_2_data["br_all"], user_2);
                     
@@ -382,6 +387,9 @@
 
                     messages.push(user_3 + error_message);
 
+                } else if (user_3_data["message"] == "You have exceeded the rate limit per second for your plan, BASIC, by the API provider") {
+                    accounts_validated = false;
+                    alert('Please try again in a few seconds.');
                 } else {
                     let user_3_verified = verification_rules(user_3_data["br_all"], user_3);
 
@@ -410,6 +418,9 @@
 
                     messages.push(user_4 + error_message);
 
+                } else if (user_4_data["message"] == "You have exceeded the rate limit per second for your plan, BASIC, by the API provider") {
+                    accounts_validated = false;
+                    alert('Please try again in a few seconds.');
                 } else {
                     let user_4_verified = verification_rules(user_4_data["br_all"], user_4);
 
