@@ -142,13 +142,14 @@
 
                 } else {
                     let user_verified = true;
-                    user_stats.style.display = "block";
 
                     kdSpan.textContent  = user_data["br_all"]["kdRatio"];
                     timePlayedSpan.textContent  = convertUtcEpoch(user_data["br_all"]["timePlayed"]);
                     gamesPlayedSpan.textContent  = user_data["br_all"]["gamesPlayed"];
                     winsSpan.textContent  = user_data["br_all"]["wins"];
                     killsSpan.textContent  = user_data["br_all"]["kills"];
+
+                    user_stats.style.display = "block";
 
                     total_users.push({"user": user_verified})
                     accounts_validated = true;
