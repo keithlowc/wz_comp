@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container">
+<div class="container pt-4">
     <div class="border rounded join-competition-form">
         <div class="row p-4">
             <div class="col-12">
@@ -25,6 +25,19 @@
                         </div>
                         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                             {{ form.user_id_type|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    <div class="row" id="userStats">
+                        <div class="col">
+                            <h5>Player stats</h5>
+                            <ul>
+                                <li class="pt-2"><a class="btn btn-primary">Current KD: <span class="badge badge-danger" id="kd"> 0 </span></a> </li>
+                                <li class="pt-2"><a class="btn btn-primary">Total Wins: <span class="badge badge-danger" id="wins"> 0 </span></a></li>
+                                <li class="pt-2"><a class="btn btn-primary">Total Kills: <span class="badge badge-danger" id="kills"> 0 </span></a></li>
+                                <li class="pt-2"><a class="btn btn-primary">Time played (In days): <span class="badge badge-danger" id="timePlayed"> 0 </span></a></li>
+                                <li class="pt-2"><a class="btn btn-primary">Games played: <span class="badge badge-danger" id="gamesPlayed"> 0 </span></a></li>
+                            </ul>
                         </div>
                     </div>
 
@@ -66,6 +79,15 @@
         let progress_bar_row = document.getElementById("progressBar");
         let progress_bar = document.getElementsByClassName("progress-bar");
 
+        let user_stats = document.getElementById("userStats");
+        user_stats.style.display = "none";
+
+        let kdSpan = document.getElementById("kd");
+        let timePlayedSpan = document.getElementById("timePlayed");
+        let gamesPlayedSpan = document.getElementById("gamesPlayed");
+        let winsSpan = document.getElementById("wins");
+        let killsSpan = document.getElementById("kills");
+
         let user_has_text = false;
 
         let messages = [];
@@ -77,6 +99,7 @@
         progress_bar_row.style.display = "none";
 
         async function validate_users() {
+            accounts_validated = false;
             let user = document.getElementById("id_user_id").value;
             let id_user_id_type = document.getElementById("id_user_id_type").value;
 
@@ -113,8 +136,20 @@
 
                     messages.push(user + error_message);
 
+                } else if (user_data["message"] == "You have exceeded the rate limit per second for your plan, BASIC, by the API provider") {
+                    accounts_validated = false;
+                    alert('Please try again in a few seconds.');
+
                 } else {
                     let user_verified = true;
+
+                    kdSpan.textContent  = user_data["br_all"]["kdRatio"];
+                    timePlayedSpan.textContent  = convertUtcEpoch(user_data["br_all"]["timePlayed"]);
+                    gamesPlayedSpan.textContent  = user_data["br_all"]["gamesPlayed"];
+                    winsSpan.textContent  = user_data["br_all"]["wins"];
+                    killsSpan.textContent  = user_data["br_all"]["kills"];
+
+                    user_stats.style.display = "block";
 
                     total_users.push({"user": user_verified})
                     accounts_validated = true;
@@ -200,11 +235,19 @@
                 new_message = " Does not exist or ID type selection is wrong!";
             } else if (message == "Not permitted: not allowed") {
                 new_message = " Account is private. Needs to be public to work! Log into Activision > Profile > Account Linking > Searchable = All and Data Visible = All";
+            } else if (message = "You have exceeded the rate limit per second for your plan, BASIC, by the API provider") {
+                new_message = "Please refresh the page and try again in a few minutes";
             } else {
                 new_message = " " + message;
             }
 
             return new_message;
+        }
+
+        function convertUtcEpoch(epoch) {
+            let hours = epoch / 3600
+            let days = hours / 24
+            return days
         }
 
     </script>
