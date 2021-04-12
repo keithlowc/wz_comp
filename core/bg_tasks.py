@@ -225,7 +225,7 @@ def recalculate_competition_stats(custom_config, comp_name):
         team.data_to_render = organized_data
         team.save()
 
-@background(schedule = 1)
+
 def calculate_competition_scores(comp_name):
     '''
     Parses from previous data and 
