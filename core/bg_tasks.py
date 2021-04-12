@@ -167,10 +167,9 @@ def recalculate_competition_stats(custom_config, comp_name):
                         headshots = match['headshots']
                         team_wipes = match['teamWipes']
                         longest_streak = match['longestStreak']
-                        percent_time_moving = match['percentTimeMoving']
+                        percent_time_moving = match['percent_time_moving']
                         utc_start_time = match['utcStartSeconds']
                         time_played = match['timePlayed']
-                        anomalous_match = match['anomalousMatch']
 
                         # Search if the match already exists if not then add it.
                         util.add_to_match_model(competition = competition, 
@@ -272,19 +271,12 @@ def calculate_competition_scores(comp_name):
             kills = []
             placements = []
             stim_glitch_detected = False
-            anomalous_match_detected = False
 
             for user in users:
                 if user is not None:
                     try:
                         kills.append(val[user][0]['kills'])
                         placements.append(val[user][0]['teamPlacement'])
-
-                        if val[user][0]['anomalousMatch'] == True:
-                            print('This match set it to true!')
-                            anomalous_match_detected = True
-                        else:
-                            print('this user is not {}'.format(user))
 
                         if val[user][0]['stimGlitch'] == True:
                             stim_glitch_detected = True
@@ -310,7 +302,6 @@ def calculate_competition_scores(comp_name):
                 'total_points': int(points_for_kills + points_for_placement),
                 'top_match': False,
                 'stim_glitch_detected': stim_glitch_detected,
-                'anomalous_match_detected': anomalous_match_detected,
             }
 
         print('Sorting and calculating top matches! number_of_matches_to_count_points is {}'.format(competition.number_of_matches_to_count_points))
