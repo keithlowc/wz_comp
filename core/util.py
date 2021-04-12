@@ -2,7 +2,6 @@ from .warzone_api import WarzoneApi
 from .email import EmailNotificationSystem
 
 from core.models import StaffCustomTeams, Player, Match
-from core.anomaly_detection import AnomalyDetection
 
 import datetime, time
 
@@ -101,13 +100,10 @@ def get_values_from_matches(matches_list, message, user_tag = None):
             data['longestStreak'] = matches['playerStats']['longestStreak']
             data['gulag'] = matches['playerStats']['gulagKills']
             data['loadouts'] = matches['player']['loadout']
-            data['percentTimeMoving'] = matches['playerStats']['percentTimeMoving']
+            data['percent_time_moving'] = matches['playerStats']['percentTimeMoving']
             data['utcStartSeconds'] = matches['utcStartSeconds']
             data['timePlayed'] = matches['playerStats']['timePlayed']
 
-            # Anomaly detection
-            anomaly_detector = AnomalyDetection(competition_rank = 'gold')
-            data['anomalousMatch'] = anomaly_detector.detect_anomalous_match(data['kills'])
 
             # Gulag
             if data['gulag'] > 1:
