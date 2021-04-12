@@ -106,7 +106,7 @@ def get_values_from_matches(matches_list, message, user_tag = None):
             data['timePlayed'] = matches['playerStats']['timePlayed']
 
             # Anomaly detection
-            anomaly_detector = AnomalyDetection(competition_rank = 'catch_all')
+            anomaly_detector = AnomalyDetection(competition_rank = 'gold')
             data['anomalousMatch'] = anomaly_detector.detect_anomalous_match(data['kills'])
 
             # Gulag
