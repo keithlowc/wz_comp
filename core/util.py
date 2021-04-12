@@ -2,6 +2,7 @@ from .warzone_api import WarzoneApi
 from .email import EmailNotificationSystem
 
 from core.models import StaffCustomTeams, Player, Match
+from core.anomaly_detection import AnomalyDetection
 
 import datetime, time
 
@@ -100,10 +101,13 @@ def get_values_from_matches(matches_list, message, user_tag = None):
             data['longestStreak'] = matches['playerStats']['longestStreak']
             data['gulag'] = matches['playerStats']['gulagKills']
             data['loadouts'] = matches['player']['loadout']
-            data['percent_time_moving'] = matches['playerStats']['percentTimeMoving']
+            data['percentTimeMoving'] = matches['playerStats']['percentTimeMoving']
             data['utcStartSeconds'] = matches['utcStartSeconds']
             data['timePlayed'] = matches['playerStats']['timePlayed']
 
+            # Anomaly detection
+            anomaly_detector = AnomalyDetection(competition_rank = 'catch_all')
+            data['anomalousMatch'] = anomaly_detector.detect_anomalous_match(data['kills'])
 
             # Gulag
             if data['gulag'] > 1:
@@ -301,7 +305,8 @@ def get_custom_data(user_tag, user_id_type, competition_start_time, competition_
                                                                                     'br_dmz_plndtrios',
                                                                                     'br_dmz_plndval1',
                                                                                     'brtdm_rmbl',
-                                                                                    'brtdm_wzrumval2'])
+                                                                                    'brtdm_wzrumval2',
+                                                                                    'br_rebirth_rbrthquad'])
 
         matches_without_time_filter = get_values_from_matches(matches_list = matches_without_time_filter,
                                                             message = 'Matches without time filter',
