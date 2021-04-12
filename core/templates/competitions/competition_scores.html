@@ -311,10 +311,10 @@
                                                         {% for key, val in matches.items %}
 
                                                           {% if key == 'points' %}
-                                                            {% if val.stim_glitch_detected == True %}
+                                                            {% if val.stim_glitch_detected == True or val.anomalous_match_detected == True %}
                                                               <div class="col-1 my-auto">
                                                                 <!-- <i class="fas fa-syringe note-icon"></i> -->
-                                                                <i class="fas fa-exclamation-triangle note-icon"></i>
+                                                                <i class="fas fa-exclamation-triangle note-icon" data-toggle="tooltip" data-placement="top" title="Our system may have detected something weird with this match"></i>
                                                               </div>
                                                             {% else %}
                                                               <div class="col-1 my-auto">
@@ -323,15 +323,15 @@
 
                                                             {% if val.placement == competition.points_per_first_place %}
                                                               <div class="col-1 my-auto">
-                                                                <i class="fas fa-crown first-place"></i>
+                                                                <i class="fas fa-crown first-place" data-toggle="tooltip" data-placement="top" title="Top placement"></i>
                                                               </div>
                                                             {% elif val.placement == competition.points_per_second_place %}
                                                               <div class="col-1 my-auto">
-                                                                <i class="fas fa-crown second-place"></i>
+                                                                <i class="fas fa-crown second-place" data-toggle="tooltip" data-placement="top" title="Top placement"></i>
                                                               </div>
                                                             {% elif val.placement == competition.points_per_third_place %}
                                                               <div class="col-1 my-auto">
-                                                                <i class="fas fa-crown third-place"></i>
+                                                                <i class="fas fa-crown third-place" data-toggle="tooltip" data-placement="top" title="Top placement"></i>
                                                               </div>
                                                             {% else %}
                                                               <div class="col-1 my-auto">
@@ -340,7 +340,7 @@
                                 
                                                             {% if val.top_match == True %}
                                                               <div class="col-1 my-auto">
-                                                                <i class="fas fa-crosshairs red-icon"></i>
+                                                                <i class="fas fa-crosshairs red-icon" data-toggle="tooltip" data-placement="top" title="Top match"></i>
                                                               </div>
                                                             {% else %}
                                                               <div class="col-1 my-auto">
@@ -370,7 +370,7 @@
                                                           {% for key, val in matches.items %}
 
                                                             {% if key == 'points' %}
-                                                              <th class="col" colspan="2">Match Points:</th>
+                                                              <th class="col" colspan="3">Match Points:</th>
                                                               <th class="col" colspan="3">{{ val.total_points }}</th>
                                                             {% endif %}
 
@@ -383,7 +383,8 @@
                                                             <th scope="col">Damage</th>
                                                             <th scope="col" class="notranslate placement">Placement</th>
                                                             <th scope="col" class="notranslate gulag">Gulag</th>
-                                                            <th scope="col" class="notranslate stimGlitch" colspan="2"><i class="fas fa-syringe"></i>glitch?</th>
+                                                            <th scope="col" class="notranslate stimGlitch"><i class="fas fa-syringe"></i>glitch?</th>
+                                                            <th scope="col" class="status">Anomaly detected?</th>
                                                         </tr>
                                                       </thead>
 
@@ -393,19 +394,33 @@
                                                               {% if key == 'points' %}
                                                                 <!-- Don't do anything -->
                                                               {% else %}
-                                                                <td class="player">{{ key }}</td> 
+                                                                <td class="player notranslate">{{ key }}</td> 
                                                                 <td class="kd">{{ val.0.kd|format_kd }}</td>
                                                                 <td class="kills">{{ val.0.kills }}</td>
                                                                 <td class="damageDone">{{ val.0.damageDone }}</td>
                                                                 <td class="teamPlacement">{{ val.0.teamPlacement }}</td>
                                                                 <td class="gulag">
                                                                   {% if val.0.gulag == 1 %}
-                                                                    <i class="fas fa-times-circle check-mark-icon"></i>
+                                                                    <i class="fas fa-times-circle check-mark-icon" data-toggle="tooltip" data-placement="top" title="User won gulag"></i>
                                                                   {% else %}
-                                                                    <i class="fas fa-times-circle red-icon"></i>
+                                                                    <i class="fas fa-times-circle red-icon" data-toggle="tooltip" data-placement="top" title="User lost gulag"></i>
                                                                   {% endif %}
                                                                 </td>
-                                                                <td class="stimGlitch">{{ val.0.stimGlitch }}</td>
+                                                                <td class="stimGlitch">
+                                                                  {% if val.0.stimGlitch == True %}
+                                                                  <p class="red-icon">{{ val.0.stimGlitch }}</p>
+                                                                  {% else %}
+                                                                    <p class="check-mark-icon">{{ val.0.stimGlitch }}</p>
+                                                                  {% endif %}
+                                                                </td>
+                                                                <td class="status">
+                                                                  {% if val.0.anomalousMatch == True %}
+                                                                    <p class="red-icon"><i class="fas fa-exclamation-triangle note-icon" data-toggle="tooltip" data-placement="top" title="Our model has detected this match as an anomaly!"></i> {{ val.0.anomalousMatch }}</p> 
+                                                                  {% else %}
+                                                                    <p class="check-mark-icon">{{ val.0.anomalousMatch }}</p>
+                                                                  {% endif %}
+                                                                  
+                                                                </td>
                                                               {% endif %}
                                                           </tr>
                                                         {% endfor %}
