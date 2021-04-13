@@ -236,6 +236,8 @@ class Match(models.Model):
     time_played = models.CharField(max_length = 100, null = True)
     percent_time_moving = models.FloatField(null = True)
     player_kd_at_time = models.FloatField(null = True)
+    anomalous_match = models.BooleanField(null = True)
+    match_type = models.CharField(max_length = 100, null = True)
 
     class Meta:
         verbose_name = 'Match'
