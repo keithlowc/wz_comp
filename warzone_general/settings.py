@@ -47,6 +47,7 @@ LIBRARY_APPS = [
     'crispy_forms',
     'background_task',
     'rest_framework',
+    'silk',
 ]
 
 INSTALLED_APPS = [
@@ -69,6 +70,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # silky profile
+    'silk.middleware.SilkyMiddleware',
 ]
 
 ROOT_URLCONF = 'warzone_general.urls'
@@ -199,3 +202,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ]
 }
+
+# SILKY PROFILER
+SILKY_AUTHENTICATION = True  # User must login
+SILKY_AUTHORISATION = True  # User must have permissions
+
+SILKY_META = True
