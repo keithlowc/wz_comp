@@ -31,6 +31,8 @@ def recalculate_competition_stats(custom_config, comp_name):
 
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
+    competition_model_rank = competition.model_rank
+
     competition_start_time = competition.start_time # Datetime.datetime format
     competition_end_time = competition.end_time     # Datetime.datetime format
     competition_type = competition.competition_type
@@ -135,6 +137,7 @@ def recalculate_competition_stats(custom_config, comp_name):
                                                                             competition_start_time = competition_start_time,
                                                                             competition_end_time = competition_end_time,
                                                                             competition_type = competition_type,
+                                                                            competition_model_rank = competition_model_rank,
                                                                             custom_config = custom_config)
 
             if error:
@@ -171,6 +174,7 @@ def recalculate_competition_stats(custom_config, comp_name):
                         utc_start_time = match['utcStartSeconds']
                         time_played = match['timePlayed']
                         anomalous_match = match['anomalousMatch']
+                        match_type = match['matchType']
 
                         # Search if the match already exists if not then add it.
                         util.add_to_match_model(competition = competition, 
@@ -190,6 +194,8 @@ def recalculate_competition_stats(custom_config, comp_name):
                                                 utc_start_time = utc_start_time,
                                                 time_played = time_played,
                                                 player_kd_at_time = player.user_kd,
+                                                anomalous_match = anomalous_match,
+                                                match_type = match_type,
                                                 index = index)
                 except Exception as e:
                     print('Error: {}'.format(e))

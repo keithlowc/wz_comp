@@ -40,6 +40,17 @@ class StaffCustomCompetition(models.Model):
     facebook_link = models.URLField(max_length = 1000, null = True, blank = True)
     twitter_link = models.URLField(max_length = 1000, null = True, blank = True)
     twitch_link = models.URLField(max_length = 1000, null = True, blank = True)
+
+    # Anomaly detection model level
+    model_rank_types = [
+        ('Gold','Gold'),
+        ('Platinum','Platinum'),
+        ('Master','Master'),
+        ('Legend','Legend'),
+        ('Catch_all', 'Catch all'),
+    ]
+
+    model_rank = models.CharField(max_length = 9, choices = model_rank_types, default = 'Gold')
     
     # Verification rules
     cod_kd_maximum_per_player_verification = models.FloatField(default = 3, verbose_name = "Account Verification: KD maximum per player (Default = 3)")
@@ -225,6 +236,8 @@ class Match(models.Model):
     time_played = models.CharField(max_length = 100, null = True)
     percent_time_moving = models.FloatField(null = True)
     player_kd_at_time = models.FloatField(null = True)
+    anomalous_match = models.BooleanField(null = True)
+    match_type = models.CharField(max_length = 100, null = True)
 
     class Meta:
         verbose_name = 'Match'

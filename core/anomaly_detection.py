@@ -9,11 +9,11 @@ class AnomalyDetection():
         self.model, self.threshold = self.choose_model()
     
     def choose_model(self):
-        if self.competition_rank == 'gold':
+        if self.competition_rank == 'Gold':
             model = load('core/models/gold_model.joblib')
             threshold = 1
             return model, threshold
-        elif self.competition_rank == 'catch_all':
+        elif self.competition_rank == 'Catch_all':
             model = load('core/models/catch_all_model.joblib')
             threshold = 1
             return model, threshold

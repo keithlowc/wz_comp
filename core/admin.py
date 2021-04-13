@@ -276,7 +276,8 @@ class MatchAdmin(admin.ModelAdmin):
     list_display = ('competition', 'team', 'player', 'match_id', 
                     'kills', 'kd', 'deaths', 'headshots', 'damage_done', 
                     'damage_taken', 'placement', 'team_wipes', 'longest_streak',
-                    'utc_start_time', 'time_played', 'percent_time_moving', 'player_kd_at_time',)
+                    'utc_start_time', 'time_played', 'percent_time_moving', 'player_kd_at_time',
+                    'anomalous_match', 'match_type')
     list_filter = ('team',)
 
 admin.site.register(Match, MatchAdmin)
