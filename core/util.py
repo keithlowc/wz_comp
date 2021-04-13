@@ -70,7 +70,7 @@ def filter_matches(matches_list, competition_type):
     return new_matches_list
 
 
-def get_values_from_matches(matches_list, message, user_tag = None):
+def get_values_from_matches(matches_list, message, competition_model_rank, user_tag = None):
     
     all_matches = []
 
@@ -106,7 +106,7 @@ def get_values_from_matches(matches_list, message, user_tag = None):
             data['timePlayed'] = matches['playerStats']['timePlayed']
 
             # Anomaly detection
-            anomaly_detector = AnomalyDetection(competition_rank = 'gold')
+            anomaly_detector = AnomalyDetection(competition_rank = competition_model_rank)
             data['anomalousMatch'] = anomaly_detector.detect_anomalous_match(data['kills'])
 
             # Gulag
@@ -250,7 +250,7 @@ def filter_for_time(custom_config, matches_list, competition_start_time, competi
         return top_matches
 
 
-def get_custom_data(user_tag, user_id_type, competition_start_time, competition_end_time, competition_type, custom_config):
+def get_custom_data(user_tag, user_id_type, competition_start_time, competition_end_time, competition_type, competition_model_rank, custom_config):
     '''
     Gets the matches for user_tag
     '''
@@ -298,7 +298,8 @@ def get_custom_data(user_tag, user_id_type, competition_start_time, competition_
         if len(data) > 0:
             clean_data = get_values_from_matches(matches_list = data, 
                                                 message = 'Clean data',
-                                                user_tag = user_tag)
+                                                user_tag = user_tag,
+                                                competition_model_rank = competition_model_rank)
 
         matches_without_time_filter = exclude_matches_of_type(matches_list = matches_without_time_filter, 
                                                             competition_type_list = ['br_dmz_plnbld',
@@ -310,7 +311,8 @@ def get_custom_data(user_tag, user_id_type, competition_start_time, competition_
 
         matches_without_time_filter = get_values_from_matches(matches_list = matches_without_time_filter,
                                                             message = 'Matches without time filter',
-                                                            user_tag = user_tag)
+                                                            user_tag = user_tag,
+                                                            competition_model_rank = competition_model_rank)
 
         return clean_data, matches_without_time_filter, error, error_message
 

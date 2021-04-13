@@ -31,6 +31,8 @@ def recalculate_competition_stats(custom_config, comp_name):
 
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
 
+    competition_model_rank = competition.model_rank
+
     competition_start_time = competition.start_time # Datetime.datetime format
     competition_end_time = competition.end_time     # Datetime.datetime format
     competition_type = competition.competition_type
@@ -135,6 +137,7 @@ def recalculate_competition_stats(custom_config, comp_name):
                                                                             competition_start_time = competition_start_time,
                                                                             competition_end_time = competition_end_time,
                                                                             competition_type = competition_type,
+                                                                            competition_model_rank = competition_model_rank,
                                                                             custom_config = custom_config)
 
             if error:

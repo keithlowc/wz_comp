@@ -252,6 +252,9 @@ class CompetitionAdminPage(forms.ModelForm):
                 'twitter_link',
                 'twitch_link',
 
+                # Model ranks
+                'model_rank',
+
                 # Verification values
                 'cod_kd_minimum_per_player_verification',
                 'cod_kd_maximum_per_player_verification',
@@ -276,6 +279,7 @@ class CompetitionAdminPage(forms.ModelForm):
             'competition_banner': 'Competition banner (URL only)',
             'start_time': 'Competition Start time',
             'end_time': 'Competition End time',
+            'model_rank': 'Select rank for anomaly detection',
             'discord_link': 'Discord link (OPTIONAL)',
             'instagram_link': 'Instagram link (OPTIONAL)',
             'facebook_link': 'Facebook link (OPTIONAL)',
@@ -308,6 +312,9 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
                 'facebook_link',
                 'twitter_link',
                 'twitch_link',
+                
+                # Model ranks
+                'model_rank',
 
                 # Verification values
                 'cod_kd_minimum_per_player_verification',
@@ -359,6 +366,7 @@ class CompetitionAdminPageSuperUser(forms.ModelForm):
             'facebook_link': 'Facebook link (OPTIONAL)',
             'twitter_link': 'Twitter link (OPTIONAL)',
             'twitch_link': 'Twitch link (OPTIONAL)',
+            'model_rank': 'Select rank for anomaly detection',
             'competition_started': 'Competition has started (ADMIN)',
             'competition_status': 'Competition Status (ADMIN)',
             'competition_cover_results': 'Competition cover results (ADMIN)',
