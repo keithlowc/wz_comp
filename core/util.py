@@ -73,8 +73,10 @@ def filter_matches(matches_list, competition_type):
 def get_values_from_matches(matches_list, message, competition_model_rank, user_tag = None):
     
     all_matches = []
-
-    print('Player name: {} for {}'.format(matches_list[0]['player']['username'], message))
+    try:
+        print('Player name: {} for {}'.format(matches_list[0]['player']['username'], message))
+    except Exception as e:
+        print(e)
 
     for index, matches in enumerate(matches_list):
 
