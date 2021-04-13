@@ -104,6 +104,7 @@ def get_values_from_matches(matches_list, message, competition_model_rank, user_
             data['percentTimeMoving'] = matches['playerStats']['percentTimeMoving']
             data['utcStartSeconds'] = matches['utcStartSeconds']
             data['timePlayed'] = matches['playerStats']['timePlayed']
+            data['matchType'] = matches['mode']
 
             # Anomaly detection
             anomaly_detector = AnomalyDetection(competition_rank = competition_model_rank)
@@ -352,7 +353,7 @@ def add_to_player_model(competition, team, user_kd, user_id, user_id_type):
         print('Not saving Player {} since it already exists in db! But adding relation ship to team and competition'.format(user_id))
 
 
-def add_to_match_model(competition, team, player, match_id, kills, kd, deaths, headshots, damage_done, damage_taken, placement, team_wipes, longest_streak, percent_time_moving, utc_start_time, time_played, player_kd_at_time, index):
+def add_to_match_model(competition, team, player, match_id, kills, kd, deaths, headshots, damage_done, damage_taken, placement, team_wipes, longest_streak, percent_time_moving, utc_start_time, time_played, player_kd_at_time, anomalous_match, match_type, index):
     '''
     Adds the match to the MATCH model
     if this match with
@@ -382,7 +383,9 @@ def add_to_match_model(competition, team, player, match_id, kills, kd, deaths, h
                                 placement = placement,
                                 time_played = time_played,
                                 utc_start_time = utc_start_time,
-                                player_kd_at_time = player_kd_at_time)
+                                player_kd_at_time = player_kd_at_time,
+                                anomalous_match = anomalous_match,
+                                match_type = match_type)
 
         print('Match #{} saved!'.format(index))
     else:
