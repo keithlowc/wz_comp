@@ -7,6 +7,7 @@ from django.http import FileResponse
 from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, PastTournaments, PastTeams
 from .forms import JoinCompetitionRequestForm, EmailCommunicationForm, PlayerVerificationForm, CompetitionPasswordRequestForm
 
+from silk.profiling.profiler import silk_profile
 from . import signals, util, bg_tasks
 from .warzone_api import WarzoneApi
 
@@ -165,6 +166,7 @@ def competition_password_request(request, comp_name):
         return render(request, 'forms/competition_password_request.html', context)
 
 
+@silk_profile(name='Recalculate scores')
 def recalculate_scores(request, comp_name):
     signals.send_message.send(sender = None,
                     request = request,
@@ -213,6 +215,7 @@ def recalculate_scores(request, comp_name):
     return redirect('get_competition', comp_name = comp_name)
 
 
+@silk_profile(name='Manually recalculate once')
 def manually_recalculate_score_once(request, comp_name):
     '''
     Allows recalculation of the data
@@ -260,6 +263,7 @@ def manually_recalculate_score_once(request, comp_name):
     return redirect('get_competition', comp_name = comp_name)
 
 
+@silk_profile(name='Get all competitions')
 def get_competitions_all(request):
     '''
     Gets all competitions.
@@ -276,6 +280,7 @@ def get_competitions_all(request):
     return render(request, 'competitions/competition_main.html', context)
 
 
+@silk_profile(name='Get competition')
 def get_competition(request, comp_name):
     '''
     Gets specific competition
