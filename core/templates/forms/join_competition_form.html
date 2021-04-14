@@ -283,10 +283,8 @@
         } else {
 
             if (stream_user != "") {
-                alert(stream_type)
 
                 if (stream_type == "twitch") {
-                    alert('twitch is selected')
                     let twitch_token_promise = await ajax_request_get_twitch_token(twitch_api_verfication_client_id, twitch_api_verfication_client_secret);
                     token = twitch_token_promise['access_token'];
                     token_type = twitch_token_promise['token_type'][0].toUpperCase() + twitch_token_promise['token_type'].slice(1);
@@ -302,7 +300,6 @@
                     }
 
                 } else if (stream_type == "facebook") {
-                    alert('fb is selected')
                     progress_bar[0].style.width = "35%";
                     progress_bar[0].textContent = "Validating facebook account.. 35%";
                 }
