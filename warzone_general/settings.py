@@ -48,6 +48,7 @@ LIBRARY_APPS = [
     'background_task',
     'rest_framework',
     'silk',
+    'google_translate',
 ]
 
 INSTALLED_APPS = [
