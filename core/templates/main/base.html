@@ -42,8 +42,10 @@
     <div class="container-fluid" id="main">
         <div class="row">
             <div class="col-md-12">
-                {% block content %}
-                {% endblock content%}
+              {% include 'messages/messages.html' %}
+
+              {% block content %}
+              {% endblock content%}
             </div>
         </div>
     </div>

@@ -247,7 +247,7 @@
         messages = [];
 
         let accounts_validated = true;
-        let twitch_account_exists = true;
+        let streaming_account_exists = true;
         let form_completed = true;
 
         let token = "";
@@ -278,29 +278,35 @@
         // verify account other wise don't
         if (stream_user.includes('http') || stream_user.includes('https') || stream_user.includes('twitch.tv') || stream_user.includes('facebook.com')) {
             messages.push(stream_type + ": You input an URL. It should be username only!");
-            twitch_account_exists = false;
+            streaming_account_exists = false;
 
         } else {
 
             if (stream_user != "") {
 
-                let twitch_token_promise = await ajax_request_get_twitch_token(twitch_api_verfication_client_id, twitch_api_verfication_client_secret);
-                token = twitch_token_promise['access_token'];
-                token_type = twitch_token_promise['token_type'][0].toUpperCase() + twitch_token_promise['token_type'].slice(1);
-                let twitch_account = await ajax_request_check_twitch_acc_exists(stream_user, token, token_type)
+                if (stream_type == "twitch") {
+                    let twitch_token_promise = await ajax_request_get_twitch_token(twitch_api_verfication_client_id, twitch_api_verfication_client_secret);
+                    token = twitch_token_promise['access_token'];
+                    token_type = twitch_token_promise['token_type'][0].toUpperCase() + twitch_token_promise['token_type'].slice(1);
+                    let twitch_account = await ajax_request_check_twitch_acc_exists(stream_user, token, token_type)
 
-                if (twitch_account['data'].length == 0) {
-                    messages.push("Unable to find your twitch user");
-                    twitch_account_exists = false;
-                    progress_bar[0].textContent = "Twitch account does not exist.. 35%";
-                } else {
+                    if (twitch_account['data'].length == 0) {
+                        messages.push("Unable to find your twitch user");
+                        streaming_account_exists = false;
+                        progress_bar[0].textContent = "Twitch account does not exist.. 35%";
+                    } else {
+                        progress_bar[0].style.width = "35%";
+                        progress_bar[0].textContent = "Validating twitch account.. 35%";
+                    }
+
+                } else if (stream_type == "facebook") {
                     progress_bar[0].style.width = "35%";
-                    progress_bar[0].textContent = "Validating twitch account.. 35%";
+                    progress_bar[0].textContent = "Validating facebook account.. 35%";
                 }
 
             } else {
-                messages.push("You did not input a twitch account");
-                twitch_account_exists = false;
+                messages.push("You did not input a streaming account");
+                streaming_account_exists = false;
             }
         }
 
@@ -455,7 +461,7 @@
         progress_bar[0].textContent = "Validating.. 75%";
 
         // Validate all users
-        if (accounts_validated == true && twitch_account_exists == true && form_completed == true) {
+        if (accounts_validated == true && streaming_account_exists == true && form_completed == true) {
             // Progress bar at 100%
             progress_bar[0].style.width = "100%";
             progress_bar[0].textContent = "Users and streaming account were validated.. 100%";
