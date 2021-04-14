@@ -393,6 +393,7 @@ class ConfigControllerAdminPage(forms.ModelForm):
             'competition_email_time_before_start',
             'competitions_dummy_data',
             'competition_email_active',
+            'anomaly_detection_active',
             'cod_url_warzone_stats',
             'cod_url_warzone_matches',
             'cod_x_rapidapi_key',

@@ -383,6 +383,8 @@ class ConfigController(models.Model):
     competition_email_active = models.BooleanField(default = True)
     competition_email_time_before_start = models.IntegerField(default = 60 * 30) # 60 seconds * 30 times = 30 minutes
 
+    anomaly_detection_active = models.BooleanField(default = True)
+
     cod_url_warzone_stats = models.CharField(max_length = 500,  null = True, unique = True)
     cod_url_warzone_matches = models.CharField(max_length = 500,  null = True, unique = True)
     cod_x_rapidapi_key = models.CharField(max_length = 250,  null = True, unique = True)
