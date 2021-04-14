@@ -35,7 +35,8 @@ def remediate_kds(request, comp_name):
     custom_config = {
         'cod_x_rapidapi_key': config.cod_x_rapidapi_key,
         'cod_x_rapidapi_host': config.cod_x_rapidapi_host,
-        'competitions_dummy_data': config.competitions_dummy_data
+        'competitions_dummy_data': config.competitions_dummy_data,
+        'anomaly_detection_active': config.anomaly_detection_active,
     }
     
     bg_tasks.remediate_users_kd(custom_config = custom_config, comp_name = comp_name)
@@ -178,7 +179,8 @@ def recalculate_scores(request, comp_name):
     custom_config = {
         'cod_x_rapidapi_key': config.cod_x_rapidapi_key,
         'cod_x_rapidapi_host': config.cod_x_rapidapi_host,
-        'competitions_dummy_data': config.competitions_dummy_data
+        'competitions_dummy_data': config.competitions_dummy_data,
+        'anomaly_detection_active': config.anomaly_detection_active,
     }
 
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
@@ -233,7 +235,8 @@ def manually_recalculate_score_once(request, comp_name):
     custom_config = {
         'cod_x_rapidapi_key': config.cod_x_rapidapi_key,
         'cod_x_rapidapi_host': config.cod_x_rapidapi_host,
-        'competitions_dummy_data': config.competitions_dummy_data
+        'competitions_dummy_data': config.competitions_dummy_data,
+        'anomaly_detection_active': config.anomaly_detection_active,
     }
 
     competition = StaffCustomCompetition.objects.get(competition_name = comp_name)

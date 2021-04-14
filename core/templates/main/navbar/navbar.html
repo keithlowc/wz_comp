@@ -1,0 +1,56 @@
+{% load static %}
+{% block content %}
+
+<div class="nav-side-menu">
+    <div class="brand">
+      <a class="navbar-brand pt-1 pb-2" href="{% url 'get_competitions_all' %}"><img src="{% static 'images/logo.png' %}"></a>
+    </div>
+    <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+    <div class="menu-list">
+
+        <ul id="menu-content" class="menu-content collapse out">
+          <p class="text-white font-weight-bold text-uppercase px-3 pb-4 pt-4 mb-0">Main Panel</p>
+            <li>
+              <a class="nav-item nav-link" href="{% url 'get_competitions_all' %}">Competitions</a>
+            </li>
+
+            <li>
+              <a class="nav-item nav-link" href="{% url 'get_past_tournaments' %}">Past Competitions</a>
+            </li>
+
+            <li>
+              <a class="nav-item nav-link" href="https://discord.gg/RkThGa9qgw">Contact Us</a>
+            </li>
+
+          {% if user.is_authenticated%}
+            {% if user.is_staff or user.is_superuser %}
+
+            <p class="text-white font-weight-bold text-uppercase px-3 pb-4 pt-4 mb-0">Admin Panel</p>
+            <li>
+              <a class="nav-item nav-link" href="/admin">Manage Competitions</a>
+            </li>
+            <li>
+              <a class="nav-item nav-link" href="{% url 'verify_individual_player' %}">Verify Player</a>
+            </li>
+            
+          {% endif %}
+            <p class="text-white font-weight-bold text-uppercase px-3 pb-4 pt-4 mb-0">Account Panel</p>
+            <!-- <li>
+              <a class="nav-item nav-link" href="{% url 'logout' %}">Profile</a>
+            </li> -->
+            <li>
+              <a class="nav-item nav-link" href="{% url 'logout' %}">Log Out</a>
+            </li>
+          {% else %}
+            <p class="text-white font-weight-bold text-uppercase px-3 pb-4 pt-4 mb-0">Account Panel</p>
+            <li>
+              <a class="nav-item nav-link" href="{% url 'login' %}">Log In</a>
+            </li>
+            <!-- <li>
+              <a class="nav-item nav-link" href="{% url 'signup' %}">Sign Up</a>
+            </li> -->
+          </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
