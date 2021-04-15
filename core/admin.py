@@ -3,7 +3,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 import csv, datetime
 
-from .models import StaffCustomTeams, Match, Player, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, Analytics, PastTournaments, PastTeams
+from .models import StaffCustomTeams, Match, Player, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, Analytics, PastTournaments, PastTeams, RocketLeague
 from .forms import TeamFormAdminPage, TeamFormAdminPageSuperUser, CompetitionAdminPage, CompetitionAdminPageSuperUser, ConfigControllerAdminPage
 
 # from background_task.models import Task
@@ -388,3 +388,7 @@ class ConfigControllerAdmin(admin.ModelAdmin):
 
 admin.site.register(ConfigController, ConfigControllerAdmin)
 
+class RocketLeagueAdmin(admin.ModelAdmin):
+    list_display = ('team_name', 'captain_name', 'captain_cellphone_number', 'captain_email', 'player_1_id', 'player_2_id', 'player_3_id')
+
+admin.site.register(RocketLeague, RocketLeagueAdmin)

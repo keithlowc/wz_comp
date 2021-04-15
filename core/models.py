@@ -430,5 +430,46 @@ class Analytics(models.Model):
     def __str__(self):
         return str(self.date)
 
+# Temporary code
+class RocketLeague(models.Model):
+    team_name = models.CharField(max_length = 150, null = True, unique = True)
+    captain_name = models.CharField(max_length = 100, null = True)
+    captain_cellphone_number = models.CharField(max_length = 100, null = True)
+    captain_email = models.EmailField()
+
+    platform_type = [
+        ('PC', 'PC'),
+        ('PSN', 'PSN'),
+        ('XBOX', 'XBOX'),
+    ]
+
+    rank_type = [
+        ('Bronze', 'Bronze'),
+        ('Silver', 'Silver'),
+        ('Platinum', 'Platinum'),
+        ('Diamond', 'Diamond'),
+        ('Champion', 'Champion'),
+        ('Grand Champion', 'Grand Champion'),
+    ]
+
+    player_1_id = models.CharField(max_length = 200, null = True, unique = True)
+    player_1_platform = models.CharField(max_length = 5, choices = platform_type)
+    player_1_rank = models.CharField(max_length = 50, choices = rank_type)
+
+    player_2_id = models.CharField(max_length = 200, null = True, unique = True)
+    player_2_platform = models.CharField(max_length = 5, choices = platform_type)
+    player_2_rank = models.CharField(max_length = 50, choices = rank_type)
+
+    player_3_id = models.CharField(max_length = 200, null = True, unique = True)
+    player_3_platform = models.CharField(max_length = 5, choices = platform_type)
+    player_3_rank = models.CharField(max_length = 50, choices = rank_type)
+
+    class Meta:
+        verbose_name = 'Rocket League Team'
+        verbose_name_plural = 'Rocket League Teams'
+    
+    def __str__(self):
+        return str(self.team_name)
+
 
 
