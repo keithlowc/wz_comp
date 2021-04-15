@@ -30,4 +30,7 @@ urlpatterns = [
 
     # Data remediation
     path('competition/<str:comp_name>/dataremediation', views.remediate_kds, name = 'remediate_kds'),
+
+    # Temporary Rocket League
+    path('rocketleague/form/total_upgrade', views.show_rocket_league_form, name = 'show_rocket_league_form'),
 ]

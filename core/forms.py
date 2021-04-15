@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, PlayerVerification, ConfigController, AbstractModel
+from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, PlayerVerification, ConfigController, AbstractModel, RocketLeague
 
 from django.core.exceptions import ValidationError
 
@@ -410,3 +410,18 @@ class ConfigControllerAdminPage(forms.ModelForm):
             'competitions_page_refresh_time': 'Competition Page refresh time (Miliseconds)',
             'competition_email_time_before_start': 'Competition time to fire email job before competition start (Seconds)',
         }
+
+
+# Temporary Rocket League form
+
+class RocketLeagueForm(forms.ModelForm):
+    '''
+    Rocket league form for total upgrade
+    '''
+
+    class Meta:
+        model = RocketLeague
+        fields = ('team_name','captain_name','captain_cellphone_number','captain_email',
+                    'player_1_id', 'player_1_platform', 'player_1_rank', 'player_2_id',
+                    'player_2_platform', 'player_2_rank', 'player_3_id', 'player_3_platform',
+                    'player_3_rank')
