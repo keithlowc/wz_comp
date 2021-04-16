@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import FileResponse
 
 from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, PastTournaments, PastTeams
-from .forms import JoinCompetitionRequestForm, EmailCommunicationForm, PlayerVerificationForm, CompetitionPasswordRequestForm
+from .forms import JoinCompetitionRequestForm, EmailCommunicationForm, PlayerVerificationForm, CompetitionPasswordRequestForm, RocketLeagueForm
 
 from silk.profiling.profiler import silk_profile
 from . import signals, util, bg_tasks
@@ -507,3 +507,29 @@ def verify_individual_player(request):
         'config': config,
     }
     return render(request, 'verify/public_or_not.html', context)
+
+
+# Temporary Rocket League
+
+def show_rocket_league_form(request):
+
+    if request.method == 'POST':
+        form = RocketLeagueForm(request.POST)
+        if form.is_valid():
+            rocket = form.save(commit = False)
+            team_name = rocket.team_name
+            rocket.save()
+
+            signals.send_message.send(sender = None,
+                                    request = request,
+                                    message = 'Your team {} has succesfully been entered to Total Upgrade competition'.format(team_name),
+                                    type = 'SUCCESS')
+
+            return redirect('show_rocket_league_form')
+
+    form = RocketLeagueForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'forms/rocket_league_form.html', context)
