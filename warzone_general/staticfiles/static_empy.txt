@@ -1,1 +1,0 @@
-this file allows to keep the staticfiles folder empty on git
