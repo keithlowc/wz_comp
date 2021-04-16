@@ -444,12 +444,8 @@ class RocketLeague(models.Model):
     ]
 
     rank_type = [
-        ('Bronze', 'Bronze'),
-        ('Silver', 'Silver'),
+        ('Gold', 'Gold'),
         ('Platinum', 'Platinum'),
-        ('Diamond', 'Diamond'),
-        ('Champion', 'Champion'),
-        ('Grand Champion', 'Grand Champion'),
     ]
 
     player_1_id = models.CharField(max_length = 200, null = True, unique = True)
