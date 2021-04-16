@@ -1,0 +1,55 @@
+body {
+    background-color:#1E242B;
+}
+
+.h1, h1, h5, h2, a, i{
+    color:#EFEFEF!important;
+}
+
+/* Miscellaneous */
+
+.font-color-black {
+    color: black!important;;
+}
+
+/* Navigation bar */
+.bg-light {
+    background-color:#2D3640!important;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color:#EBECEC;
+}
+
+.navbar-light .navbar-brand {
+    color:#EFEFEF;
+}
+
+/* Card image */
+.circular {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.circular img {
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+/* Card header */
+
+.card-header:first-child {
+    background-color: #212529!important;
+}
