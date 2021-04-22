@@ -2,7 +2,7 @@ body {
     background-color:#1E242B;
 }
 
-.h1, h2, h3, h4, h5, i{
+.h1, h2, h3, h4, h5, a, i{
     color:#EFEFEF!important;
     font-family: 'Roboto', sans-serif;
 }
@@ -153,25 +153,6 @@ body {
 .youtube-icon-color {
     color: #FF0000!important;
 }
-
-.oauth-button {
-    transition: .4s;
-}
-
-.oauth-button:hover {
-    transition: .4s;
-    filter: brightness(85%);
-}
-
-.google {
-    background-color: #dd4b39;
-    color: white;
-  }
-
-.fb {
-    background-color: #3B5998;
-    color: white;
-  }
 
 /* Check mark */
 

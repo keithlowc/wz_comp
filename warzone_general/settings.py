@@ -60,7 +60,38 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-] + CUSTOM_APPS + LIBRARY_APPS
+
+    # DJANGO ALL_AUTH
+    'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.twitch',
+    # 'allauth.socialaccount.providers.facebook',
+
+] + LIBRARY_APPS + CUSTOM_APPS
+
+# DJANGO ALL_AUTH
+SITE_ID = 2 # This is the id of the site on the admin, usually id = 1 but i deleted it
+
+# https://dev.to/gajesh/the-complete-django-allauth-guide-la3
+
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 7 # Email will expire in 7 days
+ACCOUNT_EMAIL_REQUIRED = True # Email needs to be verified
+ACCOUNT_EMAIL_VERIFICATION = "mandatory" # Block user from loggin in before verifying account
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400 # 1 day in seconds
+
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+# Here you can overwrite sign up forms
+ACCOUNT_FORMS = {
+    'signup': 'authentication.forms.CustomSignupForm',
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -159,8 +190,15 @@ MEDIA_URL = '/images/'
 
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+# Authentication from django all_auth
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',
@@ -198,6 +236,8 @@ EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
 EMAIL_HOST_PASSWORD = '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'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+DEFAULT_FROM_EMAIL = 'dueloutesports@gmail.com' #https://stackoverflow.com/questions/61853146/django-sendgrid-allauth
 
 # DJANGO REST FRAMEWORK
 REST_FRAMEWORK = {
