@@ -86,6 +86,7 @@ ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400 # 1 day in seconds
 
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
+ACCOUNT_DEFAULT_HTTP_PROTOCOL='https'
 
 # Here you can overwrite sign up forms
 ACCOUNT_FORMS = {
