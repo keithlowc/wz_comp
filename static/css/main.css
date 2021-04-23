@@ -156,12 +156,12 @@ body {
 
 .oauth-button {
     transition: .4s;
-    color: white;
 }
 
 .oauth-button:hover {
     transition: .4s;
     filter: brightness(85%);
+    color: white;
 }
 
 .google {
