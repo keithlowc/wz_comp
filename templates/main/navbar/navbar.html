@@ -24,6 +24,10 @@
               <a class="nav-item nav-link white-color-font" href="https://discord.gg/RkThGa9qgw">Contact Us</a>
             </li>
 
+            <li>
+              <a class="nav-item nav-link white-color-font" href="/privacy_policy">Privacy Policy</a>
+            </li>
+
           {% if user.is_authenticated%}
             {% if user.is_staff or user.is_superuser %}
 
@@ -48,8 +52,9 @@
             <li>
               <a class="nav-item nav-link white-color-font" href="/accounts/signup/">Sign up</a>
             </li>
+
           </ul>
-        {% endif %}
+          {% endif %}
         
         <!-- {% google_translate type='simple' language='en' %} -->
 

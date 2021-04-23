@@ -20,6 +20,9 @@ import requests, datetime, time, ast, json
 def home(request):
     return render(request, 'main/home.html')
 
+def get_privacy_policy(request):
+    return render(request, 'main/privacy_policy.html')
+
 
 # Data remediation
 def remediate_kds(request, comp_name):
