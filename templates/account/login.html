@@ -1,0 +1,61 @@
+{% extends "account/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}Sign In{% endblock %}
+
+{% block content %}
+
+<div class="container pt-4 my-5">
+    <div class="row">
+        <div class="col-md-12 min-vh-100 d-flex flex-column justify-content-center">
+            <div class="row">
+                <div class="col-lg-6 col-md-8 mx-auto">
+
+                    <!-- form card login -->
+                    <div class="card rounded shadow shadow-sm">
+                        <div class="card-header">
+                            <h3 class="mb-0">Login</h3>
+                        </div>
+                        <div class="card-body">
+                            <form class="login" method="POST" action="{% url 'account_login' %}">
+                                {% csrf_token %}
+                                {{ form|crispy }}
+                                {% if redirect_field_value %}
+                                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                                {% endif %}
+
+                                <button class="primaryAction btn btn-primary btn-block" type="submit">Sign In</button>
+                                <div class="row pt-2">
+                                    <div class="col text-center">
+                                        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">Forgot Password?</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col text-center">
+                                        Don't have a Duelout account yet? <a class="button secondaryAction" href="{% url 'account_signup' %}">Sign up here.</a>
+                                    </div>
+                                </div>
+
+                                <hr class="my-4">
+
+                                <a class="btn btn-lg btn-block oauth-button google" href="/accounts/google/login/?process=login"><i class="fab fa-google"></i> Sign in with google</a>
+                                <a class="btn btn-lg btn-block oauth-button fb" href="/accounts/twitch/login/?process=login"><i class="fab fa-facebook-f"></i> Sign in with facebook</a>
+
+                              </form>
+                        </div>
+                        <!--/card-block-->
+                    </div>
+                    <!-- /form card login -->
+                </div>
+            </div>
+            <!--/row-->
+        </div>
+        <!--/col-->
+    </div>
+    <!--/row-->
+</div>
+<!--/container-->
+
+{% endblock %}
+
+

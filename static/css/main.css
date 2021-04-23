@@ -156,6 +156,7 @@ body {
 
 .oauth-button {
     transition: .4s;
+    color: white;
 }
 
 .oauth-button:hover {
