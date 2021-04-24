@@ -143,6 +143,8 @@ DATABASES = {
 if 'SERVER' in os.environ:
     DATABASES['default'] = dj_database_url.config()
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None
+
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
