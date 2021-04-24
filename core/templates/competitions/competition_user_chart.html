@@ -8,7 +8,7 @@
   <div class="row pt-2 pb-2">
     <div class="col-2"></div>
       <div class="col-8">
-        <a type="button" class="btn btn-info btn-block" onclick="runCharts('{{ user|remove_everything_after_hashtag }}')" data-toggle="modal" data-target="#damageModal-{{user|remove_everything_after_hashtag}}">
+        <a type="button" class="btn btn-info btn-block white-color-font" onclick="runCharts('{{ user|remove_everything_after_hashtag }}')" data-toggle="modal" data-target="#damageModal-{{user|remove_everything_after_hashtag}}">
           {{ user }}
           {% if errors != None %}
             <span class="badge badge-danger">{{ errors }}</span>

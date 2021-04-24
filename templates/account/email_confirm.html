@@ -1,0 +1,53 @@
+{% extends "account/base.html" %}
+
+{% load account %}
+
+{% block head_title %}Confirm E-mail Address{% endblock %}
+
+{% block content %}
+
+<div class="container pt-4 my-5">
+    <div class="row">
+        <div class="col-md-12 min-vh-100 d-flex flex-column justify-content-center">
+            <div class="row">
+                <div class="col-lg-6 col-md-8 mx-auto">
+
+                    <!-- form card login -->
+                    <div class="card rounded shadow shadow-sm">
+                        <div class="card-header">
+                            <h3 class="mb-0">Confirm e-mail address</h3>
+                        </div>
+                        <div class="card-body">
+                            {% if confirmation %}
+
+                                {% user_display confirmation.email_address.user as user_display %}
+
+                                <p>{% with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user <b>{{ user_display|title }}</b>.{% endwith %}</p>
+
+                                <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-primary btn-block" type="submit">Confirm</button>
+                                </form>
+
+                            {% else %}
+
+                                {% url 'account_email' as email_url %}
+
+                                <p>This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.</p>
+
+                            {% endif %}
+                        </div>
+                        <!--/card-block-->
+                    </div>
+                    <!-- /form card login -->
+                </div>
+            </div>
+            <!--/row-->
+        </div>
+        <!--/col-->
+    </div>
+    <!--/row-->
+</div>
+<!--/container-->
+
+{% endblock %}
