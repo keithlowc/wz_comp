@@ -1,23 +1,23 @@
 {% block content %}
     <div class="navbar bg-light justify-content-center">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <h1 class="white-color-font">Top records Kills <i class="fas fa-skull-crossbones"></i></h1>
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <h1 class="white-color-font text-center pb-2">Top records Kills <i class="fas fa-skull-crossbones"></i></h1>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col p-2">
-                        <a class="btn btn-primary btn-block p-2" href="#">
+                        <a class="btn btn-primary btn-block btn-lg p-2" href="#">
                             <div class="row text-align-left">
                                 <div class="col">
                                     <h3>Solos</h3>
                                     <hr>
                                     <div class="row">
                                         <div class="col">
-                                            <p class="leaderboard">Makako Gaming:</p>
+                                            <p class="leaderboard">{{ solo.team_name|title }}:</p>
                                         </div>
                                         <div class="col">
                                             <b class="black-color-font leaderboard">20 <i class="fas fa-skull-crossbones black-color-font"></i></b>
@@ -33,14 +33,14 @@
                         </a>
                     </div>
                     <div class="col p-2">
-                        <a class="btn btn-success btn-block p-2" href="#">
+                        <a class="btn btn-success btn-block btn-lg p-2" href="#">
                             <div class="row text-align-left">
                                 <div class="col">
                                     <h3>Duos</h3>
                                     <hr>
                                     <div class="row">
                                         <div class="col">
-                                            <p class="leaderboard">Makako Gaming:</p>
+                                            <p class="leaderboard">{{ duo.team_name|title }}:</p>
                                         </div>
                                         <div class="col">
                                             <b class="black-color-font leaderboard">20 <i class="fas fa-skull-crossbones black-color-font"></i></b>
@@ -56,14 +56,14 @@
                         </a>
                     </div>
                     <div class="col p-2">
-                        <a class="btn btn-primary btn-block p-2" href="#">
+                        <a class="btn btn-primary btn-block btn-lg p-2" href="#">
                             <div class="row text-align-left">
                                 <div class="col">
                                     <h3>Trios</h3>
                                     <hr>
                                     <div class="row">
                                         <div class="col">
-                                            <p class="leaderboard">Makako Gaming:</p>
+                                            <p class="leaderboard">{{ trio.team_name|title }}:</p>
                                         </div>
                                         <div class="col">
                                             <b class="black-color-font leaderboard">20 <i class="fas fa-skull-crossbones black-color-font"></i></b>
@@ -79,14 +79,14 @@
                         </a>
                     </div>
                     <div class="col p-2">
-                        <a class="btn btn-success btn-block p-2" href="#">
+                        <a class="btn btn-success btn-block btn-lg p-2" href="#">
                             <div class="row text-align-left">
                                 <div class="col">
                                     <h3>Squads</h3>
                                     <hr>
                                     <div class="row">
                                         <div class="col">
-                                            <p class="leaderboard">Makako Gaming:</p>
+                                            <p class="leaderboard">{{ squad.team_name|title }}:</p>
                                         </div>
                                         <div class="col">
                                             <b class="black-color-font leaderboard">20 <i class="fas fa-skull-crossbones black-color-font"></i></b>
