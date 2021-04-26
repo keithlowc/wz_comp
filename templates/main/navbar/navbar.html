@@ -21,11 +21,7 @@
             </li>
 
             <li>
-              <a class="nav-item nav-link white-color-font" href="https://discord.gg/RkThGa9qgw">Contact Us</a>
-            </li>
-
-            <li>
-              <a class="nav-item nav-link white-color-font" href="/privacy_policy">Privacy Policy</a>
+              <a class="nav-item nav-link white-color-font" href="{% url 'show_records' %}">Top Records</a>
             </li>
 
           {% if user.is_authenticated%}
@@ -53,8 +49,20 @@
               <a class="nav-item nav-link white-color-font" href="/accounts/signup/">Sign up</a>
             </li>
 
-          </ul>
+
           {% endif %}
+          
+          <p class="text-white font-weight-bold text-uppercase px-3 pb-4 pt-4 mb-0">Extra</p>
+
+          <li>
+            <a class="nav-item nav-link white-color-font" href="https://discord.gg/RkThGa9qgw">Contact Us</a>
+          </li>
+
+          <li>
+            <a class="nav-item nav-link white-color-font" href="/privacy_policy">Privacy Policy</a>
+          </li>
+
+        </ul>
         
         <!-- {% google_translate type='simple' language='en' %} -->
 

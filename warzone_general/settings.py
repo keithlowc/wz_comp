@@ -42,6 +42,7 @@ else:
 
 CUSTOM_APPS = [
     'core',
+    'leaderboards',
     'authentication',
 ]
 
