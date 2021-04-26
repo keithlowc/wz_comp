@@ -10,17 +10,19 @@
                 </div>
                 <div class="row">
                     <div class="col p-2">
-                        <a class="btn btn-primary btn-block btn-lg p-2" href="#">
+                        <a class="btn btn-primary btn-block btn-lg p-2" href="#solos">
                             <div class="row text-align-left">
                                 <div class="col">
                                     <h3>Solos</h3>
                                     <hr>
                                     <div class="row">
                                         <div class="col">
-                                            <p class="leaderboard">{{ solo.team_name|title }}:</p>
+                                            <p class="leaderboard">{{ solo.team_name|title }}</p>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col">
-                                            <b class="black-color-font leaderboard">{{ solo.kills }} <i class="fas fa-skull-crossbones black-color-font"></i></b>
+                                            <b class="black-color-font leaderboard">{{ solo.kills }} <i class="fas fa-skull-crossbones black-color-font" data-toggle="tooltip" data-placement="top" title="Record kills"></i></b>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -33,17 +35,19 @@
                         </a>
                     </div>
                     <div class="col p-2">
-                        <a class="btn btn-success btn-block btn-lg p-2" href="#">
+                        <a class="btn btn-success btn-block btn-lg p-2" href="#duos">
                             <div class="row text-align-left">
                                 <div class="col">
                                     <h3>Duos</h3>
                                     <hr>
                                     <div class="row">
                                         <div class="col">
-                                            <p class="leaderboard">{{ duo.team_name|title }}:</p>
+                                            <p class="leaderboard">{{ duo.team_name|title }}</p>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col">
-                                            <b class="black-color-font leaderboard">{{ duo.kills }} <i class="fas fa-skull-crossbones black-color-font"></i></b>
+                                            <b class="black-color-font leaderboard">{{ duo.kills }} <i class="fas fa-skull-crossbones black-color-font" data-toggle="tooltip" data-placement="top" title="Record kills"></i></b>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -56,17 +60,19 @@
                         </a>
                     </div>
                     <div class="col p-2">
-                        <a class="btn btn-primary btn-block btn-lg p-2" href="#">
+                        <a class="btn btn-primary btn-block btn-lg p-2" href="#trios">
                             <div class="row text-align-left">
                                 <div class="col">
                                     <h3>Trios</h3>
                                     <hr>
                                     <div class="row">
                                         <div class="col">
-                                            <p class="leaderboard">{{ trio.team_name|title }}:</p>
+                                            <p class="leaderboard">{{ trio.team_name|title }}</p>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col">
-                                            <b class="black-color-font leaderboard">{{ trio.kills }} <i class="fas fa-skull-crossbones black-color-font"></i></b>
+                                            <b class="black-color-font leaderboard">{{ trio.kills }} <i class="fas fa-skull-crossbones black-color-font" data-toggle="tooltip" data-placement="top" title="Record kills"></i></b>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -79,17 +85,19 @@
                         </a>
                     </div>
                     <div class="col p-2">
-                        <a class="btn btn-success btn-block btn-lg p-2" href="#">
+                        <a class="btn btn-success btn-block btn-lg p-2" href="#squads">
                             <div class="row text-align-left">
                                 <div class="col">
                                     <h3>Squads</h3>
                                     <hr>
                                     <div class="row">
                                         <div class="col">
-                                            <p class="leaderboard">{{ squad.team_name|title }}:</p>
+                                            <p class="leaderboard">{{ squad.team_name|title }}</p>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col">
-                                            <b class="black-color-font leaderboard">{{ squad.kills }} <i class="fas fa-skull-crossbones black-color-font"></i></b>
+                                            <b class="black-color-font leaderboard">{{ squad.kills }} <i class="fas fa-skull-crossbones black-color-font" data-toggle="tooltip" data-placement="top" title="Record kills"></i></b>
                                         </div>
                                     </div>
                                     <div class="row">

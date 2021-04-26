@@ -8,10 +8,10 @@ def home(request):
     return render(request, 'home.html')
 
 def show_records(request):
-    solos = Teams.objects.filter(record_mode = 'Solos').order_by('-kills')
-    duos = Teams.objects.filter(record_mode = 'Duos').order_by('-kills')
-    trios = Teams.objects.filter(record_mode = 'Trios').order_by('-kills')
-    squads = Teams.objects.filter(record_mode = 'Squads').order_by('-kills')
+    solos = Teams.objects.filter(record_mode = 'Solos').order_by('-kills')[:5]
+    duos = Teams.objects.filter(record_mode = 'Duos').order_by('-kills')[:5]
+    trios = Teams.objects.filter(record_mode = 'Trios').order_by('-kills')[:5]
+    squads = Teams.objects.filter(record_mode = 'Squads').order_by('-kills')[:5]
 
     context = {
         'solos': solos,
