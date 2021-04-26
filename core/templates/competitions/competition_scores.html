@@ -197,7 +197,7 @@
                     <div class="card mt-1">
                         <div class="card-header" role="tab" id="headingThree">
                           <h5 class="mb-0">
-                            <a id="{{team}}-collapse" onclick="loadStreamVideoToFrame('{{team}}-collapse', '{{team.team_stream_user}}-header-twitch', '{{team.team_stream_user}}-iframe'); toggleIcon('{{ forloop.counter0|add }}')" class="collapsed" data-toggle="collapse" href="#{{ team }}" aria-expanded="false" aria-controls="{{ team }}">
+                            <a id="{{team}}-collapse" class="white-color-font" onclick="loadStreamVideoToFrame('{{team}}-collapse', '{{team.team_stream_user}}-header-twitch', '{{team.team_stream_user}}-iframe'); toggleIcon('{{ forloop.counter0|add }}')" class="collapsed" data-toggle="collapse" href="#{{ team }}" aria-expanded="false" aria-controls="{{ team }}">
                                   <div class="row">
                                     
                                     <div class="col-1">
@@ -304,7 +304,7 @@
                                             <div class="card">
                                             <div class="card-header" role="tab" id="headingInside">
                                                 <h5 class="mb-0">
-                                                <a class="collapsed" onclick="toggleIcon_2('{{forloop.counter0|add}}-{{team.team_name|convert_spaces_to_underscore}}')" data-toggle="collapse" href="#{{ forloop.counter0|add }} - {{key}} - {{team}}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }} - {{key}} - {{team}}">
+                                                <a class="collapsed white-color-font" onclick="toggleIcon_2('{{forloop.counter0|add}}-{{team.team_name|convert_spaces_to_underscore}}')" data-toggle="collapse" href="#{{ forloop.counter0|add }} - {{key}} - {{team}}" aria-expanded="false" aria-controls="{{ forloop.counter0|add }} - {{key}} - {{team}}">
                                                     <div class="row">
                                                       <div class="col-8 my-auto">Match #{{ forloop.counter0|add }}</div>
 

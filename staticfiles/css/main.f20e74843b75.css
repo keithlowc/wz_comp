@@ -2,7 +2,7 @@ body {
     background-color:#1E242B;
 }
 
-.h1, h2, h3, h4, h5, i{
+.h1, h2, h3, h4, h5, a, i{
     color:#EFEFEF!important;
     font-family: 'Roboto', sans-serif;
 }
@@ -154,31 +154,6 @@ body {
     color: #FF0000!important;
 }
 
-.oauth-button {
-    transition: .4s;
-}
-
-.oauth-button:hover {
-    transition: .4s;
-    filter: brightness(85%);
-    color: white;
-}
-
-.google {
-    background-color: #dd4b39;
-    color: white;
-  }
-
-.fb {
-    background-color: #3B5998;
-    color: white;
-  }
-
-.twitch {
-    background-color: #772CE8!important;
-    color: white;
-  }
-
 /* Check mark */
 
 .check-mark-icon {
@@ -199,9 +174,9 @@ body {
 
 /* Forms labels */
 
-/* label {
-    color: white;
-} */
+label {
+    color: black;
+}
 
 /* Form color */
 

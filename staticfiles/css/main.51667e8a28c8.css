@@ -154,30 +154,9 @@ body {
     color: #FF0000!important;
 }
 
-.oauth-button {
-    transition: .4s;
+.google-button-color {
+    background-color: #A94942!important;
 }
-
-.oauth-button:hover {
-    transition: .4s;
-    filter: brightness(85%);
-    color: white;
-}
-
-.google {
-    background-color: #dd4b39;
-    color: white;
-  }
-
-.fb {
-    background-color: #3B5998;
-    color: white;
-  }
-
-.twitch {
-    background-color: #772CE8!important;
-    color: white;
-  }
 
 /* Check mark */
 

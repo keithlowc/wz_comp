@@ -20,6 +20,9 @@ import requests, datetime, time, ast, json
 def home(request):
     return render(request, 'main/home.html')
 
+def get_privacy_policy(request):
+    return render(request, 'main/privacy_policy.html')
+
 
 # Data remediation
 def remediate_kds(request, comp_name):
@@ -375,12 +378,6 @@ def migrate_competition_to_past_tournaments(request, comp_name):
     return redirect('get_past_tournaments')
 
 
-# Charts data
-
-def show_chart(request):
-    return render(request,  'competitions/competition_user_chart.html')
-
-
 # Competition check in
 
 def check_in_to_competition(request, comp_name, checked_in_uuid):
@@ -431,6 +428,10 @@ def show_competition_dashboard(request, comp_name):
         'comp_name': comp_name,
     }
     return render(request, 'competitions/dashboard/dashboard.html', context)
+
+
+def show_chart(request):
+    return render(request,  'competitions/competition_user_chart.html')
 
 
 # Competition Communication
