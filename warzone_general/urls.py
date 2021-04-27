@@ -22,6 +22,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
 
     path('', include('core.urls')),
+    path('', include('leaderboards.urls')),
     path('', include('api.urls')),
 
     path('silk/', include('silk.urls', namespace='silk'))
