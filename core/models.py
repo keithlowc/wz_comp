@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.contrib import admin
 
+from django_countries.fields import CountryField
+
 from datetime import datetime
 
 from .validators import validate_competition_name
@@ -429,6 +431,13 @@ class Analytics(models.Model):
     
     def __str__(self):
         return str(self.date)
+
+
+class Profile(models.Model):
+    description = models.CharField(max_length = 250, null = True)
+    country = CountryField()
+    warzone_tag = models.CharField(max_length = 100, null = True, blank = True)
+    stream_url = models.URLField()
 
 # Temporary code
 class RocketLeague(models.Model):
