@@ -65,6 +65,48 @@ def get_or_create_profile(request):
     return render(request, 'user_profiles/profile.html', context = context)
 
 
+def get_team_profile(request, team_name):
+    '''
+    Returns the team profile page
+    '''
+
+    team = Team.objects.get(name = team_name)
+
+    context = {
+        'name': team.name,
+        'members': team.members.all(),
+        'description': team.description,
+        'invite_code': team.invite_code,
+    }
+
+    return render(request, 'teams/team.html', context = context)
+
+
+def join_team(request, team_name, invite_code):
+    '''
+    Allows the user to join the team
+    with the given invitation code
+    '''
+    
+    try:
+        team = Team.objects.get(name = team_name, invite_code = invite_code)
+        profile = Profile.objects.get(user = request.user)
+        team.members.add(profile)
+        team.save()
+
+        signals.send_message.send(sender = None,
+                request = request,
+                message = 'You have joined the team',
+                type = 'SUCCESS')
+
+    except Exception as e:
+        signals.send_message.send(sender = None,
+            request = request,
+            message = 'There was an issue joining the team with error {}'.format(e),
+            type = 'WARNING')
+
+    return redirect('get_team_profile', team_name = team_name)
+
 
 # Data remediation
 def remediate_kds(request, comp_name):

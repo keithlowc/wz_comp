@@ -48,7 +48,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-8 col-md-12 col-sm-12 border-left">
-                                    <div class="row">
+                                    <div class="row pt-4">
                                         <div class="col">
                                             <h3 class="display-4 black-color-font">Current Teams:</h3>
                                         </div>
@@ -59,7 +59,7 @@
                                                 {% for team in teams %}
                                                     <div class="row">
                                                         <div class="col">
-                                                            <a href="#">{{forloop.counter0|add}} - {{ team }}</a>
+                                                            <a href="{% url 'get_team_profile' team_name=team.name %}">{{forloop.counter0|add}} - {{ team }}</a>
                                                         </div>
                                                     </div>
                                                 {% endfor %}
@@ -70,14 +70,42 @@
                                     </div>
                                     <div class="row">
                                         <div class="col">
-                                            <a class="btn btn-primary white-color-font">Join a team</a>
+                                            <!-- Button trigger modal -->
+                                            <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+                                                Create a team
+                                            </button> -->
+                                            
+                                            <!-- Modal -->
+                                            <!-- <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title black-color-font" id="exampleModalLongTitle">Join a team</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                            <div class="modal-body">
+                                                                <form>
+                                                                    {% csrf_token %}
+                                                                    {{ form|crispy }}
+                                                                </form>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
                                             <a class="btn btn-primary white-color-font">Create a team</a>
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
-
 
 
                         </div>
@@ -93,5 +121,7 @@
     <!--/row-->
 </div>
 <!--/container-->
+
+
 
 {% endblock %}

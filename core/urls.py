@@ -10,6 +10,8 @@ urlpatterns = [
     # User profile patch
 
     path('profile', views.get_or_create_profile, name = 'get_or_create_profile'),
+    path('team/<str:regiment_name>', views.get_regiment_profile, name = 'get_regiment_profile'),
+    path('team/<str:regiment_name>/invite/<str:invite_code>', views.join_team, name = 'join_team'),
 
     # Competition charts
     path('competition/user/chart', views.show_chart, name = 'show_chart'),

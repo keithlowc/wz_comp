@@ -452,6 +452,7 @@ class Team(models.Model):
     members = models.ManyToManyField(Profile)
     name = models.CharField(max_length = 100, null = True)
     description = models.TextField(max_length = 250)
+    invite_code = models.CharField(max_length = 50, default = uuid.uuid4().hex[:6].upper())
 
     class Meta:
         verbose_name = 'Team'

@@ -1,0 +1,106 @@
+{% extends 'main/base.html' %}
+{% load custom_filtering_tags %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container my-5 h-100">
+    <div class="row h-100 align-items-center">
+        <div class="col-md-12 min-vh-100 d-flex flex-column">
+            <div class="row">
+                <div class="col-lg-12 mx-auto">
+
+                    <!-- form card login -->
+                    <div class="card rounded shadow shadow-sm">
+                        <div class="card-header">
+                            <h3 class="mb-0">Team profile</h3>
+                        </div>
+                        <div class="card-body text-center">
+
+                           <div class="row">
+                               <div class="col-2 col-lg-2 col-md-12 col-sm-12">
+                                   <div class="row">
+                                        <div class="col">
+                                            <img src="https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png" class="rounded" alt="Cinque Terre" style="height: 100px; width: 100px">
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                       <div class="col">
+                                        <h3 class="black-color-font">{{ name }}</h3>
+                                       </div>
+                                   </div>
+                                    
+                               </div>
+                               <div class="col-10 col-lg-10 col-md-12 col-sm-12 text-left">
+                                   <div class="row">
+                                       <div class="col">
+                                            <h3 class="black-color-font">Description:</h3>
+                                            <p>{{ description }}</p>
+                                       </div>
+                                   </div>
+
+                                   <div class="row">
+                                        <div class="col">
+                                            <h3 class="black-color-font">Members:</h3>
+                                            {% for member in members %}
+                                                <p>{{ forloop.counter0|add }} - {{ member|title }} - {{ member.country }}</p>
+                                            {% endfor %}
+                                        </div>
+                                   </div>
+                                   
+                                   <div class="row">
+                                       <div class="col">
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+                                               Invite member
+                                            </button>
+                                            
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title black-color-font" id="exampleModalLongTitle">Invitation url</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                            <div class="modal-body">
+                                                                <p>Send this url to the person you are inviting!</p>
+                                                                <a href="{{ request.build_absolute_uri  }}/invite/{{invite_code}}">{{ request.build_absolute_uri  }}/invite/{{invite_code}}</a>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                       </div>
+                                   </div>
+
+                               </div>
+                           </div>
+
+
+                        </div>
+                        <!--/card-block-->
+                    </div>
+                    <!-- /form card login -->
+                </div>
+            </div>
+            <!--/row-->
+        </div>
+        <!--/col-->
+    </div>
+    <!--/row-->
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+</script>
+
+{% endblock %}
