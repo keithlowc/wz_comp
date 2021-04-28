@@ -50,21 +50,21 @@
                                 <div class="col-lg-8 col-md-12 col-sm-12 border-left">
                                     <div class="row pt-4">
                                         <div class="col">
-                                            <h3 class="display-4 black-color-font">Current Teams:</h3>
+                                            <h3 class="display-4 black-color-font">Current regiments:</h3>
                                         </div>
                                     </div>
                                     <div class="row pb-4">
                                         <div class="col">
-                                            {% if teams.count != 0 %}
-                                                {% for team in teams %}
+                                            {% if regiments.count != 0 %}
+                                                {% for regiment in regiments %}
                                                     <div class="row">
                                                         <div class="col">
-                                                            <a href="{% url 'get_team_profile' team_name=team.name %}">{{forloop.counter0|add}} - {{ team }}</a>
+                                                            <a href="{% url 'get_regiment_profile' regiment_name=regiment.name %}">{{forloop.counter0|add}} - {{ regiment }}</a>
                                                         </div>
                                                     </div>
                                                 {% endfor %}
                                             {% else %}
-                                                <p>You are not part of any team</p>
+                                                <p>You are not part of any regiment</p>
                                             {% endif %}
                                         </div>
                                     </div>

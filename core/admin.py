@@ -3,7 +3,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 import csv, datetime
 
-from .models import StaffCustomTeams, Match, Player, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, Analytics, PastTournaments, PastTeams, RocketLeague, Profile, Team
+from .models import StaffCustomTeams, Match, Player, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, Analytics, PastTournaments, PastTeams, RocketLeague, Profile, Regiment
 from .forms import TeamFormAdminPage, TeamFormAdminPageSuperUser, CompetitionAdminPage, CompetitionAdminPageSuperUser, ConfigControllerAdminPage
 
 # from background_task.models import Task
@@ -19,7 +19,7 @@ admin.site.index_title = 'Welcome to Duelout Portal'
 admin.site.register(Analytics)
 
 admin.site.register(Profile)
-admin.site.register(Team)
+admin.site.register(Regiment)
 
 # StaffCustomTeam admin
 class StaffCustomTeamAdmin(admin.ModelAdmin):

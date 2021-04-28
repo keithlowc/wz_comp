@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+{% load custom_filtering_tags %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container my-5 h-100">
+    <div class="row h-100 align-items-center">
+        <div class="col-md-12 min-vh-100 d-flex flex-column">
+            <div class="row">
+                <div class="col-lg-12 mx-auto">
+
+                    <!-- form card login -->
+                    <div class="card rounded shadow shadow-sm">
+                        <div class="card-header">
+                            <h3 class="mb-0">Regiment invitation</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="row">
+                                <div class="col">
+                                    <h3 class="black-color-font">Do you want to join the regiment: {{ regiment_name|title }}?</h3>
+                                    <a class="btn btn-success" href="{% url 'join_regiment' regiment_name=regiment_name invite_code=invite_code %}">Accept</a>
+                                    <a class="btn btn-danger">Decline</a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--/card-block-->
+                    </div>
+                    <!-- /form card login -->
+                </div>
+            </div>
+            <!--/row-->
+        </div>
+        <!--/col-->
+    </div>
+    <!--/row-->
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+     $(window).load(function(){        
+    $('#myModal').modal('show');
+        }); 
+</script>
+
+{% endblock %}

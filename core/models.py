@@ -448,15 +448,15 @@ class Profile(models.Model):
         return str(self.user)
 
 
-class Team(models.Model):
+class Regiment(models.Model):
     members = models.ManyToManyField(Profile)
     name = models.CharField(max_length = 100, null = True)
     description = models.TextField(max_length = 250)
     invite_code = models.CharField(max_length = 50, default = uuid.uuid4().hex[:6].upper())
 
     class Meta:
-        verbose_name = 'Team'
-        verbose_name_plural = 'Teams'
+        verbose_name = 'Regiment'
+        verbose_name_plural = 'Regiments'
     
     def __str__(self):
         return str(self.name)

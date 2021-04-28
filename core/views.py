@@ -4,7 +4,7 @@ from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse
 
-from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, PastTournaments, PastTeams, Profile, Team
+from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, PastTournaments, PastTeams, Profile, Regiment
 from .forms import JoinCompetitionRequestForm, EmailCommunicationForm, PlayerVerificationForm, CompetitionPasswordRequestForm, RocketLeagueForm, ProfileForm
 
 from silk.profiling.profiler import silk_profile
@@ -37,7 +37,7 @@ def get_or_create_profile(request):
         instance = None
     
     # Find all the teams he is part of
-    teams = Team.objects.filter(members = instance)
+    regiments = Regiment.objects.filter(members = instance)
 
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance = instance)
@@ -59,40 +59,54 @@ def get_or_create_profile(request):
     
     context = {
         'form': form,
-        'teams': teams,
+        'regiments': regiments,
     }
 
     return render(request, 'user_profiles/profile.html', context = context)
 
 
-def get_team_profile(request, team_name):
+def get_regiment_profile(request, regiment_name):
     '''
     Returns the team profile page
     '''
 
-    team = Team.objects.get(name = team_name)
+    regiment = Regiment.objects.get(name = regiment_name)
 
     context = {
-        'name': team.name,
-        'members': team.members.all(),
-        'description': team.description,
-        'invite_code': team.invite_code,
+        'name': regiment.name,
+        'members': regiment.members.all(),
+        'description': regiment.description,
+        'invite_code': regiment.invite_code,
     }
 
-    return render(request, 'teams/team.html', context = context)
+    return render(request, 'regiments/regiment.html', context = context)
 
 
-def join_team(request, team_name, invite_code):
+def regiment_join_confirmation(request, regiment_name, invite_code):
+    '''
+    Shows a form for the user to 
+    confirm regiment join
+    '''
+
+    context = {
+        'regiment_name': regiment_name,
+        'invite_code': invite_code,
+    }
+
+    return render(request, 'regiments/regiment_join_confirmation.html', context = context)
+
+
+def join_regiment(request, regiment_name, invite_code):
     '''
     Allows the user to join the team
     with the given invitation code
     '''
     
     try:
-        team = Team.objects.get(name = team_name, invite_code = invite_code)
+        regiment = Regiment.objects.get(name = regiment_name, invite_code = invite_code)
         profile = Profile.objects.get(user = request.user)
-        team.members.add(profile)
-        team.save()
+        regiment.members.add(profile)
+        regiment.save()
 
         signals.send_message.send(sender = None,
                 request = request,
@@ -105,7 +119,7 @@ def join_team(request, team_name, invite_code):
             message = 'There was an issue joining the team with error {}'.format(e),
             type = 'WARNING')
 
-    return redirect('get_team_profile', team_name = team_name)
+    return redirect('get_regiment_profile', regiment_name = regiment_name)
 
 
 # Data remediation
