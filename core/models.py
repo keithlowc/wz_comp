@@ -434,10 +434,32 @@ class Analytics(models.Model):
 
 
 class Profile(models.Model):
-    description = models.CharField(max_length = 250, null = True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, unique = True)
+    # profile_name = models.CharField(max_length = 50, null = True, unique = True)
     country = CountryField()
-    warzone_tag = models.CharField(max_length = 100, null = True, blank = True)
+    warzone_tag = models.CharField(max_length = 100, null = True, blank = True, unique = True)
     stream_url = models.URLField()
+
+    class Meta:
+        verbose_name = 'User Profile'
+        verbose_name_plural = 'User Profiles'
+    
+    def __str__(self):
+        return str(self.user)
+
+
+class Team(models.Model):
+    members = models.ManyToManyField(Profile)
+    name = models.CharField(max_length = 100, null = True)
+    description = models.TextField(max_length = 250)
+
+    class Meta:
+        verbose_name = 'Team'
+        verbose_name_plural = 'Teams'
+    
+    def __str__(self):
+        return str(self.name)
+
 
 # Temporary code
 class RocketLeague(models.Model):

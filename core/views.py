@@ -4,8 +4,8 @@ from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse
 
-from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, PastTournaments, PastTeams
-from .forms import JoinCompetitionRequestForm, EmailCommunicationForm, PlayerVerificationForm, CompetitionPasswordRequestForm, RocketLeagueForm
+from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, PastTournaments, PastTeams, Profile, Team
+from .forms import JoinCompetitionRequestForm, EmailCommunicationForm, PlayerVerificationForm, CompetitionPasswordRequestForm, RocketLeagueForm, ProfileForm
 
 from silk.profiling.profiler import silk_profile
 from . import signals, util, bg_tasks
@@ -22,6 +22,48 @@ def home(request):
 
 def get_privacy_policy(request):
     return render(request, 'main/privacy_policy.html')
+
+# User profile patch
+
+def get_or_create_profile(request):
+    '''
+    Returns the profile of the user
+    and allows them to edit it
+    '''
+    try:
+        instance = Profile.objects.get(user = request.user)
+    except Profile.DoesNotExist as e:
+        print('Does not exist')
+        instance = None
+    
+    # Find all the teams he is part of
+    teams = Team.objects.filter(members = instance)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance = instance)
+
+        if form.is_valid():
+            print('Form is valid!')
+            profile_form = form.save(commit = False)
+            profile_form.user = request.user
+            profile_form.save()
+
+            signals.send_message.send(sender = None,
+                        request = request,
+                        message = 'You have succesfully updated your profile',
+                        type = 'SUCCESS')
+
+            return redirect('get_or_create_profile')
+
+    form = ProfileForm(instance = instance)
+    
+    context = {
+        'form': form,
+        'teams': teams,
+    }
+
+    return render(request, 'user_profiles/profile.html', context = context)
+
 
 
 # Data remediation

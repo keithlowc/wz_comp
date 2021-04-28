@@ -7,6 +7,10 @@ urlpatterns = [
     path('', views.get_competitions_all, name = 'get_competitions_all'),
     path('privacy_policy', views.get_privacy_policy, name = 'get_privacy_policy'),
 
+    # User profile patch
+
+    path('profile', views.get_or_create_profile, name = 'get_or_create_profile'),
+
     # Competition charts
     path('competition/user/chart', views.show_chart, name = 'show_chart'),
     path('competition/recalculate_scores/<str:comp_name>', views.recalculate_scores, name = 'recalculate_scores'),

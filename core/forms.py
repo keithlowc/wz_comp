@@ -1,8 +1,15 @@
 from django import forms
 
-from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, PlayerVerification, ConfigController, AbstractModel, RocketLeague
+from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, PlayerVerification, ConfigController, AbstractModel, RocketLeague, Profile
 
 from django.core.exceptions import ValidationError
+
+# User profile patch
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('country', 'warzone_tag', 'stream_url')
 
 # Front end forms
 

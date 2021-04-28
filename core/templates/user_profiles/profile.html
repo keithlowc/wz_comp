@@ -1,0 +1,97 @@
+{% extends 'main/base.html' %}
+{% load custom_filtering_tags %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container my-5 h-100">
+    <div class="row h-100 align-items-center">
+        <div class="col-md-12 min-vh-100 d-flex flex-column">
+            <div class="row">
+                <div class="col-lg-12 mx-auto">
+
+                    <!-- form card login -->
+                    <div class="card rounded shadow shadow-sm">
+                        <div class="card-header">
+                            <h3 class="mb-0">User Profile</h3>
+                        </div>
+                        <div class="card-body text-center">
+
+                            <div class="row">
+                                <div class="col-lg-4 col-md-12 col-sm-12">
+                                    <div class="row">
+                                        <div class="col ">
+                                            <img src="https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png" class="rounded" alt="Cinque Terre" style="height: 100px; width: 100px">
+                                        </div>
+                                    </div>
+        
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3 class="display-4 black-color-font">{{ user|title }}</h3>
+                                            <form method="post">
+                                                {% csrf_token %}
+                                                
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {{ form|crispy }}
+                                                    </div>
+                                                </div>
+                            
+                                                <div class="row pt-4">
+                                                    <div class="col">
+                                                        <button class="primaryAction btn btn-primary btn-block" type="submit">Save profile</button>
+                                                    </div>
+                                                </div>
+                            
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 col-md-12 col-sm-12 border-left">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3 class="display-4 black-color-font">Current Teams:</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row pb-4">
+                                        <div class="col">
+                                            {% if teams.count != 0 %}
+                                                {% for team in teams %}
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <a href="#">{{forloop.counter0|add}} - {{ team }}</a>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <p>You are not part of any team</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <a class="btn btn-primary white-color-font">Join a team</a>
+                                            <a class="btn btn-primary white-color-font">Create a team</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <!--/card-block-->
+                    </div>
+                    <!-- /form card login -->
+                </div>
+            </div>
+            <!--/row-->
+        </div>
+        <!--/col-->
+    </div>
+    <!--/row-->
+</div>
+<!--/container-->
+
+{% endblock %}
