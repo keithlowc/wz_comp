@@ -18,20 +18,21 @@
                         <div class="card-body text-center">
 
                            <div class="row">
-                               <div class="col-2 col-lg-2 col-md-12 col-sm-12">
+                               <div class="col-lg-4 col-md-12 col-sm-12 pb-4">
                                    <div class="row">
-                                        <div class="col">
+                                        <div class="col-12">
                                             <img src="https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png" class="rounded" alt="Cinque Terre" style="height: 100px; width: 100px">
                                         </div>
                                    </div>
-                                   <div class="row">
-                                       <div class="col">
-                                        <h3 class="black-color-font">{{ name }}</h3>
+                                   <div class="row pt-4">
+                                       <div class="col-12">
+                                            <h3 class="black-color-font">{{ name|title }}</h3>
                                        </div>
                                    </div>
                                     
                                </div>
-                               <div class="col-10 col-lg-10 col-md-12 col-sm-12 text-left">
+
+                               <div class="col-lg-8 col-md-12 col-sm-12 text-left">
                                    <div class="row">
                                        <div class="col">
                                             <h3 class="black-color-font">Description:</h3>
@@ -65,19 +66,26 @@
                                    <div class="row">
                                        <div class="col">
                                             <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#inviteToRegimentModal">
-                                               Invite member
-                                            </button>
 
-                                            {% if leader == user.profile %}
-                                                <a href="{% url 'edit_regiment' regiment_name=name %}" class="btn btn-primary">
-                                                    Edit regiment    
-                                                </a>
-                                            {% endif %}
-
-                                            <a href="{% url 'leave_regiment' regiment_name=name %}" class="btn btn-danger">
-                                                Leave regiment   
-                                            </a>
+                                            <div class="row">
+                                                <div class="col pb-2">
+                                                    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#inviteToRegimentModal">
+                                                        Invite member <i class="fas fa-user-plus"></i>
+                                                     </button>
+                                                </div>
+                                                {% if leader == user.profile %}
+                                                <div class="col pb-2">
+                                                    <a href="{% url 'edit_regiment' regiment_name=name %}" class="btn btn-primary btn-block">
+                                                        Edit regiment    
+                                                    </a>
+                                                </div>
+                                                {% endif %}
+                                                <div class="col pb-2">
+                                                    <a href="{% url 'leave_regiment' regiment_name=name %}" class="btn btn-danger btn-block">
+                                                        Leave regiment   
+                                                    </a>
+                                                </div>
+                                            </div>
                                             
                                             <!-- Invite to regiment modal -->
                                             <div class="modal fade" id="inviteToRegimentModal" tabindex="-1" role="dialog" aria-labelledby="inviteToRegimentModalTitle" aria-hidden="true">
