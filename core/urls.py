@@ -10,9 +10,14 @@ urlpatterns = [
     # User profile patch
 
     path('profile', views.get_or_create_profile, name = 'get_or_create_profile'),
-    path('team/<str:regiment_name>', views.get_regiment_profile, name = 'get_regiment_profile'),
-    path('team/<str:regiment_name>/invite/<str:invite_code>', views.regiment_join_confirmation, name = 'regiment_join_confirmation'),
-    path('team/<str:regiment_name>/invite/<str:invite_code>/join', views.join_regiment, name = 'join_regiment'),
+    path('regiment/<str:regiment_name>', views.get_regiment_profile, name = 'get_regiment_profile'),
+    path('regiment/<str:regiment_name>/invite/<str:invite_code>', views.regiment_join_confirmation, name = 'regiment_join_confirmation'),
+    path('regiment/<str:regiment_name>/invite/<str:invite_code>/join', views.join_regiment, name = 'join_regiment'),
+    path('regiment/create/process', views.create_regiment, name = 'create_regiment'),
+    path('regiment/edit/<str:regiment_name>', views.edit_regiment, name = 'edit_regiment'),
+    path('regiment/leave/<str:regiment_name>', views.leave_regiment, name = 'leave_regiment'),
+    path('regiment/<str:regiment_name>/remove/<str:member_username>', views.remove_member_from_regiment, name = 'remove_member_from_regiment'),
+
 
     # Competition charts
     path('competition/user/chart', views.show_chart, name = 'show_chart'),

@@ -59,7 +59,7 @@
                                                 {% for regiment in regiments %}
                                                     <div class="row">
                                                         <div class="col">
-                                                            <a href="{% url 'get_regiment_profile' regiment_name=regiment.name %}">{{forloop.counter0|add}} - {{ regiment }}</a>
+                                                            <a href="{% url 'get_regiment_profile' regiment_name=regiment.name %}">{{forloop.counter0|add}} - {{ regiment|title }}</a>
                                                         </div>
                                                     </div>
                                                 {% endfor %}
@@ -85,28 +85,26 @@
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
-                                                            <div class="modal-body">
-                                                                <form>
+                                                            <form method="post">
+                                                                <div class="modal-body">
                                                                     {% csrf_token %}
                                                                     {{ form|crispy }}
-                                                                </form>
-
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-primary">Save changes</button>
-                                                        </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                    <button class="primaryAction btn btn-primary btn-block" type="submit">Save profile</button>
+                                                                </div>
+                                                            </form>
                                                     </div>
                                                 </div>
                                             </div> -->
 
-                                            <a class="btn btn-primary white-color-font">Create a team</a>
+                                            <a href="{% url 'create_regiment' %}" class="btn btn-primary">Create a regiment</a>
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
-
 
                         </div>
                         <!--/card-block-->

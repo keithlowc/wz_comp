@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, PlayerVerification, ConfigController, AbstractModel, RocketLeague, Profile
+from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, PlayerVerification, ConfigController, AbstractModel, RocketLeague, Profile, Regiment
 
 from django.core.exceptions import ValidationError
 
@@ -10,6 +10,15 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('country', 'warzone_tag', 'stream_url')
+
+class RegimentForm(forms.ModelForm):
+    '''
+    Create or edit regiment form
+    '''
+
+    class Meta:
+        model = Regiment
+        fields = ('name', 'description',)
 
 # Front end forms
 

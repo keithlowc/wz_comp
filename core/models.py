@@ -449,10 +449,11 @@ class Profile(models.Model):
 
 
 class Regiment(models.Model):
-    members = models.ManyToManyField(Profile)
-    name = models.CharField(max_length = 100, null = True)
+    members = models.ManyToManyField(Profile, related_name = 'members', blank = True)
+    name = models.CharField(max_length = 100, null = True, unique = True)
+    leader = models.ForeignKey(Profile, on_delete = models.SET_NULL, null = True, related_name = 'leader') # Should set the next player as leader
     description = models.TextField(max_length = 250)
-    invite_code = models.CharField(max_length = 50, default = uuid.uuid4().hex[:6].upper())
+    invite_code = models.UUIDField(default = uuid.uuid4)
 
     class Meta:
         verbose_name = 'Regiment'
