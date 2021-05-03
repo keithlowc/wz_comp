@@ -48,7 +48,7 @@ def get_or_create_profile(request):
     regiments = Regiment.objects.filter(members = profile)
 
     if request.method == 'POST':
-        form = ProfileForm(request.POST, instance = profile)
+        form = ProfileForm(request.POST, request.FILES, instance = profile)
 
         if form.is_valid():
             print('Form is valid!')

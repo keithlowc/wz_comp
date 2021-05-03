@@ -52,6 +52,7 @@ LIBRARY_APPS = [
     'rest_framework',
     'silk',
     'google_translate',
+    'storages',
 ]
 
 INSTALLED_APPS = [
@@ -255,3 +256,15 @@ SILKY_AUTHENTICATION = True  # User must login
 SILKY_AUTHORISATION = True  # User must have permissions
 
 SILKY_META = True
+
+# S3 BUCKET CONFIG
+# Note if you get this error: AWS4-HMAC-SHA256
+# It means that region cannot be US East (Ohio) us-east-2
+# Just choose west US West (Oregon) us-west-2
+AWS_ACCESS_KEY_ID = 'AKIAXOVOUINVP5HJLUFH'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'duelout-static-bucket'
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

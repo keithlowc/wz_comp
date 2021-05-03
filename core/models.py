@@ -441,7 +441,7 @@ class Profile(models.Model):
     ]
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, unique = True)
-    # profile_name = models.CharField(max_length = 50, null = True, unique = True)
+    profile_pic = models.ImageField(default = 'https://play-lh.googleusercontent.com/r2-_2oE9tU_46_n4GIC21PmqNIqPMoQNRPhfVNnK1v8hmDfA_yLuRwCy_E1cf5Wh4oM', null = True, upload_to = 'profile_pics')
     country = CountryField()
     warzone_tag = models.CharField(max_length = 100, null = True, unique = True)
     warzone_tag_type = models.CharField(max_length = 50, choices = wz_tag_type, default = 'battle')

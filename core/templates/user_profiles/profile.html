@@ -21,15 +21,21 @@
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="row">
                                         <div class="col ">
-                                            <img src="https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png" class="rounded" alt="Cinque Terre" style="height: 100px; width: 100px">
+                                            <img class="rounded-circle account-img" src="{{ profile.profile_pic.url }}">
                                         </div>
                                     </div>
         
                                     <div class="row">
                                         <div class="col">
                                             <h3 class="display-4 black-color-font">{{ user|title }}</h3>
-                                            <form method="post">
+                                            <form method="post" enctype="multipart/form-data">
                                                 {% csrf_token %}
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {{ form.profile_pic|as_crispy_field }}
+                                                    </div>
+                                                </div>
                                                 
                                                 <div class="row">
                                                     <div class="col">
