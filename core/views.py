@@ -29,17 +29,26 @@ def get_or_create_profile(request):
     Returns the profile of the user
     and allows them to edit it
     '''
+    config = ConfigController.objects.get(name = 'main_config_controller')
+
+    custom_config = {
+        'cod_x_rapidapi_key': config.cod_x_rapidapi_key,
+        'cod_x_rapidapi_host': config.cod_x_rapidapi_host,
+        'competitions_dummy_data': config.competitions_dummy_data,
+        'anomaly_detection_active': config.anomaly_detection_active,
+    }
+
     try:
-        instance = Profile.objects.get(user = request.user)
+        profile = Profile.objects.get(user = request.user)
     except Profile.DoesNotExist as e:
         print('Does not exist')
-        instance = None
+        profile = None
     
     # Find all the teams he is part of
-    regiments = Regiment.objects.filter(members = instance)
+    regiments = Regiment.objects.filter(members = profile)
 
     if request.method == 'POST':
-        form = ProfileForm(request.POST, instance = instance)
+        form = ProfileForm(request.POST, instance = profile)
 
         if form.is_valid():
             print('Form is valid!')
@@ -47,22 +56,27 @@ def get_or_create_profile(request):
             profile_form.user = request.user
             profile_form.save()
 
+            bg_tasks.verify_user_profile_warzone_tag(custom_config = custom_config,
+                                                    user = request.user.id, 
+                                                    wz_tag = profile_form.warzone_tag, 
+                                                    wz_tag_type = profile_form.warzone_tag_type)
+
             signals.send_message.send(sender = None,
-                        request = request,
-                        message = 'You have succesfully updated your profile',
-                        type = 'SUCCESS')
+                                    request = request,
+                                    message = 'You have succesfully updated your profile',
+                                    type = 'SUCCESS')
 
             return redirect('get_or_create_profile')
 
-    form = ProfileForm(instance = instance)
+    form = ProfileForm(instance = profile)
     
     context = {
         'form': form,
         'regiments': regiments,
+        'profile': profile,
     }
 
     return render(request, 'user_profiles/profile.html', context = context)
-
 
 @login_required
 def get_regiment_profile(request, regiment_name):
@@ -86,7 +100,6 @@ def get_regiment_profile(request, regiment_name):
     # except Exception as e:
     #     context = {}
     #     return render(request, 'regiments/regiment.html', context = context)
-
 
 @login_required
 def regiment_join_confirmation(request, regiment_name, invite_code):
@@ -123,7 +136,6 @@ def regiment_join_confirmation(request, regiment_name, invite_code):
 
     return render(request, 'regiments/regiment_join_confirmation.html', context = context)
 
-
 @login_required
 def join_regiment(request, regiment_name, invite_code):
     '''
@@ -149,7 +161,6 @@ def join_regiment(request, regiment_name, invite_code):
             type = 'WARNING')
 
     return redirect('get_regiment_profile', regiment_name = regiment_name)
-
 
 @login_required
 def create_regiment(request):
@@ -194,7 +205,7 @@ def create_regiment(request):
 
     return render(request, 'regiments/forms/regiment_creation.html', context = context)
 
-
+@login_required
 def edit_regiment(request, regiment_name):
     '''
     Edit regiment view
@@ -228,7 +239,7 @@ def edit_regiment(request, regiment_name):
 
     return render(request, 'regiments/forms/regiment_creation.html', context = context)
 
-
+@login_required
 def leave_regiment(request, regiment_name):
     '''
     Leave regiment
@@ -273,7 +284,7 @@ def leave_regiment(request, regiment_name):
         
         return redirect('get_or_create_profile')
 
-
+@login_required
 def remove_member_from_regiment(request, regiment_name, member_username):
     '''
     Remove the member from the regiment
@@ -292,6 +303,8 @@ def remove_member_from_regiment(request, regiment_name, member_username):
         type = 'WARNING')
 
     return redirect('get_regiment_profile', regiment_name = regiment_name)
+
+
 
 
 # Data remediation

@@ -434,10 +434,19 @@ class Analytics(models.Model):
 
 
 class Profile(models.Model):
+    wz_tag_type = [
+        ('battle', 'Battlenet ID'),
+        ('psn', 'Psnet ID'),
+        ('xbl', 'XboxLive ID'),
+    ]
+
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, unique = True)
     # profile_name = models.CharField(max_length = 50, null = True, unique = True)
     country = CountryField()
-    warzone_tag = models.CharField(max_length = 100, null = True, blank = True, unique = True)
+    warzone_tag = models.CharField(max_length = 100, null = True, unique = True)
+    warzone_tag_type = models.CharField(max_length = 50, choices = wz_tag_type, default = 'battle')
+    warzone_tag_verified = models.BooleanField(default = False)
+    warzone_tag_error_message = models.CharField(max_length = 200, null = True, blank = True, default = 'None')
     stream_url = models.URLField()
 
     class Meta:

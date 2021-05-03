@@ -9,7 +9,11 @@ from django.core.exceptions import ValidationError
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('country', 'warzone_tag', 'stream_url')
+        fields = ('country', 'warzone_tag', 'warzone_tag_type', 'stream_url')
+    
+        labels = {
+            'warzone_tag_type': 'Tag type',
+        }
 
 class RegimentForm(forms.ModelForm):
     '''

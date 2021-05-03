@@ -13,12 +13,12 @@
                     <!-- form card login -->
                     <div class="card rounded shadow shadow-sm">
                         <div class="card-header">
-                            <h3 class="mb-0">User Profile</h3>
+                            <h3 class="mb-0">Profile</h3>
                         </div>
                         <div class="card-body text-center">
 
                             <div class="row">
-                                <div class="col-lg-4 col-md-12 col-sm-12">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="row">
                                         <div class="col ">
                                             <img src="https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png" class="rounded" alt="Cinque Terre" style="height: 100px; width: 100px">
@@ -33,7 +33,59 @@
                                                 
                                                 <div class="row">
                                                     <div class="col">
-                                                        {{ form|crispy }}
+                                                        {{ form.country|as_crispy_field }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-5 col-md-12 col-sm-12">
+                                                        {{ form.warzone_tag|as_crispy_field }}
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-12 col-sm-12">
+                                                        {{ form.warzone_tag_type|as_crispy_field }}
+                                                    </div>
+
+                                                    {% if profile.warzone_tag_verified == True %}
+                                                    <div class="col-lg-3 col-md-12 col-sm-12 pl-2">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                WZ Tag Verified
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col pt-3">
+                                                                <i class="fas fa-check check-mark-icon" data-toggle="tooltip" data-placement="top" title="Warzone tag verified"></i>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    {% else %}
+                                                    <div class="col-lg-3 col-md-12 col-sm-12 pl-2">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                WZ Tag Verified
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col pt-3">
+                                                                <i class="fas fa-times red-icon" data-toggle="tooltip" data-placement="top" title="Warzone tag is not verified"></i>
+                                                                <p>
+                                                                    {% if profile.warzone_tag_error_message != None %}
+                                                                        {{ profile.warzone_tag_error_message }}
+                                                                    {% endif %}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% endif %}
+
+                                                </div>
+                                                
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {{ form.stream_url|as_crispy_field }}
                                                     </div>
                                                 </div>
                             
@@ -47,8 +99,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-8 col-md-12 col-sm-12 border-left">
-                                    <div class="row pt-4">
+                                <div class="col-lg-6 col-md-12 col-sm-12 border-left">
+                                    <div class="row pt-4 pb-4">
                                         <div class="col">
                                             <h3 class="display-4 black-color-font">Current regiments:</h3>
                                         </div>
@@ -56,13 +108,30 @@
                                     <div class="row pb-4">
                                         <div class="col">
                                             {% if regiments.count != 0 %}
-                                                {% for regiment in regiments %}
+                                                
                                                     <div class="row">
                                                         <div class="col">
-                                                            <a href="{% url 'get_regiment_profile' regiment_name=regiment.name %}">{{forloop.counter0|add}} - {{ regiment|title }}</a>
+
+                                                              <table class="table table-striped">
+                                                                <thead>
+                                                                  <tr>
+                                                                    <th scope="col">#</th>
+                                                                    <th scope="col">Regiment name</th>
+                                                                  </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% for regiment in regiments %}
+                                                                    <tr>
+                                                                      <th scope="row">{{ forloop.counter0|add }}</th>
+                                                                      <td><a href="{% url 'get_regiment_profile' regiment_name=regiment.name %}">{{ regiment|title }}</a></td>
+                                                                    </tr>
+                                                                    {% endfor %}
+                                                                </tbody>
+                                                              </table>
+                                                            
                                                         </div>
                                                     </div>
-                                                {% endfor %}
+                                                
                                             {% else %}
                                                 <p>You are not part of any regiment</p>
                                             {% endif %}
@@ -99,7 +168,7 @@
                                                 </div>
                                             </div> -->
 
-                                            <a href="{% url 'create_regiment' %}" class="btn btn-primary">Create a regiment <i class="fas fa-users"></i></a>
+                                            <a href="{% url 'create_regiment' %}" class="btn btn-primary btn-block">Create a regiment <i class="fas fa-users"></i></a>
                                         </div>
                                     </div>
 
@@ -120,6 +189,9 @@
 </div>
 <!--/container-->
 
+{% endblock %}
 
-
+{% block javascript %}
+    <script>
+    </script>
 {% endblock %}

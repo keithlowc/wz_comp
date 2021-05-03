@@ -1,7 +1,7 @@
 from .warzone_api import WarzoneApi
 from .email import EmailNotificationSystem
 
-from core.models import StaffCustomTeams, Player, Match
+from core.models import StaffCustomTeams, Player, Match, Profile
 from core.anomaly_detection import AnomalyDetection
 
 import datetime, time
@@ -471,3 +471,34 @@ def check_if_competition_is_one_hour_from_start(competition_config):
         print('--> Current delta {} is not <= 1 hour'.format(delta))
         print('--> Emails will not be sent out!')
 
+
+# User profile patch
+
+def get_wz_user_data(custom_config, user, wz_tag, wz_tag_type):
+    '''
+    Verifies user profile tag
+    '''
+
+    custom_config = custom_config
+
+    warzone_api = WarzoneApi(tag = wz_tag.replace('#', '%23'),
+                             platform = wz_tag_type, 
+                             cod_x_rapidapi_key = custom_config["cod_x_rapidapi_key"], 
+                             cod_x_rapidapi_host = custom_config["cod_x_rapidapi_host"])
+    
+    data, error, error_message = warzone_api.get_warzone_general_stats()
+
+    user_profile = Profile.objects.get(user = user)
+
+    if error == False:
+        user_profile.warzone_tag_verified = True
+        user_profile.warzone_tag_error_message = ''
+    else:
+        user_profile.warzone_tag_verified = False
+        user_profile.warzone_tag_error_message = error_message
+    
+    user_profile.save()
+
+    print('Data: {}'.format(data))
+    print('Error: {}'.format(error))
+    print('error message: {}'.format(error_message))

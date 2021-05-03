@@ -18,7 +18,7 @@
                         <div class="card-body text-center">
 
                            <div class="row">
-                               <div class="col-lg-4 col-md-12 col-sm-12 pb-4">
+                               <div class="col-lg-4 col-md-12 col-sm-12 pb-4 my-auto">
                                    <div class="row">
                                         <div class="col-12">
                                             <img src="https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png" class="rounded" alt="Cinque Terre" style="height: 100px; width: 100px">
@@ -35,7 +35,7 @@
                                <div class="col-lg-8 col-md-12 col-sm-12 text-left">
                                    <div class="row">
                                        <div class="col">
-                                            <h3 class="black-color-font">Description:</h3>
+                                            <h3 class="black-color-font pb-2">Description:</h3>
                                             <p>{{ description }}</p>
                                        </div>
                                    </div>
@@ -43,27 +43,52 @@
                                    <div class="row">
                                         <div class="col">
                                             <h3 class="black-color-font">Members:</h3>
-                                            {% for member in members %}
-                                                <p>{{ forloop.counter0|add }} - {{ member|title }} - {{ member.country }} 
-
-                                                    {% if leader == user.profile %}
-                                                        {% if member != leader %}
-                                                            <a href="{% url 'remove_member_from_regiment' regiment_name=name member_username=member %}" data-toggle="tooltip" data-placement="top" title="Remove user">
-                                                                <i class="fa fa-times youtube-icon-color" aria-hidden="true"></i>
-                                                            </a>
-                                                        {% else %}
-                                                            <a href="">
-                                                                <i class="fas fa-crown first-place" data-toggle="tooltip" data-placement="top" title="Regiment Leader"></i>
-                                                            </a>
-                                                        {% endif %}
-                                                    {% endif %}
-
-                                                </p>
-                                            {% endfor %}
+                                                <div class="table-responsive pt-4">
+                                                    <table class="table">
+                                                        <thead class="thead-dark">
+                                                          <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">WZ Tag</th>
+                                                            <th scope="col">Tag verified?</th>
+                                                            <th scope="col">Country</th>
+                                                            {% if leader == user.profile %}
+                                                            <th scope="col">Management</th>
+                                                            {% endif %}
+                                                          </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for member in members %}
+                                                            <tr>
+                                                                
+                                                                
+                                                                <th scope="row">{{ forloop.counter0|add }}</th>
+                                                                <td>{{ member|title }}
+                                                                    {% if member == leader %}
+                                                                    <i class="fas fa-crown first-place" data-toggle="tooltip" data-placement="top" title="Regiment Leader"></i>
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>{{ member.warzone_tag|title }}</td>
+                                                                <td>{{ member.warzone_tag_verified }}</td>
+                                                                <td>{{ member.country }}</td>
+                                                                {% if leader == user.profile %}
+                                                                    {% if member != leader %}
+                                                                    <td>
+                                                                        <a href="{% url 'remove_member_from_regiment' regiment_name=name member_username=member %}" data-toggle="tooltip" data-placement="top" title="Remove user">
+                                                                            <i class="fa fa-times youtube-icon-color" aria-hidden="true"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                         </div>
                                    </div>
                                    
-                                   <div class="row">
+                                   <div class="row pt-4">
                                        <div class="col">
                                             <!-- Button trigger modal -->
 
