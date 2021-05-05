@@ -38,6 +38,9 @@
           {% endif %}
             <p class="text-white font-weight-bold text-uppercase px-3 pb-4 pt-4 mb-0">Account Panel</p>
             <li>
+              <a class="nav-item nav-link white-color-font" href="{% url 'get_or_create_profile' %}">Profile</a>
+            </li>
+            <li>
               <a class="nav-item nav-link white-color-font" href="/accounts/logout/">Log out</a>
             </li>
           {% else %}

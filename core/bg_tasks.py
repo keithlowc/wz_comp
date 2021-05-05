@@ -19,6 +19,21 @@ try:
 except Exception as e:
     time_to_run = 1
 
+# User and profile patch
+@background(schedule = 1)
+def verify_user_profile_warzone_tag(custom_config, user, wz_tag, wz_tag_type):
+    '''
+    Checks that the profile submitted on tag is 
+    valid and public
+    '''
+
+    util.get_wz_user_data(custom_config = custom_config, 
+                        user = user, 
+                        wz_tag = wz_tag, 
+                        wz_tag_type = wz_tag_type)
+    
+
+
 def recalculate_competition_stats(custom_config, comp_name):
     '''
     Caculates all the competition stats

@@ -90,6 +90,10 @@ body {
     border: 2px solid white!important;
 }
 
+.profile-img {
+    height: 150px;
+}
+
 /* Card header */
 
 .card-header:first-child {

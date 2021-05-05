@@ -1,0 +1,83 @@
+{% extends 'main/base.html' %}
+{% load custom_filtering_tags %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container my-5 h-100">
+    <div class="row h-100 align-items-center">
+        <div class="col-md-12 min-vh-100 d-flex flex-column">
+            <div class="row">
+                <div class="col-lg-12 mx-auto">
+
+                    <!-- form card login -->
+                    <div class="card rounded shadow shadow-sm">
+                        <div class="card-header">
+                            <h3 class="mb-0">Regiment Creation</h3>
+                        </div>
+                        <div class="card-body text-center">
+
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+        
+                                    <div class="row">
+                                        <div class="col">
+                                            <img src="{{ regiment.regiment_logo.url }}" class="rounded-circle account-img" alt="No image" style="height: 100px; width: 100px">
+                                            <form method="post" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {{ form.regiment_logo|as_crispy_field }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {{ form.name|as_crispy_field }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {{ form.description|as_crispy_field }}
+                                                    </div>
+                                                </div>
+                            
+                                                <div class="row pt-4">
+                                                    <div class="col">
+                                                        {% if regiment_editing == True %}
+                                                            <button class="primaryAction btn btn-primary btn-block" type="submit">Edit regiment</button>
+                                                        {% else %}
+                                                            <button class="primaryAction btn btn-primary btn-block" type="submit">Create regiment</button>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                            
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!--/card-block-->
+                    </div>
+                    <!-- /form card login -->
+                </div>
+            </div>
+            <!--/row-->
+        </div>
+        <!--/col-->
+    </div>
+    <!--/row-->
+</div>
+<!--/container-->
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+</script>
+
+{% endblock %}

@@ -1,8 +1,44 @@
 from django import forms
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit, Row, Column
+from crispy_forms.bootstrap import FormActions, FieldWithButtons, StrictButton
 
-from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, PlayerVerification, ConfigController, AbstractModel, RocketLeague
+from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, PlayerVerification, ConfigController, AbstractModel, RocketLeague, Profile, Regiment
 
 from django.core.exceptions import ValidationError
+
+# User profile patch
+
+class ProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        # self.helper.layout = FormActions(
+        #     FieldWithButtons('profile_pic', StrictButton("Set profile pic"))
+        # )
+
+    class Meta:
+        model = Profile
+        fields = ('profile_pic', 'country', 'warzone_tag', 'warzone_tag_type', 'stream_url')
+    
+        labels = {
+            'warzone_tag_type': 'Tag type',
+        }
+
+class RegimentForm(forms.ModelForm):
+    '''
+    Create or edit regiment form
+    '''
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        # self.helper.layout = FormActions(
+        #     FieldWithButtons('regiment_logo', StrictButton("Set profile pic"))
+        # )
+
+    class Meta:
+        model = Regiment
+        fields = ('regiment_logo','name', 'description',)
 
 # Front end forms
 
