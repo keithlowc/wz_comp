@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='profile',
             name='profile_pic',
-            field=models.ImageField(default='https://play-lh.googleusercontent.com/r2-_2oE9tU_46_n4GIC21PmqNIqPMoQNRPhfVNnK1v8hmDfA_yLuRwCy_E1cf5Wh4oM', null=True, upload_to=''),
+            field=models.ImageField(default='', null=True, upload_to=''),
         ),
         migrations.AlterField(
             model_name='profile',
