@@ -94,6 +94,7 @@ def get_regiment_profile(request, regiment_name):
         'description': regiment.description,
         'invite_code': regiment.invite_code,
         'leader': regiment.leader,
+        'regiment': regiment,
     }
 
     return render(request, 'regiments/regiment.html', context = context)
@@ -171,7 +172,7 @@ def create_regiment(request):
     regiment_count = Regiment.objects.filter(members = profile).count()
 
     if request.method == 'POST':
-        form = RegimentForm(request.POST)
+        form = RegimentForm(request.POST, request.FILES)
         
         if regiment_count < 5:
 
@@ -212,12 +213,12 @@ def edit_regiment(request, regiment_name):
     '''
 
     profile = Profile.objects.get(user = request.user)
-    regiment_instance = Regiment.objects.get(leader = profile, name = regiment_name)
+    regiment = Regiment.objects.get(leader = profile, name = regiment_name)
 
     new_regiment_name = ''
 
     if request.method == 'POST':
-        form = RegimentForm(request.POST, instance = regiment_instance)
+        form = RegimentForm(request.POST, request.FILES, instance = regiment)
         if form.is_valid():
             regiment_form = form.save(commit = False)
             new_regiment_name = regiment_form.name
@@ -230,10 +231,11 @@ def edit_regiment(request, regiment_name):
             
             return redirect('get_regiment_profile', regiment_name = new_regiment_name)
 
-    form = RegimentForm(instance = regiment_instance)
+    form = RegimentForm(instance = regiment)
 
     context = {
         'form': form,
+        'regiment': regiment,
         'regiment_editing': True,
     }
 

@@ -22,13 +22,25 @@
         
                                     <div class="row">
                                         <div class="col">
-                                            <img src="https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png" class="rounded" alt="Cinque Terre" style="height: 100px; width: 100px">
-                                            <form method="post">
+                                            <img src="{{ regiment.regiment_logo.url }}" class="rounded-circle account-img" alt="No image" style="height: 100px; width: 100px">
+                                            <form method="post" enctype="multipart/form-data">
                                                 {% csrf_token %}
                                                 
                                                 <div class="row">
                                                     <div class="col">
-                                                        {{ form|crispy }}
+                                                        {{ form.regiment_logo|as_crispy_field }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {{ form.name|as_crispy_field }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        {{ form.description|as_crispy_field }}
                                                     </div>
                                                 </div>
                             

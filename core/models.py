@@ -459,6 +459,7 @@ class Profile(models.Model):
 
 class Regiment(models.Model):
     members = models.ManyToManyField(Profile, related_name = 'members', blank = True)
+    regiment_logo = models.ImageField(default = 'https://play-lh.googleusercontent.com/r2-_2oE9tU_46_n4GIC21PmqNIqPMoQNRPhfVNnK1v8hmDfA_yLuRwCy_E1cf5Wh4oM', null = True, upload_to = 'regiment_pics')
     name = models.CharField(max_length = 100, null = True, unique = True)
     leader = models.ForeignKey(Profile, on_delete = models.SET_NULL, null = True, related_name = 'leader') # Should set the next player as leader
     description = models.TextField(max_length = 250)
