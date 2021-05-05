@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='regiment',
             name='regiment_logo',
-            field=models.ImageField(default='https://play-lh.googleusercontent.com/r2-_2oE9tU_46_n4GIC21PmqNIqPMoQNRPhfVNnK1v8hmDfA_yLuRwCy_E1cf5Wh4oM', null=True, upload_to='profile_pics'),
+            field=models.ImageField(default='', null=True, upload_to='profile_pics'),
         ),
     ]
