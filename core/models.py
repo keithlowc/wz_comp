@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.contrib import admin
 
+from django_countries.fields import CountryField
+
 from datetime import datetime
 
 from .validators import validate_competition_name
@@ -429,6 +431,47 @@ class Analytics(models.Model):
     
     def __str__(self):
         return str(self.date)
+
+
+class Profile(models.Model):
+    wz_tag_type = [
+        ('battle', 'Battlenet ID'),
+        ('psn', 'Psnet ID'),
+        ('xbl', 'XboxLive ID'),
+    ]
+
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, null = True, unique = True)
+    profile_pic = models.ImageField(default = 'profile_pics/default.png', null = True, upload_to = 'profile_pics')
+    country = CountryField()
+    warzone_tag = models.CharField(max_length = 100, null = True, unique = True)
+    warzone_tag_type = models.CharField(max_length = 50, choices = wz_tag_type, default = 'battle')
+    warzone_tag_verified = models.BooleanField(default = False)
+    warzone_tag_error_message = models.CharField(max_length = 200, null = True, blank = True, default = 'None')
+    stream_url = models.URLField()
+
+    class Meta:
+        verbose_name = 'User Profile'
+        verbose_name_plural = 'User Profiles'
+    
+    def __str__(self):
+        return str(self.user)
+
+
+class Regiment(models.Model):
+    members = models.ManyToManyField(Profile, related_name = 'members', blank = True)
+    regiment_logo = models.ImageField(default = 'regiment_pics/default.png', null = True, upload_to = 'regiment_pics')
+    name = models.CharField(max_length = 100, null = True, unique = True)
+    leader = models.ForeignKey(Profile, on_delete = models.SET_NULL, null = True, related_name = 'leader') # Should set the next player as leader
+    description = models.TextField(max_length = 250)
+    invite_code = models.UUIDField(default = uuid.uuid4)
+
+    class Meta:
+        verbose_name = 'Regiment'
+        verbose_name_plural = 'Regiments'
+    
+    def __str__(self):
+        return str(self.name)
+
 
 # Temporary code
 class RocketLeague(models.Model):

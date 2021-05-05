@@ -1,0 +1,86 @@
+{% extends 'main/base.html' %}
+{% load custom_filtering_tags %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container my-5 h-100">
+    <div class="row h-100 align-items-center">
+        <div class="col-md-12 min-vh-100 d-flex flex-column">
+            <div class="row">
+                <div class="col-lg-12 mx-auto">
+
+                    <!-- form card login -->
+
+                    {% if regiment_exist == True %}
+                        {% if user_is_part_of_regiment == False %}
+                            <div class="card rounded shadow shadow-sm">
+                                <div class="card-header">
+                                    <h3 class="mb-0">Regiment invitation</h3>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3 class="black-color-font">Do you want to join the regiment: {{ regiment_name|title }}?</h3>
+                                            <a class="btn btn-success" href="{% url 'join_regiment' regiment_name=regiment_name invite_code=invite_code %}">Accept</a>
+                                            <a class="btn btn-danger" href="{% url 'get_or_create_profile' %}">Decline</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!--/card-block-->
+                            </div>
+                        {% else %}
+                            <div class="card rounded shadow shadow-sm">
+                                <div class="card-header">
+                                    <h3 class="mb-0">Regiment invitation</h3>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3 class="black-color-font">You are already part of: {{ regiment_name|title }}</h3>
+                                            <a class="btn btn-success" href="{% url 'get_regiment_profile' regiment_name=regiment_name %}">Accept</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!--/card-block-->
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="card rounded shadow shadow-sm">
+                            <div class="card-header">
+                                <h3 class="mb-0">Regiment invitation no longer exists!</h3>
+                            </div>
+                            <div class="card-body text-center">
+                                <div class="row">
+                                    <div class="col">
+                                        <h3 class="black-color-font">The regiment: {{ regiment_name|title }} no longer exist!</h3>
+                                        <a class="btn btn-success" href="{% url 'home' %}">Accept</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--/card-block-->
+                        </div>
+                    {% endif %}
+                    <!-- /form card login -->
+                </div>
+            </div>
+            <!--/row-->
+        </div>
+        <!--/col-->
+    </div>
+    <!--/row-->
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+     $(window).load(function(){        
+    $('#myModal').modal('show');
+        }); 
+</script>
+
+{% endblock %}
