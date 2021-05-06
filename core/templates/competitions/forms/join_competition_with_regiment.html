@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+{% load custom_filtering_tags %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="border rounded join-competition-form white-color-font">
+        <div class="row p-4">
+            <div class="col-12">
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col">
+                            {{ form|crispy }}
+                        </div>
+                    </div>
+
+                    <div class="row pt-4">
+                        <div class="col-4">
+                            <input type="submit" value="Submit" class="btn btn-primary btn-block" id="submitButton">
+                        </div>
+                        <div class="col-4"></div>
+                        <div class="col-4"></div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

@@ -3,10 +3,27 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 from crispy_forms.bootstrap import FormActions, FieldWithButtons, StrictButton
 
-from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, PlayerVerification, ConfigController, AbstractModel, RocketLeague, Profile, Regiment
+from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, PlayerVerification, ConfigController, AbstractModel, RocketLeague, Profile, Regiment, Team
 
 from django.core.exceptions import ValidationError
 
+# Competition patch
+
+class TeamForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        # exclude = ['player_1']
+        fields = ('name', 'player_1', 'player_2', 'player_3', 'player_4')
+    
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(TeamForm, self).__init__(*args, **kwargs)
+        profile = Profile.objects.get(user = user)
+        members = Regiment.objects.filter(members = profile)[0].members.all()
+        self.fields['player_1'].queryset = members
+        self.fields['player_2'].queryset = members
+        self.fields['player_3'].queryset = members
+        self.fields['player_4'].queryset = members
 # User profile patch
 
 class ProfileForm(forms.ModelForm):

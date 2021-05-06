@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 
 from .models import StaffCustomTeams, StaffCustomCompetition, CompetitionCommunicationEmails, ConfigController, PastTournaments, PastTeams, Profile, Regiment
-from .forms import JoinCompetitionRequestForm, EmailCommunicationForm, PlayerVerificationForm, CompetitionPasswordRequestForm, RocketLeagueForm, ProfileForm, RegimentForm
+from .forms import JoinCompetitionRequestForm, EmailCommunicationForm, PlayerVerificationForm, CompetitionPasswordRequestForm, RocketLeagueForm, ProfileForm, RegimentForm, TeamForm
 
 from silk.profiling.profiler import silk_profile
 from . import signals, util, bg_tasks
@@ -84,8 +84,6 @@ def get_regiment_profile(request, regiment_name):
     Returns the team profile page
     '''
 
-    # try:
-
     regiment = Regiment.objects.get(name = regiment_name)
 
     context = {
@@ -98,9 +96,6 @@ def get_regiment_profile(request, regiment_name):
     }
 
     return render(request, 'regiments/regiment.html', context = context)
-    # except Exception as e:
-    #     context = {}
-    #     return render(request, 'regiments/regiment.html', context = context)
 
 @login_required
 def regiment_join_confirmation(request, regiment_name, invite_code):
@@ -174,7 +169,7 @@ def create_regiment(request):
     if request.method == 'POST':
         form = RegimentForm(request.POST, request.FILES)
         
-        if regiment_count < 5:
+        if regiment_count < 1:
 
             if form.is_valid():
                 
@@ -306,7 +301,45 @@ def remove_member_from_regiment(request, regiment_name, member_username):
 
     return redirect('get_regiment_profile', regiment_name = regiment_name)
 
+# Competition patch
 
+def join_request_competition_with_regiment(request, comp_name):
+    '''
+    Shows form specific 
+    '''
+    config = ConfigController.objects.get(name = 'main_config_controller')
+    competition = StaffCustomCompetition.objects.get(competition_name = comp_name)
+
+    if request.method == 'POST':
+        form = TeamForm(request.POST, user = request.user)
+        if form.is_valid():
+            join_form = form.save(commit = False)
+            # join_form.player_1 = join_form.player_1.id
+            # join_form.player_2 = join_form.player_2.id
+            # join_form.player_3 = join_form.player_3.id
+            # join_form.player_4 = join_form.player_4.id
+            join_form.save()
+
+            signals.send_message.send(sender = None,
+                    request = request,
+                    message = 'Successfully joined tournament',
+                    type = 'SUCCESS')
+            
+            return redirect('get_or_create_profile')
+        
+        else:
+            signals.send_message.send(sender = None,
+                    request = request,
+                    message = 'Form is not valid, you probably selected the same player twice',
+                    type = 'WARNING')
+
+    form = TeamForm(user = request.user)
+
+    context = {
+        'form': form
+    }
+
+    return render(request, 'competitions/forms/join_competition_with_regiment.html', context)
 
 
 # Data remediation

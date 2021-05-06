@@ -432,6 +432,7 @@ class Analytics(models.Model):
     def __str__(self):
         return str(self.date)
 
+# User profile patch
 
 class Profile(models.Model):
     wz_tag_type = [
@@ -472,6 +473,20 @@ class Regiment(models.Model):
     def __str__(self):
         return str(self.name)
 
+
+class Team(models.Model):
+    name = models.CharField(max_length = 250, null = True, unique = True)
+    player_1 = models.OneToOneField(Profile, blank = True, on_delete = models.CASCADE, null = True, related_name = 'player_1')
+    player_2 = models.OneToOneField(Profile, blank = True, on_delete = models.CASCADE, null = True, related_name = 'player_2')
+    player_3 = models.OneToOneField(Profile, blank = True, on_delete = models.CASCADE, null = True, related_name = 'player_3')
+    player_4 = models.OneToOneField(Profile, blank = True, on_delete = models.CASCADE, null = True, related_name = 'player_4')
+
+    class Meta:
+        verbose_name = 'Team'
+        verbose_name_plural = 'Teams'
+    
+    def __str__(self):
+        return str(self.name)
 
 # Temporary code
 class RocketLeague(models.Model):

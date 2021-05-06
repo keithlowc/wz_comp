@@ -82,6 +82,7 @@
                           <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xm-6 pt-1">
                             {% if competition.competition_entry == "Free" %}
                               <a class="btn btn-success btn-block" href="{% url 'join_request_competition' comp_name=competition.competition_name %}">Sign Up</a>
+                              <a class="btn btn-success btn-block" href="{% url 'join_request_competition_with_regiment' comp_name=competition.competition_name %}">Sign Up with team</a>
                             {% else %}
                               <a class="btn btn-success btn-block" href="{% url 'competition_password_request' comp_name=competition.competition_name %}">Sign Up</a>
                             {% endif %}

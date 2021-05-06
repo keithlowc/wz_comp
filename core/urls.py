@@ -18,6 +18,9 @@ urlpatterns = [
     path('regiment/leave/<str:regiment_name>', views.leave_regiment, name = 'leave_regiment'),
     path('regiment/<str:regiment_name>/remove/<str:member_username>', views.remove_member_from_regiment, name = 'remove_member_from_regiment'),
 
+    # Competition patch
+
+    path('competition/regiment_join/<str:comp_name>/', views.join_request_competition_with_regiment, name = 'join_request_competition_with_regiment'),
 
     # Competition charts
     path('competition/user/chart', views.show_chart, name = 'show_chart'),
